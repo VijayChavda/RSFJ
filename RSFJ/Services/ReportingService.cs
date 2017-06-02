@@ -32,7 +32,7 @@ namespace RSFJ.Services
                 headingLine, "INNER_EXCEPTION", headingLine, ServiceException.InnerException
                 );
 
-            StorageService.Instance.CreateTimeStampFile(StorageService.Instance.ReportsDirectory, "Log", "log", message);
+            StorageService.Instance.CreateTimeStampFile(StorageService.ReportsDirectory, "Log", "log", message);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace RSFJ.Services
         {
             string message = string.Concat(DateTime.Now, Environment.NewLine, Message);
 
-            StorageService.Instance.CreateTimeStampFile(StorageService.Instance.ReportsDirectory, "Message", "msg", message);
+            StorageService.Instance.CreateTimeStampFile(StorageService.ReportsDirectory, "Message", "msg", message);
         }
     }
 }

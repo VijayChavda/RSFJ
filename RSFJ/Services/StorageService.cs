@@ -16,17 +16,17 @@ namespace RSFJ.Services
         /// <summary>
         /// Path to the reports directory.
         /// </summary>
-        public string ReportsDirectory { get; private set; }
+        public static readonly string ReportsDirectory;
 
         /// <summary>
         /// Path to the backup directory.
         /// </summary>
-        public string BackupsDirectory { get; private set; }
+        public static readonly string BackupsDirectory;
 
         /// <summary>
         /// Path to the database file.
         /// </summary>
-        public string DatabaseFile { get; private set; }
+        public static readonly string DatabaseFile;
 
         /// <summary>
         /// Initializes StorageService.
@@ -37,19 +37,24 @@ namespace RSFJ.Services
         }
 
         /// <summary>
-        /// Initializes the storage structure of RSFJ.
+        /// Initializes static components of StorageService.
         /// </summary>
-        private void InitializeStorage()
+        static StorageService()
         {
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var rootDirectory = Path.Combine(appData, "RSFJ");
             ReportsDirectory = Path.Combine(rootDirectory, "Reports");
             BackupsDirectory = Path.Combine(rootDirectory, "Backups");
+            DatabaseFile = Path.Combine(rootDirectory, "database.rsfj");
+        }
 
+        /// <summary>
+        /// Initializes the storage structure of RSFJ.
+        /// </summary>
+        private void InitializeStorage()
+        {
             Directory.CreateDirectory(ReportsDirectory);
             Directory.CreateDirectory(BackupsDirectory);
-
-            DatabaseFile = Path.Combine(rootDirectory, "database.rsfj");
         }
 
         /// <summary>
@@ -72,12 +77,15 @@ namespace RSFJ.Services
         /// <param name="FileName">The name of the file to create.</param>
         /// <param name="FileExtension">The extension of the file to create.</param>
         /// <param name="Content">The content to write in the file.</param>
-        public void CreateTimeStampFile(string Directory, string FileName, string FileExtension, string Content)
+        /// <returns>Returns the path to the file that was created.</returns>
+        public string CreateTimeStampFile(string Directory, string FileName, string FileExtension, string Content)
         {
             var file = Path.Combine(Directory,
                 string.Format("{0}-{1}.{2}", FileName, DateTime.Now.ToString("yyyyMMddHHmmss"), FileExtension));
 
             CreateFile(file, Content);
+
+            return file;
         }
     }
 }
