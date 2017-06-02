@@ -11,7 +11,8 @@ namespace RSFJ.Services
         /// <summary>
         /// The only instance of StorageService.
         /// </summary>
-        public static StorageService Instance => new StorageService();
+        public static StorageService Instance => _Instance ?? (_Instance = new StorageService());
+        private static StorageService _Instance;
 
         /// <summary>
         /// Path to the reports directory.

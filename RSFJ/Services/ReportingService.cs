@@ -9,7 +9,8 @@ namespace RSFJ.Services
         /// <summary>
         /// The only instance of ReportingService.
         /// </summary>
-        public static ReportingService Instance => new ReportingService();
+        public static ReportingService Instance => _Instance ?? (_Instance = new ReportingService());
+        private static ReportingService _Instance;
 
         /// <summary>
         /// Initializes ReportingService.
