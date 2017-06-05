@@ -14,6 +14,30 @@ namespace RSFJ.ViewModels
     {
         public ObservableCollection<RojmelEntryViewModel> Entries { get; set; }
 
+        RelayCommand _saveCommand;
+        public ICommand SaveCommand
+        {
+            get => _saveCommand ?? (_saveCommand = new RelayCommand(param => this.Save(), param => true));
+        }
+
+        RelayCommand _loadCommand;
+        public ICommand LoadCommand
+        {
+            get => _loadCommand ?? (_loadCommand = new RelayCommand(param => this.Load(), param => true));
+        }
+
+        RelayCommand _backupCommand;
+        public ICommand BackupCommand
+        {
+            get => _backupCommand ?? (_backupCommand = new RelayCommand(param => this.Backup(), param => true));
+        }
+
+        RelayCommand _restoreCommand;
+        public ICommand RestoreCommand
+        {
+            get => _restoreCommand ?? (_restoreCommand = new RelayCommand(param => this.Restore(param.ToString()), param => true));
+        }
+
         public MainViewModel()
         {
             Entries = new ObservableCollection<RojmelEntryViewModel>()
@@ -22,6 +46,26 @@ namespace RSFJ.ViewModels
                 new RojmelEntryViewModel(){ Id=2, Date = DateTime.Now.Date.AddDays(1), Account = "Person 2", StockItem = "Item 2" },
                 new RojmelEntryViewModel(){ Id=3, Date = DateTime.Now.Date.AddDays(2), Account = "Person 3", StockItem = "Item 3" },
             };
+        }
+
+        private void Save()
+        {
+
+        }
+
+        private void Load()
+        {
+
+        }
+
+        private void Backup()
+        {
+
+        }
+
+        private void Restore(string BackupFile)
+        {
+
         }
     }
 
