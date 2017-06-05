@@ -29,6 +29,10 @@ namespace RSFJ.ViewModels
     {
         public static int InstanceCount;
 
+        public static ObservableCollection<string> AccountSuggestionsList { get; set; }
+
+        public static ObservableCollection<string> StockItemSuggestionsList { get; set; }
+
         private int _Id;
         public int Id { get => _Id; set => SetProperty(ref _Id, value); }
 
@@ -83,6 +87,14 @@ namespace RSFJ.ViewModels
 
             Id = InstanceCount;
             Date = DateTime.Now.Date;
+            Account = AccountSuggestionsList.First();
+            StockItem = StockItemSuggestionsList.First();
+        }
+
+        static RojmelEntryViewModel()
+        {
+            AccountSuggestionsList = new ObservableCollection<string>() { "SELF" };
+            StockItemSuggestionsList = new ObservableCollection<string>() { "CASH" };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -93,6 +105,64 @@ namespace RSFJ.ViewModels
             {
                 Property = Value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+
+                if (PropertyName == nameof(Account))
+                {
+                    if (string.IsNullOrWhiteSpace(Account) == false && AccountSuggestionsList.Contains(Account) == false)
+                    {
+                        AccountSuggestionsList.Add(Account);
+                    }
+                }
+
+                if (PropertyName == nameof(StockItem))
+                {
+                    if (string.IsNullOrWhiteSpace(StockItem) == false && StockItemSuggestionsList.Contains(StockItem) == false)
+                    {
+                        StockItemSuggestionsList.Add(StockItem);
+                    }
+                }
+
+                if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2))
+                {
+                    if (LParam1 == null)
+                    {
+                        LParam2 = null;
+                        LResult = null;
+                    }
+
+                    if (LParam1 != null)
+                    {
+                        LResult = LParam1;
+
+                        if (LParam2 != null)
+                        {
+                            LResult = LParam1 + LParam2;
+                        }
+
+                        RParam1 = null;
+                    }
+                }
+
+                if (PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2))
+                {
+                    if (RParam1 == null)
+                    {
+                        RParam2 = null;
+                        RResult = null;
+                    }
+
+                    if (RParam1 != null)
+                    {
+                        RResult = RParam1;
+
+                        if (RParam2 != null)
+                        {
+                            RResult = RParam1 + RParam2;
+                        }
+
+                        LParam1 = null;
+                    }
+                }
             }
         }
     }
