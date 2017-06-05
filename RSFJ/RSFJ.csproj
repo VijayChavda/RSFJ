@@ -64,6 +64,7 @@
     <Compile Include="Services\DataContextService.cs" />
     <Compile Include="Services\ReportingService.cs" />
     <Compile Include="Services\StorageService.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Utilities\RelayCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
