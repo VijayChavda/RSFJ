@@ -23,6 +23,13 @@ namespace RSFJ
         public MainWindow()
         {
             InitializeComponent();
+
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.LoadCommand.Execute(null);
         }
 
         private void MetroWindow_KeyDown(object sender, KeyEventArgs e)

@@ -49,7 +49,10 @@ namespace RSFJ.ViewModels
                 {
                     foreach (var item in args.NewItems.Cast<RojmelEntryViewModel>())
                     {
-                        DataContextService.Instance.DataContext.RojmelEntries.Add(item.Model);
+                        if (DataContextService.Instance.DataContext.RojmelEntries.Contains(item.Model) == false)
+                        {
+                            DataContextService.Instance.DataContext.RojmelEntries.Add(item.Model);
+                        }
                     }
                 }
             };
@@ -62,7 +65,12 @@ namespace RSFJ.ViewModels
 
         private void Load()
         {
+            DataContextService.Instance.Load();
 
+            foreach (var model in DataContextService.Instance.DataContext.RojmelEntries)
+            {
+                Entries.Add(new RojmelEntryViewModel(model));
+            }
         }
 
         private void Backup()
@@ -158,22 +166,24 @@ namespace RSFJ.ViewModels
         {
             InstanceCount++;
 
-            Id = InstanceCount;
-            Date = Model.Date;
-            Account = Model.Account;
-            StockItem = Model.StockItem;
-            UplakClear = Model.UplakClear;
+            this.Model = Model;
+
+            _Id = Model.Id;
+            _Date = Model.Date;
+            _Account = Model.Account;
+            _StockItem = Model.StockItem;
+            _UplakClear = Model.UplakClear;
             if (Model.IsLeftSide)
             {
-                LParam1 = Model.Param1;
-                LParam2 = Model.Param2;
-                LResult = Model.Result;
+                _LParam1 = Model.Param1;
+                _LParam2 = Model.Param2;
+                _LResult = Model.Result;
             }
             else
             {
-                RParam1 = Model.Param1;
-                RParam2 = Model.Param2;
-                RResult = Model.Result;
+                _RParam1 = Model.Param1;
+                _RParam2 = Model.Param2;
+                _RResult = Model.Result;
             }
         }
 
