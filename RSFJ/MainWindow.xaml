@@ -4,11 +4,121 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RSFJ"
+        xmlns:vm="clr-namespace:RSFJ.ViewModels"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        GlowBrush="SlateGray" TitleCharacterCasing="Normal" WindowTitleBrush="SlateGray" WindowStartupLocation="CenterScreen"
-        Title="Rojmel Software for Jewellers" MinHeight="660" MinWidth="960" Height="660" Width="960" TitlebarHeight="25">
-    <Grid>
+        RightWindowCommandsOverlayBehavior="Never"
+        GlowBrush="SlateGray" TitleCharacterCasing="Normal" WindowStartupLocation="CenterScreen"
+        MinHeight="768" MinWidth="1024" Height="768" Width="1024" TitlebarHeight="75" KeyDown="MetroWindow_KeyDown">
 
+    <Controls:MetroWindow.DataContext>
+        <vm:MainViewModel x:Name="ViewModel" />
+    </Controls:MetroWindow.DataContext>
+
+    <Controls:MetroWindow.TitleTemplate>
+        <ItemContainerTemplate>
+            <Grid>
+                <TextBlock Text="Rojmel Software for Jewellers" Padding="20 20 20 0" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="16pt" />
+                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                    
+                </StackPanel>
+            </Grid>
+        </ItemContainerTemplate>
+    </Controls:MetroWindow.TitleTemplate>
+
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <ToggleButton Content="About" IsChecked="{Binding ElementName=aboutFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" />
+            <ToggleButton Content="Settings" IsChecked="{Binding ElementName=settingsFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" />
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout x:Name="settingsFlyout" Theme="Accent" Header="Settings" Position="Right" Width="300">
+                <Grid Background="LightSteelBlue">
+
+                </Grid>
+            </Controls:Flyout>
+            <Controls:Flyout x:Name="aboutFlyout" Theme="Accent" Header="About" Position="Right" Width="300">
+                <Grid Background="LightSteelBlue">
+
+                </Grid>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="300" />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid x:Name="V_DataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="WhiteSmoke"
+                  ItemsSource="{Binding Path=Entries}" AutoGenerateColumns="False" CanUserAddRows="True" 
+                  BorderBrush="Gray" BorderThickness="0 0 0 2" CanUserDeleteRows="True"
+                  d:DataContext="{Binding Source={d:DesignInstance Type=vm:RojmelEntryViewModel, CreateList=False}}">
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderBrush" Value="LightGray" />
+                    <Setter Property="BorderThickness" Value="1 1 0 0" />
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="T-ID" IsReadOnly="True" Binding="{Binding Path=Id}" Width="Auto" />
+                <DataGridTemplateColumn Header="Date" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding Path=Date, UpdateSourceTrigger=LostFocus}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Account" Width="2*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Account, UpdateSourceTrigger=LostFocus}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="comboBox" ItemsSource="{Binding Path=AccountSuggestionsList}" SelectedItem="{Binding Path=Account, UpdateSourceTrigger=PropertyChanged}" Text="{Binding Path=Account}" IsEditable="True" />
+                            <DataTemplate.Triggers>
+                                <Trigger SourceName="comboBox" Property="IsVisible" Value="True">
+                                    <Setter TargetName="comboBox" Property="FocusManager.FocusedElement" Value="{Binding ElementName=comboBox}" />
+                                </Trigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="StockItem" Width="2*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=StockItem, UpdateSourceTrigger=LostFocus}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="comboBox" ItemsSource="{Binding Path=StockItemSuggestionsList}" SelectedItem="{Binding Path=StockItem, UpdateSourceTrigger=PropertyChanged}" Text="{Binding Path=StockItem}" IsEditable="True" />
+                            <DataTemplate.Triggers>
+                                <Trigger SourceName="comboBox" Property="IsVisible" Value="True">
+                                    <Setter TargetName="comboBox" Property="FocusManager.FocusedElement" Value="{Binding ElementName=comboBox}" />
+                                </Trigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="LParam1" Binding="{Binding Path=LParam1, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn Header="LParam2" Binding="{Binding Path=LParam2, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn Header="LResult" Binding="{Binding Path=LResult, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn Header="RParam1" Binding="{Binding Path=RParam1, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn Header="RParam2" Binding="{Binding Path=RParam2, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn Header="RResult" Binding="{Binding Path=RResult, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Column="1" Background="WhiteSmoke" Width="300" BorderBrush="Gray" BorderThickness="1 0 0 0">
+
+        </Border>
     </Grid>
 </Controls:MetroWindow>
