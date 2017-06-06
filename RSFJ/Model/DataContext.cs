@@ -9,5 +9,10 @@ namespace RSFJ.Model
     public class DataContext
     {
         public List<RojmelEntry> RojmelEntries { get; set; }
+
+        public DataContext()
+        {
+            RojmelEntries = new List<RojmelEntry>();
+        }
     }
 }
