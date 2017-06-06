@@ -1,4 +1,5 @@
-﻿using RSFJ.ViewModels.Utilities;
+﻿using RSFJ.Services;
+using RSFJ.ViewModels.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,11 +42,22 @@ namespace RSFJ.ViewModels
         public MainViewModel()
         {
             Entries = new ObservableCollection<RojmelEntryViewModel>();
+
+            Entries.CollectionChanged += (sender, args) =>
+            {
+                if (args.NewItems != null)
+                {
+                    foreach (var item in args.NewItems.Cast<RojmelEntryViewModel>())
+                    {
+                        DataContextService.Instance.DataContext.RojmelEntries.Add(item.Model);
+                    }
+                }
+            };
         }
 
         private void Save()
         {
-
+            DataContextService.Instance.Save();
         }
 
         private void Load()
@@ -67,6 +79,8 @@ namespace RSFJ.ViewModels
     public class RojmelEntryViewModel : INotifyPropertyChanged
     {
         public static int InstanceCount;
+
+        public Model.RojmelEntry Model { get; set; }
 
         public static ObservableCollection<string> AccountSuggestionsList { get; set; }
 
@@ -129,12 +143,38 @@ namespace RSFJ.ViewModels
 
         public RojmelEntryViewModel()
         {
+            Model = new Model.RojmelEntry();
+
             InstanceCount++;
 
             Id = InstanceCount;
             Date = DateTime.Now.Date;
             Account = AccountSuggestionsList.First();
             StockItem = StockItemSuggestionsList.First();
+
+        }
+
+        public RojmelEntryViewModel(Model.RojmelEntry Model)
+        {
+            InstanceCount++;
+
+            Id = InstanceCount;
+            Date = Model.Date;
+            Account = Model.Account;
+            StockItem = Model.StockItem;
+            UplakClear = Model.UplakClear;
+            if (Model.IsLeftSide)
+            {
+                LParam1 = Model.Param1;
+                LParam2 = Model.Param2;
+                LResult = Model.Result;
+            }
+            else
+            {
+                RParam1 = Model.Param1;
+                RParam2 = Model.Param2;
+                RResult = Model.Result;
+            }
         }
 
         static RojmelEntryViewModel()
@@ -239,6 +279,18 @@ namespace RSFJ.ViewModels
                         LParam1 = null;
                     }
                 }
+                #endregion
+
+                #region Model update
+                Model.Id = Id;
+                Model.Date = Date;
+                Model.Account = Account;
+                Model.StockItem = StockItem;
+                Model.UplakClear = UplakClear;
+                Model.Param1 = LParam1 ?? RParam1 ?? 0;
+                Model.Param2 = LParam2 ?? RParam2 ?? 0;
+                Model.Result = LResult ?? RResult ?? 0;
+                Model.IsLeftSide = LResult != null && RResult == null;
                 #endregion
             }
         }
