@@ -128,6 +128,10 @@ namespace RSFJ.ViewModels
         private string _RParam2Name;
         public string RParam2Name { get => _RParam2Name; set => SetProperty(ref _RParam2Name, value); }
 
+        private const string RKBullion = "RK Bullion";
+        private const string Cash = "Cash";
+        private const string Fine999 = "Fine999";
+
         public RojmelEntryViewModel()
         {
             InstanceCount++;
@@ -140,8 +144,8 @@ namespace RSFJ.ViewModels
 
         static RojmelEntryViewModel()
         {
-            AccountSuggestionsList = new ObservableCollection<string>() { "SELF" };
-            StockItemSuggestionsList = new ObservableCollection<string>() { "CASH" };
+            AccountSuggestionsList = new ObservableCollection<string>() { RKBullion };
+            StockItemSuggestionsList = new ObservableCollection<string>() { Cash, Fine999 };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -153,9 +157,13 @@ namespace RSFJ.ViewModels
                 Property = Value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
+                //Account and StockItem should be defined.
+                if (string.IsNullOrWhiteSpace(Account) || string.IsNullOrWhiteSpace(StockItem)) return;
+
+                #region Auto suggestion
                 if (PropertyName == nameof(Account))
                 {
-                    if (string.IsNullOrWhiteSpace(Account) == false && AccountSuggestionsList.Contains(Account) == false)
+                    if (AccountSuggestionsList.Contains(Account) == false)
                     {
                         AccountSuggestionsList.Add(Account);
                     }
@@ -163,34 +171,53 @@ namespace RSFJ.ViewModels
 
                 if (PropertyName == nameof(StockItem))
                 {
-                    if (string.IsNullOrWhiteSpace(StockItem) == false && StockItemSuggestionsList.Contains(StockItem) == false)
+                    if (StockItemSuggestionsList.Contains(StockItem) == false)
                     {
                         StockItemSuggestionsList.Add(StockItem);
                     }
                 }
+                #endregion
 
-                if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2))
+                #region Calculation
+                if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2)
+                            || PropertyName == nameof(Account) || PropertyName == nameof(StockItem)
+                            || PropertyName == nameof(UplakClear))
                 {
                     if (LParam1 == null)
                     {
                         LParam2 = null;
                         LResult = null;
                     }
-
-                    if (LParam1 != null)
+                    else if (LParam1 != null)
                     {
                         LResult = LParam1;
 
                         if (LParam2 != null)
                         {
-                            LResult = LParam1 + LParam2;
+                            if (UplakClear)
+                            {
+                                LResult = LParam1 / LParam2;
+                            }
+                            else if (Account == RKBullion && StockItem == Fine999)
+                            {
+                                LResult = LParam1 * LParam2;
+                            }
+                            else if (StockItem == Cash)
+                            {
+                                LResult = LParam1 / LParam2;
+                            }
+                            else
+                            {
+                                LResult = LParam1 * LParam2 / 100;
+                            }
                         }
 
                         RParam1 = null;
                     }
                 }
 
-                if (PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2))
+                if (PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2)
+                    || PropertyName == nameof(Account) || PropertyName == nameof(StockItem))
                 {
                     if (RParam1 == null)
                     {
@@ -204,12 +231,20 @@ namespace RSFJ.ViewModels
 
                         if (RParam2 != null)
                         {
-                            RResult = RParam1 + RParam2;
+                            if (StockItem == Cash)
+                            {
+                                RResult = RParam1 / RParam2;
+                            }
+                            else
+                            {
+                                RResult = RParam1 * RParam2 / 100;
+                            }
                         }
 
                         LParam1 = null;
                     }
                 }
+                #endregion
             }
         }
     }
