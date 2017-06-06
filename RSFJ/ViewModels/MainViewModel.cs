@@ -185,6 +185,18 @@ namespace RSFJ.ViewModels
                 _RParam2 = Model.Param2;
                 _RResult = Model.Result;
             }
+
+            #region Add items to Account & StockItem suggestion lists.
+            if (AccountSuggestionsList.Contains(Account) == false)
+            {
+                AccountSuggestionsList.Add(Account);
+            }
+
+            if (StockItemSuggestionsList.Contains(StockItem) == false)
+            {
+                StockItemSuggestionsList.Add(StockItem);
+            }
+            #endregion
         }
 
         static RojmelEntryViewModel()
