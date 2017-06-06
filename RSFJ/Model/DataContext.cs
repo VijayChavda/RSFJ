@@ -8,6 +8,6 @@ namespace RSFJ.Model
 {
     public class DataContext
     {
-        //TODO: it's empty here...
+        public List<RojmelEntry> RojmelEntries { get; set; }
     }
 }
