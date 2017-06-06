@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,9 @@ namespace RSFJ
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.LoadCommand.Execute(null);
+
+            //Show app version in About section.
+            V_Version.Text = "Not published.";
         }
 
         private void MetroWindow_KeyDown(object sender, KeyEventArgs e)
@@ -48,6 +52,12 @@ namespace RSFJ
             {
                 ViewModel.RestoreCommand.Execute(null);
             }
+        }
+
+        private void OpenWebsite(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
         }
     }
 }
