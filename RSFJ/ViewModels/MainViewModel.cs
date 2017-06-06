@@ -35,7 +35,7 @@ namespace RSFJ.ViewModels
         RelayCommand _restoreCommand;
         public ICommand RestoreCommand
         {
-            get => _restoreCommand ?? (_restoreCommand = new RelayCommand(param => this.Restore(param.ToString()), param => true));
+            get => _restoreCommand ?? (_restoreCommand = new RelayCommand(param => this.Restore(param as string), param => true));
         }
 
         public MainViewModel()

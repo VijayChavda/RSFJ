@@ -24,5 +24,23 @@ namespace RSFJ
         {
             InitializeComponent();
         }
+
+        private void MetroWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.S && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                ViewModel.SaveCommand.Execute(null);
+            }
+
+            if (e.Key == Key.B && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                ViewModel.BackupCommand.Execute(null);
+            }
+
+            if (e.Key == Key.R && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                ViewModel.RestoreCommand.Execute(null);
+            }
+        }
     }
 }
