@@ -108,6 +108,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
+                <DataGridCheckBoxColumn Header="UC" Binding="{Binding Path=UplakClear, UpdateSourceTrigger=PropertyChanged}" Width="Auto" />
                 <DataGridTextColumn Header="LParam1" Binding="{Binding Path=LParam1, UpdateSourceTrigger=LostFocus}" Width="*" />
                 <DataGridTextColumn Header="LParam2" Binding="{Binding Path=LParam2, UpdateSourceTrigger=LostFocus}" Width="*" />
                 <DataGridTextColumn Header="LResult" Binding="{Binding Path=LResult, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />

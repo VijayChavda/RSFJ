@@ -89,6 +89,9 @@ namespace RSFJ.ViewModels
         private string _StockItem;
         public string StockItem { get => _StockItem; set => SetProperty(ref _StockItem, value); }
 
+        private bool _UplakClear;
+        public bool UplakClear { get => _UplakClear; set => SetProperty(ref _UplakClear, value); }
+
         private double? _LParam1;
         public double? LParam1 { get => _LParam1; set => SetProperty(ref _LParam1, value); }
 
