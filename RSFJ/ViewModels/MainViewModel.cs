@@ -40,12 +40,7 @@ namespace RSFJ.ViewModels
 
         public MainViewModel()
         {
-            Entries = new ObservableCollection<RojmelEntryViewModel>()
-            {
-                new RojmelEntryViewModel(){ Id=1, Date = DateTime.Now.Date.AddDays(3), Account = "Person 1", StockItem = "Item 1" },
-                new RojmelEntryViewModel(){ Id=2, Date = DateTime.Now.Date.AddDays(1), Account = "Person 2", StockItem = "Item 2" },
-                new RojmelEntryViewModel(){ Id=3, Date = DateTime.Now.Date.AddDays(2), Account = "Person 3", StockItem = "Item 3" },
-            };
+            Entries = new ObservableCollection<RojmelEntryViewModel>();
         }
 
         private void Save()
