@@ -13,6 +13,10 @@ namespace RSFJ.Services
     /// </summary>
     public class AppVerificationService
     {
+        public const string ERR_NO_INTERNET = "ERR_NO_INTERNET";   //Represents no connectivity with internet.
+        public const string ERR_NO_SERVER = "ERR_NO_SERVER";   //Represents no connectivity with verification server.
+        public const string ERR_REQUEST = "ERR_REQUEST";   //Represents other local connectivity error.
+
         /// <summary>
         /// The only instance of StorageService.
         /// </summary>
@@ -36,12 +40,28 @@ namespace RSFJ.Services
         /// Sends an activation request to the server.
         /// </summary>
         /// <param name="key">They key with which the app will be activated.</param>
-        /// <returns>Response from the server, or 'ERR_REQUEST' if request failed.</returns>
+        /// <returns>Response from the server, or one of the following:
+        /// 'ERR_NO_INTERNET' if Google server could not be reached.
+        /// 'ERR_REQUEST' if RSFJ Authentication server could not be reached.
+        /// 'ERR_REQUEST' if the request failed due to some other reason.</returns>
         public async Task<string> RequestActivationAsync(string key)
         {
+            if (CheckForServerConnection() == false)
+            {
+                if (CheckForInternetConnection() == false)
+                {
+                    return "ERR_NO_INTERNET";
+                }
+
+                return "ERR_NO_SERVER";
+            }
+
             try
             {
-                var url = string.Format("{0}?key={1}&uid={2}&app=rsfj", Properties.Settings.Default.VerificationURL, key, MID);
+                var url = key == null ?
+                    string.Format("{0}?uid={1}&app=rsfj", Properties.Settings.Default.VerificationURL, MID) :
+                    string.Format("{0}?key={1}&uid={2}&app=rsfj", Properties.Settings.Default.VerificationURL, key, MID);
+
                 var request = WebRequest.CreateHttp(url);
                 var response = await request.GetResponseAsync();
 
@@ -59,24 +79,13 @@ namespace RSFJ.Services
         /// <summary>
         /// Sends an verification request to the server.
         /// </summary>
-        /// <returns>Response from the server, or 'ERR_REQUEST' if request failed.</returns>
+        /// <returns>Response from the server, or one of the following:
+        /// 'ERR_NO_INTERNET' if Google server could not be reached.
+        /// 'ERR_REQUEST' if RSFJ Authentication server could not be reached.
+        /// 'ERR_REQUEST' if the request failed due to some other reason.</returns>
         public async Task<string> RequestVerificationAsync()
         {
-            try
-            {
-                var url = string.Format("{0}?uid={1}&app=rsfj", Properties.Settings.Default.VerificationURL, MID);
-                var request = WebRequest.CreateHttp(url);
-                var response = await request.GetResponseAsync();
-
-                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
-                {
-                    return await stream.ReadToEndAsync();
-                }
-            }
-            catch
-            {
-                return "ERR_REQUEST";
-            }
+            return await RequestActivationAsync(null);
         }
 
         /// <summary>
@@ -140,6 +149,50 @@ namespace RSFJ.Services
                 serial = (string)mo["SerialNumber"];
             }
             return serial;
+        }
+
+        /// <summary>
+        /// Attempts to connect to the internet.
+        /// </summary>
+        /// <returns></returns>
+        public static bool CheckForInternetConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    using (var stream = client.OpenRead("https://www.google.com"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Attempts to connect to the verification server.
+        /// </summary>
+        /// <returns></returns>
+        public static bool CheckForServerConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    using (var stream = client.OpenRead(Properties.Settings.Default.VerificationURL))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 
