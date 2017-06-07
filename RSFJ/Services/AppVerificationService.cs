@@ -1,0 +1,145 @@
+﻿using System;
+using System.IO;
+using System.Management;
+using System.Net;
+using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
+
+namespace RSFJ.Services
+{
+    /// <summary>
+    /// Service to handle app verification.
+    /// </summary>
+    public class AppVerificationService
+    {
+        /// <summary>
+        /// The only instance of StorageService.
+        /// </summary>
+        public static AppVerificationService Instance => _Instance ?? (_Instance = new AppVerificationService());
+        private static AppVerificationService _Instance;
+
+        /// <summary>
+        /// The machine ID of the machine where the app is installed.
+        /// </summary>
+        private readonly string MID;
+
+        /// <summary>
+        /// Initializes AppVerificationService.
+        /// </summary>
+        private AppVerificationService()
+        {
+            MID = GetMachineID();
+        }
+
+        /// <summary>
+        /// Sends an activation request to the server.
+        /// </summary>
+        /// <param name="key">They key with which the app will be activated.</param>
+        /// <returns>Response from the server, or 'ERR_REQUEST' if request failed.</returns>
+        public async Task<string> RequestActivationAsync(string key)
+        {
+            try
+            {
+                var url = string.Format("{0}?key={1}&uid={2}&app=rsfj", Properties.Settings.Default.VerificationURL, key, MID);
+                var request = WebRequest.CreateHttp(url);
+                var response = await request.GetResponseAsync();
+
+                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                {
+                    return await stream.ReadToEndAsync();
+                }
+            }
+            catch
+            {
+                return "ERR_REQUEST";
+            }
+        }
+
+        /// <summary>
+        /// Sends an verification request to the server.
+        /// </summary>
+        /// <returns>Response from the server, or 'ERR_REQUEST' if request failed.</returns>
+        public async Task<string> RequestVerificationAsync()
+        {
+            try
+            {
+                var url = string.Format("{0}?uid={1}&app=rsfj", Properties.Settings.Default.VerificationURL, MID);
+                var request = WebRequest.CreateHttp(url);
+                var response = await request.GetResponseAsync();
+
+                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                {
+                    return await stream.ReadToEndAsync();
+                }
+            }
+            catch
+            {
+                return "ERR_REQUEST";
+            }
+        }
+
+        /// <summary>
+        /// Gets a hash value that is unique for the current machine. 
+        /// Motherboard and CPU serial numbers are used to compute the hash.
+        /// </summary>
+        /// <returns>A hash value unique for the current machine.</returns>
+        private string GetMachineID()
+        {
+            return Hash(string.Concat(Hash(GetCPUId()), Hash(GetMotherboardId())));
+        }
+
+        /// <summary>
+        /// Computes a hash for the given string.
+        /// </summary>
+        /// <param name="secret">A string whose hash is to be computed.</param>
+        /// <returns></returns>
+        private string Hash(string secret)
+        {
+            byte[] salt;
+            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+
+            var pbkdf2 = new Rfc2898DeriveBytes(secret, salt, 10000);
+            byte[] hash = pbkdf2.GetBytes(20);
+
+            byte[] hashBytes = new byte[36];
+            Array.Copy(salt, 0, hashBytes, 0, 16);
+            Array.Copy(hash, 0, hashBytes, 16, 20);
+
+            return Convert.ToBase64String(hashBytes);
+        }
+
+        /// <summary>
+        /// Gets the CPU ID.
+        /// </summary>
+        /// <returns></returns>
+        private string GetCPUId()
+        {
+            ManagementObjectCollection mbsList = null;
+            ManagementObjectSearcher mbs = new ManagementObjectSearcher("Select * From Win32_processor");
+            mbsList = mbs.Get();
+            string id = "";
+            foreach (ManagementObject mo in mbsList)
+            {
+                id = mo["ProcessorID"].ToString();
+            }
+            return id;
+        }
+
+        /// <summary>
+        /// Gets the Motherboard ID.
+        /// </summary>
+        /// <returns></returns>
+        private string GetMotherboardId()
+        {
+            ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard");
+            ManagementObjectCollection moc = mos.Get();
+            string serial = "";
+            foreach (ManagementObject mo in moc)
+            {
+                serial = (string)mo["SerialNumber"];
+            }
+            return serial;
+        }
+    }
+}
