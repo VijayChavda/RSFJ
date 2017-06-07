@@ -51,9 +51,13 @@ namespace RSFJ.View
         private static readonly SolidColorBrush ErrorMessageBrush = new SolidColorBrush(Colors.Yellow);
         private static readonly SolidColorBrush InfoMessageBrush = new SolidColorBrush(Colors.White);
 
-        public Verification()
+        public bool AllowSkip { get; set; }
+
+        public Verification(bool allowSkip = true)
         {
             InitializeComponent();
+
+            AllowSkip = allowSkip;
 
             Loaded += async (s, e) =>
             {
@@ -64,6 +68,8 @@ namespace RSFJ.View
 
         private async Task VerifyApplicationAsync()
         {
+            B_Skip.IsEnabled = AllowSkip;
+
             Message = "Please wait, we are verifying this product...";
             MessageBrush = InfoMessageBrush;
 
@@ -78,6 +84,8 @@ namespace RSFJ.View
 
         private async Task ActivateApplicationAsync()
         {
+            B_Skip.IsEnabled = AllowSkip;
+
             Message = "Please wait while we activate your product...";
             MessageBrush = InfoMessageBrush;
 
@@ -92,7 +100,7 @@ namespace RSFJ.View
 
         private void ActOnResponse(string response)
         {
-            B_Retry.Visibility = B_Activate.Visibility = B_Cancel.Visibility = B_Navigate.Visibility = Visibility.Collapsed;
+            B_Retry.Visibility = B_Activate.Visibility = B_Navigate.Visibility = Visibility.Collapsed;
 
             if (response.Length > 20)
             {
@@ -114,28 +122,33 @@ namespace RSFJ.View
             }
             else if (response == nameof(AppVerificationServerResponses.ERR_NO_KEY))
             {
-                Message = "Welcome to RSFJ. You will need to activate this product with a key before you can use it.";
+                Message = "Welcome to RSFJ. Please activate this product with a key. " +
+                    "If you skip this now, you will be asked for key later on.";
                 MessageBrush = InfoMessageBrush;
                 B_Navigate.Visibility = Visibility.Visible;
-                B_Cancel.Visibility = Visibility.Visible;
             }
             else if (response == nameof(AppVerificationServerResponses.ERR_USED))
             {
                 Message = "The key you provided is already in use. If you think this is a mistake, contact support.";
                 MessageBrush = ErrorMessageBrush;
-                B_Activate.Visibility = Visibility.Visible;
+                B_Retry.Visibility = Visibility.Visible;
             }
             else if (response == nameof(AppVerificationServerResponses.ERR_WRONG_KEY))
             {
                 Message = "The key you provided is not valid. Please try again.";
                 MessageBrush = ErrorMessageBrush;
-                B_Activate.Visibility = Visibility.Visible;
+                B_Retry.Visibility = Visibility.Visible;
             }
             else if (response == AppVerificationService.ERR_NO_INTERNET)
             {
                 Message = "No internet connectivity was detected. Please try again later.";
                 MessageBrush = InfoMessageBrush;
                 B_Retry.Visibility = Visibility.Visible;
+
+                if (AllowSkip)
+                {
+                    MoveToMainPage(false);
+                }
             }
             else if (response == AppVerificationService.ERR_NO_SERVER)
             {
@@ -157,15 +170,22 @@ namespace RSFJ.View
             }
         }
 
-        private void MoveToMainPage()
+        private void MoveToMainPage(bool result = true)
         {
-            DialogResult = true;
+            DialogResult = result;
             Close();
         }
 
         private async void Retry_Button_Click(object sender, RoutedEventArgs e)
         {
-            await VerifyApplicationAsync();
+            if (V_Activation.Visibility == Visibility.Visible)
+            {
+                await ActivateApplicationAsync();
+            }
+            else
+            {
+                await VerifyApplicationAsync();
+            }
         }
 
         private async void Activate_Button_Click(object sender, RoutedEventArgs e)
@@ -173,10 +193,9 @@ namespace RSFJ.View
             await ActivateApplicationAsync();
         }
 
-        private void Cancel_Button_Click(object sender, RoutedEventArgs e)
+        private void Skip_Button_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
-            Close();
+            MoveToMainPage(false);
         }
 
         private void Navigate_Button_Click(object sender, RoutedEventArgs e)

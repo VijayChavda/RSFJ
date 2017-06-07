@@ -23,10 +23,19 @@ namespace RSFJ
     {
         public MainWindow()
         {
-            var result = new View.Verification().ShowDialog();
+            var allowSkip = Properties.Settings.Default.FailCount <= 50;
+
+            var result = new View.Verification(allowSkip).ShowDialog();
             if (result != true)
             {
-                Process.GetCurrentProcess().Kill();
+                Properties.Settings.Default.FailCount++;
+                Properties.Settings.Default.Save();
+            }
+
+            if (result == true)
+            {
+                Properties.Settings.Default.FailCount = 0;
+                Properties.Settings.Default.Save();
             }
 
             InitializeComponent();
