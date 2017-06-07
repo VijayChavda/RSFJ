@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RSFJ.Services;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -15,7 +16,13 @@ namespace RSFJ
     {
         public App()
         {
+            Startup += App_Startup;
             DispatcherUnhandledException += App_DispatcherUnhandledException;
+        }
+
+        private void App_Startup(object sender, StartupEventArgs e)
+        {
+            new View.Verification().ShowDialog();
         }
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
