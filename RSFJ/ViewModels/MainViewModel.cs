@@ -145,7 +145,7 @@ namespace RSFJ.ViewModels
         private string _RParam2Name;
         public string RParam2Name { get => _RParam2Name; set => SetProperty(ref _RParam2Name, value); }
 
-        private const string RKBullion = "RK Bullion";
+        private const string Customer = "Customer";
         private const string Cash = "Cash";
         private const string Fine999 = "Fine999";
 
@@ -201,7 +201,7 @@ namespace RSFJ.ViewModels
 
         static RojmelEntryViewModel()
         {
-            AccountSuggestionsList = new ObservableCollection<string>() { RKBullion };
+            AccountSuggestionsList = new ObservableCollection<string>() { Customer };
             StockItemSuggestionsList = new ObservableCollection<string>() { Cash, Fine999 };
         }
 
@@ -255,7 +255,7 @@ namespace RSFJ.ViewModels
                             {
                                 LResult = LParam1 / LParam2;
                             }
-                            else if (Account == RKBullion && StockItem == Fine999)
+                            else if (StockItem == Fine999)
                             {
                                 LResult = LParam1 * LParam2;
                             }
@@ -288,7 +288,11 @@ namespace RSFJ.ViewModels
 
                         if (RParam2 != null)
                         {
-                            if (StockItem == Cash)
+                            if (Account == Customer)
+                            {
+                                RResult = RParam1 * RParam2;
+                            }
+                            else if (StockItem == Cash)
                             {
                                 RResult = RParam1 / RParam2;
                             }
