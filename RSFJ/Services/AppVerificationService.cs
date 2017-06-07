@@ -142,4 +142,70 @@ namespace RSFJ.Services
             return serial;
         }
     }
+
+    /// <summary>
+    /// Represents various server responses.
+    /// </summary>
+    public enum AppVerificationServerResponses
+    {
+        /// <summary>
+        /// The application was verified.
+        /// </summary>
+        OK_VERIFIED,
+
+        /// <summary>
+        /// The application was activated.
+        /// </summary>
+        OK_ACTIVATED,
+
+        /// <summary>
+        /// User-Id was not provided.
+        /// </summary>
+        ERR_NO_ID,
+
+        /// <summary>
+        /// Application name was not provided.
+        /// </summary>
+        ERR_NO_APP,
+
+        /// <summary>
+        /// Key was not provided.
+        /// </summary>
+        ERR_NO_KEY,
+
+        /// <summary>
+        /// The provided key is already in use.
+        /// </summary>
+        ERR_USED,
+
+        /// <summary>
+        /// The provided key was incorrect.
+        /// </summary>
+        ERR_WRONG_KEY,
+
+        /// <summary>
+        /// One of the SQL query generated error.
+        /// </summary>
+        ERR_DB_1,
+
+        /// <summary>
+        /// One of the SQL query generated error.
+        /// </summary>
+        ERR_DB_2,
+
+        /// <summary>
+        /// One of the SQL query generated error.
+        /// </summary>
+        ERR_DB_3,
+
+        /// <summary>
+        /// Connection with the database server could not be established.
+        /// </summary>
+        ERR_CON,
+
+        /// <summary>
+        /// Some unknown error during activation occured.
+        /// </summary>
+        ERR_ACTIVATION
+    }
 }
