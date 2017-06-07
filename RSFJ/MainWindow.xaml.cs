@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RSFJ.Services;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -23,19 +24,17 @@ namespace RSFJ
     {
         public MainWindow()
         {
-            var allowSkip = Properties.Settings.Default.FailCount <= 50;
+            var allowSkip = RegistoryService.Instance.FailureCount <= 50;
 
             var result = new View.Verification(allowSkip).ShowDialog();
             if (result != true)
             {
-                Properties.Settings.Default.FailCount++;
-                Properties.Settings.Default.Save();
+                RegistoryService.Instance.FailureCount++;
             }
 
             if (result == true)
             {
-                Properties.Settings.Default.FailCount = 0;
-                Properties.Settings.Default.Save();
+                RegistoryService.Instance.FailureCount = 0;
             }
 
             InitializeComponent();
