@@ -54,10 +54,10 @@
                         <StackPanel Margin="0 0 0 30">
                             <TextBlock Text="Augment Software" FontSize="14pt" FontWeight="SemiBold" />
                             <TextBlock FontSize="10pt">
-                        <Hyperlink NavigateUri="https://rsfj.000webhostapp.com/privacy/" RequestNavigate="OpenWebsite">Privacy</Hyperlink>
+                        <Hyperlink NavigateUri="https://augmentsoftware.000webhostapp.com/privacy/" RequestNavigate="OpenWebsite">Privacy</Hyperlink>
                             </TextBlock>
                             <TextBlock FontSize="10pt">
-                        <Hyperlink NavigateUri="https://rsfj.000webhostapp.com/" RequestNavigate="OpenWebsite">Visit website</Hyperlink>
+                        <Hyperlink NavigateUri="https://augmentsoftware.000webhostapp.com/" RequestNavigate="OpenWebsite">Visit website</Hyperlink>
                             </TextBlock>
                             <TextBlock FontSize="10pt">
                         <Hyperlink NavigateUri="mailto:vijaychavda@gmail.com" RequestNavigate="OpenWebsite">Send an email</Hyperlink>
