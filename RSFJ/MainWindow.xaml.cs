@@ -31,9 +31,6 @@ namespace RSFJ
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.LoadCommand.Execute(null);
-
-            //Show app version in About section.
-            V_Version.Text = "Not published.";
         }
 
         private void MetroWindow_KeyDown(object sender, KeyEventArgs e)
