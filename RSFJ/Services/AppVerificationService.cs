@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Management;
 using System.Net;
-using System.Net.Mail;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace RSFJ.Services
@@ -105,17 +104,9 @@ namespace RSFJ.Services
         /// <returns></returns>
         private string Hash(string secret)
         {
-            byte[] salt;
-            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-
-            var pbkdf2 = new Rfc2898DeriveBytes(secret, salt, 10000);
-            byte[] hash = pbkdf2.GetBytes(20);
-
-            byte[] hashBytes = new byte[36];
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(hash, 0, hashBytes, 16, 20);
-
-            return Convert.ToBase64String(hashBytes);
+            var sha1 = new SHA1CryptoServiceProvider();
+            var sha1data = sha1.ComputeHash(Encoding.ASCII.GetBytes(secret));
+            return Encoding.ASCII.GetString(sha1data);
         }
 
         /// <summary>
@@ -155,7 +146,7 @@ namespace RSFJ.Services
         /// Attempts to connect to the internet.
         /// </summary>
         /// <returns></returns>
-        public static bool CheckForInternetConnection()
+        private bool CheckForInternetConnection()
         {
             try
             {
@@ -177,7 +168,7 @@ namespace RSFJ.Services
         /// Attempts to connect to the verification server.
         /// </summary>
         /// <returns></returns>
-        public static bool CheckForServerConnection()
+        private bool CheckForServerConnection()
         {
             try
             {
