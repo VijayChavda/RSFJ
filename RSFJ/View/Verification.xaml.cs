@@ -66,14 +66,33 @@ namespace RSFJ.View
         {
             Message = "Please wait, we are verifying this product...";
             MessageBrush = InfoMessageBrush;
-            IsVerifying = true;
 
             V_Commands.Visibility = Visibility.Collapsed;
-            B_Retry.Visibility = Visibility.Collapsed;
-            B_Activate.Visibility = Visibility.Collapsed;
-            B_Cancel.Visibility = Visibility.Collapsed;
-
+            IsVerifying = true;
             var response = await AppVerificationService.Instance.RequestVerificationAsync();
+            IsVerifying = false;
+            V_Commands.Visibility = Visibility.Visible;
+
+            ActOnResponse(response);
+        }
+
+        private async Task ActivateApplicationAsync()
+        {
+            Message = "Please wait while we activate your product...";
+            MessageBrush = InfoMessageBrush;
+
+            V_Commands.Visibility = Visibility.Collapsed;
+            IsVerifying = true;
+            var response = await AppVerificationService.Instance.RequestActivationAsync(V_KeyBox.Text);
+            IsVerifying = false;
+            V_Commands.Visibility = Visibility.Visible;
+
+            ActOnResponse(response);
+        }
+
+        private void ActOnResponse(string response)
+        {
+            B_Retry.Visibility = B_Activate.Visibility = B_Cancel.Visibility = B_Navigate.Visibility = Visibility.Collapsed;
 
             if (response.Length > 20)
             {
@@ -81,24 +100,36 @@ namespace RSFJ.View
                 MessageBrush = ErrorMessageBrush;
                 B_Retry.Visibility = Visibility.Visible;
             }
+            else if (response == nameof(AppVerificationServerResponses.OK_VERIFIED))
+            {
+                Message = "Verification was successful. Loading app...";
+                MessageBrush = InfoMessageBrush;
+                //TODO: Continue to mainpage..
+            }
+            else if (response == nameof(AppVerificationServerResponses.OK_ACTIVATED))
+            {
+                Message = "Your product has been activated. Thankyou for being a genuine customer :)";
+                MessageBrush = InfoMessageBrush;
+                //TODO: Continue to mainpage...
+            }
             else if (response == nameof(AppVerificationServerResponses.ERR_NO_KEY))
             {
                 Message = "Welcome to RSFJ. You will need to activate this product with a key before you can use it.";
                 MessageBrush = InfoMessageBrush;
-                B_Activate.Visibility = Visibility.Visible;
+                B_Navigate.Visibility = Visibility.Visible;
                 B_Cancel.Visibility = Visibility.Visible;
             }
-            //else if (response == nameof(AppVerificationServerResponses.ERR_USED))
-            //{
-            //    Message = "The key you provided is already in use. If you think this is a mistake, contact support.";
-            //    MessageBrush = ErrorMessageBrush;
-            //    B_Okay.Visibility = Visibility.Visible;
-            //}
+            else if (response == nameof(AppVerificationServerResponses.ERR_USED))
+            {
+                Message = "The key you provided is already in use. If you think this is a mistake, contact support.";
+                MessageBrush = ErrorMessageBrush;
+                B_Activate.Visibility = Visibility.Visible;
+            }
             else if (response == nameof(AppVerificationServerResponses.ERR_WRONG_KEY))
             {
                 Message = "The key you provided is not valid. Please try again.";
                 MessageBrush = ErrorMessageBrush;
-                B_Retry.Visibility = Visibility.Visible;
+                B_Activate.Visibility = Visibility.Visible;
             }
             else if (response == AppVerificationService.ERR_NO_INTERNET)
             {
@@ -124,9 +155,6 @@ namespace RSFJ.View
                 MessageBrush = ErrorMessageBrush;
                 B_Retry.Visibility = Visibility.Visible;
             }
-
-            IsVerifying = false;
-            V_Commands.Visibility = Visibility.Visible;
         }
 
         private async void Retry_Button_Click(object sender, RoutedEventArgs e)
@@ -134,14 +162,23 @@ namespace RSFJ.View
             await VerifyApplicationAsync();
         }
 
+        private async void Activate_Button_Click(object sender, RoutedEventArgs e)
+        {
+            await ActivateApplicationAsync();
+        }
+
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void Activate_Button_Click(object sender, RoutedEventArgs e)
+        private void Navigate_Button_Click(object sender, RoutedEventArgs e)
         {
-            //TODO
+            Message = "Please enter your product key";
+            MessageBrush = InfoMessageBrush;
+            B_Activate.Visibility = Visibility.Visible;
+            B_Navigate.Visibility = Visibility.Collapsed;
+            V_Activation.Visibility = Visibility.Visible;
         }
     }
 }
