@@ -23,6 +23,12 @@ namespace RSFJ
     {
         public MainWindow()
         {
+            var result = new View.Verification().ShowDialog();
+            if (result != true)
+            {
+                Process.GetCurrentProcess().Kill();
+            }
+
             InitializeComponent();
 
             Loaded += MainWindow_Loaded;

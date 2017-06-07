@@ -104,13 +104,13 @@ namespace RSFJ.View
             {
                 Message = "Verification was successful. Loading app...";
                 MessageBrush = InfoMessageBrush;
-                //TODO: Continue to mainpage..
+                MoveToMainPage();
             }
             else if (response == nameof(AppVerificationServerResponses.OK_ACTIVATED))
             {
                 Message = "Your product has been activated. Thankyou for being a genuine customer :)";
                 MessageBrush = InfoMessageBrush;
-                //TODO: Continue to mainpage...
+                MoveToMainPage();
             }
             else if (response == nameof(AppVerificationServerResponses.ERR_NO_KEY))
             {
@@ -157,6 +157,12 @@ namespace RSFJ.View
             }
         }
 
+        private void MoveToMainPage()
+        {
+            DialogResult = true;
+            Close();
+        }
+
         private async void Retry_Button_Click(object sender, RoutedEventArgs e)
         {
             await VerifyApplicationAsync();
@@ -169,6 +175,7 @@ namespace RSFJ.View
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
         }
 

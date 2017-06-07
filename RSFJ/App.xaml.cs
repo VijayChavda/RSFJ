@@ -16,18 +16,12 @@ namespace RSFJ
     {
         public App()
         {
-            Startup += App_Startup;
             DispatcherUnhandledException += App_DispatcherUnhandledException;
-        }
-
-        private void App_Startup(object sender, StartupEventArgs e)
-        {
-            new View.Verification().ShowDialog();
         }
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            Services.ReportingService.Instance.CreateReport("TODO: User's message will be placed here", e.Exception);
+            ReportingService.Instance.CreateReport("TODO: User's message will be placed here", e.Exception);
 
             Environment.Exit(0);
         }
