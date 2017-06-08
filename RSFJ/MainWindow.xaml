@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:RSFJ.ViewModels"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        RightWindowCommandsOverlayBehavior="Never"
+        RightWindowCommandsOverlayBehavior="Never" Icon="/Images/logo.png" ShowIconOnTitleBar="False"
         GlowBrush="SlateGray" TitleCharacterCasing="Normal" WindowStartupLocation="CenterScreen"
         MinHeight="768" MinWidth="1024" Height="768" Width="1024" TitlebarHeight="75" KeyDown="MetroWindow_KeyDown">
 
