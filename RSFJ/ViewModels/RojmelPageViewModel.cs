@@ -30,8 +30,6 @@ namespace RSFJ.ViewModels
                     }
                 }
             };
-
-            Load();
         }
 
         public void Load()
