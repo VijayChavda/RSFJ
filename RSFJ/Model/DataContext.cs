@@ -10,9 +10,12 @@ namespace RSFJ.Model
     {
         public List<RojmelEntry> RojmelEntries { get; set; }
 
+        public List<StockItem> StockItems { get; set; }
+
         public DataContext()
         {
             RojmelEntries = new List<RojmelEntry>();
+            StockItems = new List<StockItem>();
         }
     }
 }
