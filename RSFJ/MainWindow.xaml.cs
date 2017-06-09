@@ -24,6 +24,17 @@ namespace RSFJ
     {
         public MainWindow()
         {
+            VerifySoftware();
+
+            InitializeComponent();
+        }
+
+        private void VerifySoftware()
+        {
+#if DEBUG
+            return;
+#endif
+
             var allowSkip = RegistoryService.Instance.FailureCount <= 50;
 
             var result = new View.Verification(allowSkip).ShowDialog();
@@ -36,8 +47,6 @@ namespace RSFJ
             {
                 RegistoryService.Instance.FailureCount = 0;
             }
-
-            InitializeComponent();
         }
 
         private void MetroWindow_KeyDown(object sender, KeyEventArgs e)
