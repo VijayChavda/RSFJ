@@ -19,12 +19,6 @@ namespace RSFJ.ViewModels
             get => _saveCommand ?? (_saveCommand = new RelayCommand(param => this.Save(), param => true));
         }
 
-        RelayCommand _loadCommand;
-        public ICommand LoadCommand
-        {
-            get => _loadCommand ?? (_loadCommand = new RelayCommand(param => this.Load(), param => true));
-        }
-
         RelayCommand _backupCommand;
         public ICommand BackupCommand
         {
@@ -44,11 +38,6 @@ namespace RSFJ.ViewModels
         private void Save()
         {
             DataContextService.Instance.Save();
-        }
-
-        private void Load()
-        {
-            DataContextService.Instance.Load();
         }
 
         private void Backup()
