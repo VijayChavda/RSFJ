@@ -36,8 +36,6 @@ namespace RSFJ.ViewModels
 
         public void Load()
         {
-            DataContextService.Instance.Load();
-
             foreach (var model in DataContextService.Instance.DataContext.RojmelEntries)
             {
                 Entries.Add(new RojmelEntry(model));

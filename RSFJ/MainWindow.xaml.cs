@@ -26,6 +26,8 @@ namespace RSFJ
         {
             VerifySoftware();
 
+            DataContextService.Instance.Load();
+
             InitializeComponent();
         }
 
