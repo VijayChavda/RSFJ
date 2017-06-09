@@ -72,5 +72,12 @@ namespace RSFJ
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
         }
+
+        private void FrameNavigate(object sender, RoutedEventArgs e)
+        {
+            var page = (sender as Button).Tag.ToString();
+
+            V_Frame.Navigate(Resources[page]);
+        }
     }
 }

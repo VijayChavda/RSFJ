@@ -26,8 +26,11 @@
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <ToggleButton Content="About" IsChecked="{Binding ElementName=aboutFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" />
-            <ToggleButton Content="Settings" IsChecked="{Binding ElementName=settingsFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" />
+            <Button VerticalAlignment="Center" Content="Rojmel" Cursor="Hand" FontWeight="Bold" FontSize="11pt" Click="FrameNavigate" Tag="RojmelPage" />
+            <Button VerticalAlignment="Center" Content="Balance sheet" Cursor="Hand" FontWeight="Bold" FontSize="11pt" Click="FrameNavigate" Tag="BalanceSheetPage" />
+
+            <ToggleButton Content="Settings" IsChecked="{Binding ElementName=settingsFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="DarkSlateGray" />
+            <ToggleButton Content="About" IsChecked="{Binding ElementName=aboutFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="DarkSlateGray" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 
@@ -70,5 +73,10 @@
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
 
-    <v:RojmelPage />
+    <Controls:MetroWindow.Resources>
+        <v:RojmelPage x:Key="RojmelPage" />
+    </Controls:MetroWindow.Resources>
+
+    <Frame x:Name="V_Frame" NavigationUIVisibility="Hidden" Content="{StaticResource RojmelPage}" />
+
 </Controls:MetroWindow>
