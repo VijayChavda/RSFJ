@@ -75,6 +75,7 @@
 
     <Controls:MetroWindow.Resources>
         <v:RojmelPage x:Key="RojmelPage" />
+        <v:BalanceSheetPage x:Key="BalanceSheetPage" />
     </Controls:MetroWindow.Resources>
 
     <Frame x:Name="V_Frame" NavigationUIVisibility="Hidden" Content="{StaticResource RojmelPage}" />

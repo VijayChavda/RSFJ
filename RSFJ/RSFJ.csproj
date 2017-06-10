@@ -109,6 +109,9 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RojmelPageViewModel.cs" />
     <Compile Include="ViewModels\Utilities\RelayCommand.cs" />
+    <Compile Include="View\BalanceSheetPage.xaml.cs">
+      <DependentUpon>BalanceSheetPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\RojmelPage.xaml.cs">
       <DependentUpon>RojmelPage.xaml</DependentUpon>
     </Compile>
@@ -127,6 +130,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\BalanceSheetPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\RojmelPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
