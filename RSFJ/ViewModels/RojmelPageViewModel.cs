@@ -153,7 +153,24 @@ namespace RSFJ.ViewModels
         static RojmelEntry()
         {
             AccountSuggestionsList = new ObservableCollection<string>() { Customer };
-            StockItemSuggestionsList = new ObservableCollection<string>() { Cash, Fine999 };
+            StockItemSuggestionsList = new ObservableCollection<string>();
+
+            StockItemSuggestionsList.CollectionChanged += (sender, e) =>
+            {
+                if (e.NewItems != null)
+                {
+                    foreach (var item in e.NewItems.Cast<string>())
+                    {
+                        DataContextService.Instance.DataContext.StockItems.Add(new Model.StockItem()
+                        {
+                            Name = item
+                        });
+                    }
+                }
+            };
+
+            StockItemSuggestionsList.Add(Cash);
+            StockItemSuggestionsList.Add(Fine999);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
