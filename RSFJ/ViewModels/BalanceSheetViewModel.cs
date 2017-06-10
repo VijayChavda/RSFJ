@@ -13,6 +13,8 @@ namespace RSFJ.ViewModels
     {
         public ObservableCollection<StockItem> StockItems { get; set; }
 
+        public StockItem CurrentEditingStockItem { get; set; }
+
         public BalanceSheetViewModel()
         {
             StockItems = new ObservableCollection<StockItem>();

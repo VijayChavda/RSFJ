@@ -20,6 +20,15 @@ namespace RSFJ.View
     /// </summary>
     public partial class BalanceSheetPage : Page
     {
+        public bool IsCurrentRateValid
+        {
+            get { return (bool)GetValue(IsCurrentRateValidProperty); }
+            set { SetValue(IsCurrentRateValidProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsCurrentRateValidProperty =
+            DependencyProperty.Register("IsCurrentRateValid", typeof(bool), typeof(BalanceSheetPage), new PropertyMetadata(false));
+
         public BalanceSheetPage()
         {
             InitializeComponent();
@@ -30,6 +39,17 @@ namespace RSFJ.View
         private void BalanceSheetPage_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.Load();
+        }
+
+        private void ChangeRate_Click(object sender, RoutedEventArgs e)
+        {
+            var rate = double.Parse(V_Rate.Text);
+            ViewModel.CurrentEditingStockItem.Rate = IsCurrentRateValid ? Math.Round(rate, 2) : 0;
+        }
+
+        private void V_Rate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            IsCurrentRateValid = double.TryParse(V_Rate.Text, out double temp);
         }
     }
 }

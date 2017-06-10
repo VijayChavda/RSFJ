@@ -1,4 +1,4 @@
-﻿<Page x:Class="RSFJ.View.BalanceSheetPage"
+﻿<Page x:Name="CurrentPageInstance" x:Class="RSFJ.View.BalanceSheetPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,11 +9,59 @@
       d:DesignHeight="300" d:DesignWidth="300"
       Title="BalanceSheetPage">
 
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Page.Resources>
+
     <Page.DataContext>
         <vm:BalanceSheetViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
     <Grid>
-        <ListView ItemsSource="{Binding Path=StockItems}" DisplayMemberPath="Name" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="300" />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid ItemsSource="{Binding Path=StockItems}" SelectedItem="{Binding Path=CurrentEditingStockItem}"
+                  IsReadOnly="True" AutoGenerateColumns="False" CanUserReorderColumns="False" SelectedIndex="0"
+                  HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="13pt" Foreground="DarkSlateGray">
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Item" Width="2*" />
+                <DataGridTextColumn Binding="{Binding Path=Rate, StringFormat=N2}" Header="Rate" Width="2*" />
+                <DataGridTextColumn Binding="{Binding Path=InStock}" Header="In Stock" Width="2*" />
+                <DataGridTextColumn Binding="{Binding Path=Money}" Header="Money" Width="2*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Column="1" Background="WhiteSmoke" BorderBrush="DarkSlateGray" Padding="10" BorderThickness="1 0 0 0">
+            <StackPanel>
+                <StackPanel Margin="10">
+                    <TextBlock Text="{Binding Path=CurrentEditingStockItem.Name}" FontSize="18pt" />
+                </StackPanel>
+                <StackPanel Margin="10">
+                    <TextBlock Text="Rate" FontSize="12pt" Margin="0 0 10 0" />
+                    <TextBox x:Name="V_Rate" Text="{Binding Path=CurrentEditingStockItem.Rate, Mode=OneWay, StringFormat=N2}" FontSize="15pt" Foreground="DarkSlateGray" TextChanged="V_Rate_TextChanged" />
+                    <Button Content="Change Rate" Padding="20 10" Margin="0 20" HorizontalAlignment="Right" FocusVisualStyle="{x:Null}" Click="ChangeRate_Click"
+                            IsEnabled="{Binding ElementName=CurrentPageInstance, Path=IsCurrentRateValid}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>
