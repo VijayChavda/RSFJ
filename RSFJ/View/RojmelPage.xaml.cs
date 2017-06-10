@@ -24,13 +24,6 @@ namespace RSFJ.View
         public RojmelPage()
         {
             InitializeComponent();
-
-            Loaded += RojmelPage_Loaded;
-        }
-
-        private void RojmelPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Load();
         }
     }
 }

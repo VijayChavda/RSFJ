@@ -23,17 +23,11 @@ namespace RSFJ.ViewModels
                 {
                     foreach (var item in args.NewItems.Cast<RojmelEntry>())
                     {
-                        if (DataContextService.Instance.DataContext.RojmelEntries.Contains(item.Model) == false)
-                        {
-                            DataContextService.Instance.DataContext.RojmelEntries.Add(item.Model);
-                        }
+                        DataContextService.Instance.DataContext.RojmelEntries.Add(item.Model);
                     }
                 }
             };
-        }
 
-        public void Load()
-        {
             foreach (var model in DataContextService.Instance.DataContext.RojmelEntries)
             {
                 Entries.Add(new RojmelEntry(model));
