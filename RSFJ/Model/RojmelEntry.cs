@@ -51,5 +51,37 @@ namespace RSFJ.Model
         /// Direction of rojmel entry. Represents credit/debit.
         /// </summary>
         public bool IsLeftSide { get; set; }
+
+        #region Equals, ==, != overrides
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            return Id == (obj as RojmelEntry).Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
+
+        public static bool operator ==(RojmelEntry a, RojmelEntry b)
+        {
+            if (object.ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(RojmelEntry a, RojmelEntry b)
+        {
+            return !(a == b);
+        }
+        #endregion
     }
 }

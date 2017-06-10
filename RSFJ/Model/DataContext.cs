@@ -8,14 +8,14 @@ namespace RSFJ.Model
 {
     public class DataContext
     {
-        public List<RojmelEntry> RojmelEntries { get; set; }
+        public HashSet<RojmelEntry> RojmelEntries { get; set; }
 
-        public List<StockItem> StockItems { get; set; }
+        public HashSet<StockItem> StockItems { get; set; }
 
         public DataContext()
         {
-            RojmelEntries = new List<RojmelEntry>();
-            StockItems = new List<StockItem>();
+            RojmelEntries = new HashSet<RojmelEntry>();
+            StockItems = new HashSet<StockItem>();
         }
     }
 }
