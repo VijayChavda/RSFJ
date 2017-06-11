@@ -43,10 +43,10 @@
                 </Style>
             </DataGrid.CellStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Item" Width="2*" />
-                <DataGridTextColumn Binding="{Binding Path=Rate, StringFormat=N2}" Header="Rate" Width="2*" />
-                <DataGridTextColumn Binding="{Binding Path=InStock}" Header="In Stock" Width="2*" />
-                <DataGridTextColumn Binding="{Binding Path=Money}" Header="Money" Width="2*" />
+                <DataGridTextColumn Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Header="Item" Width="2*" />
+                <DataGridTextColumn Binding="{Binding Path=Rate, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Header="Rate" Width="2*" />
+                <DataGridTextColumn Binding="{Binding Path=InStock, UpdateSourceTrigger=PropertyChanged}" Header="In Stock" Width="2*" />
+                <DataGridTextColumn Binding="{Binding Path=Money, UpdateSourceTrigger=PropertyChanged}" Header="Money" Width="2*" />
             </DataGrid.Columns>
         </DataGrid>
 

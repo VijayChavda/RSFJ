@@ -70,6 +70,7 @@ namespace RSFJ.ViewModels
             _Name = Model.Name;
             _Rate = Model.Rate;
             _InStock = Model.InStock;
+            _Money = _InStock * _Rate;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -85,8 +86,8 @@ namespace RSFJ.ViewModels
 
                 #region Model update
                 Model.Name = Name;
-                Model.InStock = InStock;
                 Model.Rate = Rate;
+                Model.InStock = InStock;
                 #endregion
             }
         }
