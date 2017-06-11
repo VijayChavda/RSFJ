@@ -55,8 +55,8 @@ namespace RSFJ.ViewModels
         private double _InStock;
         public double InStock { get => _InStock; set => SetProperty(ref _InStock, value); }
 
-        private double _Money;
-        public double Money { get => _Money; set => SetProperty(ref _Money, value); }
+        private double _Value;
+        public double Value { get => _Value; set => SetProperty(ref _Value, value); }
 
         private static double _Total;
         public double Total { get => _Total; set => SetProperty(ref _Total, value); }
@@ -73,7 +73,7 @@ namespace RSFJ.ViewModels
             _Name = Model.Name;
             _Rate = Model.Rate;
             _InStock = Model.InStock;
-            _Money = _InStock * _Rate;
+            Value = Model.Value;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -85,12 +85,13 @@ namespace RSFJ.ViewModels
                 Property = Value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
-                Money = InStock * Rate;
+                this.Value = InStock * Rate;
 
                 #region Model update
                 Model.Name = Name;
                 Model.Rate = Rate;
                 Model.InStock = InStock;
+                Model.Value = this.Value;
                 #endregion
             }
         }

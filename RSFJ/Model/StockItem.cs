@@ -20,6 +20,11 @@
         /// </summary>
         public double Rate { get; set; }
 
+        /// <summary>
+        /// Value of this stock item in possession.
+        /// </summary>
+        public double Value { get; set; }
+
         #region Equals, ==, != overrides
         public override bool Equals(object obj)
         {
