@@ -112,6 +112,7 @@
     <Compile Include="View\BalanceSheetPage.xaml.cs">
       <DependentUpon>BalanceSheetPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="View\RojmelPage.xaml.cs">
       <DependentUpon>RojmelPage.xaml</DependentUpon>
     </Compile>
