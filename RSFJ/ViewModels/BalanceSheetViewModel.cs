@@ -58,6 +58,9 @@ namespace RSFJ.ViewModels
         private double _Money;
         public double Money { get => _Money; set => SetProperty(ref _Money, value); }
 
+        private static double _Total;
+        public double Total { get => _Total; set => SetProperty(ref _Total, value); }
+
         public StockItem()
         {
             Model = new Model.StockItem();
