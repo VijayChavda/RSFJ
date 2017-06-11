@@ -179,6 +179,7 @@ namespace RSFJ.ViewModels
         {
             if (EqualityComparer<T>.Default.Equals(Property, Value) == false)
             {
+                T oldValue = Property;
                 Property = Value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
@@ -271,6 +272,40 @@ namespace RSFJ.ViewModels
                         }
 
                         LParam1 = null;
+                    }
+                }
+                #endregion
+
+                #region Update StockItem.InStock
+                var item = DataContextService.Instance.DataContext.StockItems.Single(x => x.Name == StockItem);
+
+                if (PropertyName == nameof(LParam1))
+                {
+                    var oldRParam1 = oldValue as double?;
+                    item.InStock -= oldRParam1 ?? 0;
+                    item.InStock += LParam1 ?? 0;
+                }
+
+                if (PropertyName == nameof(RParam1))
+                {
+                    var oldRParam1 = oldValue as double?;
+                    item.InStock += oldRParam1 ?? 0;
+                    item.InStock -= RParam1 ?? 0;
+                }
+
+                if (PropertyName == nameof(StockItem) && oldValue != null)
+                {
+                    var oldItem = DataContextService.Instance.DataContext.StockItems.Single(x => x.Name == oldValue.ToString());
+
+                    if (LResult != null)
+                    {
+                        oldItem.InStock -= LParam1 ?? 0;
+                        item.InStock += LParam1 ?? 0;
+                    }
+                    else if (RResult != null)
+                    {
+                        oldItem.InStock += RParam1 ?? 0;
+                        item.InStock -= RParam1 ?? 0;
                     }
                 }
                 #endregion
