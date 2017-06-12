@@ -24,19 +24,6 @@ namespace RSFJ
     {
         public MainWindow()
         {
-            VerifySoftware();
-
-            DataContextService.Instance.Load();
-
-            InitializeComponent();
-        }
-
-        private void VerifySoftware()
-        {
-#if DEBUG
-            return;
-#endif
-
             var allowSkip = RegistoryService.Instance.FailureCount <= 50;
 
             var result = new View.Verification(allowSkip).ShowDialog();
@@ -49,6 +36,15 @@ namespace RSFJ
             {
                 RegistoryService.Instance.FailureCount = 0;
             }
+
+            InitializeComponent();
+
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.LoadCommand.Execute(null);
         }
 
         private void MetroWindow_KeyDown(object sender, KeyEventArgs e)
@@ -73,13 +69,6 @@ namespace RSFJ
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
-        }
-
-        private void FrameNavigate(object sender, RoutedEventArgs e)
-        {
-            var page = (sender as Button).Tag.ToString();
-
-            V_Frame.Navigate(Resources[page]);
         }
     }
 }

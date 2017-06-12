@@ -96,27 +96,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\Account.cs" />
     <Compile Include="Model\DataContext.cs" />
     <Compile Include="Model\RojmelEntry.cs" />
-    <Compile Include="Model\StockItem.cs" />
     <Compile Include="Services\AppVerificationService.cs" />
     <Compile Include="Services\DataContextService.cs" />
     <Compile Include="Services\ReportingService.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\RegistoryService.cs" />
-    <Compile Include="ViewModels\BalanceSheetViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\RojmelPageViewModel.cs" />
     <Compile Include="ViewModels\Utilities\RelayCommand.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="View\BalanceSheetPage.xaml.cs">
-      <DependentUpon>BalanceSheetPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Converters\NullToVisibilityConverter.cs" />
-    <Compile Include="View\RojmelPage.xaml.cs">
-      <DependentUpon>RojmelPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Verification.xaml.cs">
       <DependentUpon>Verification.xaml</DependentUpon>
     </Compile>
@@ -132,14 +120,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\BalanceSheetPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\RojmelPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Verification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
