@@ -1,53 +1,41 @@
 ﻿using RSFJ.Services;
 using RSFJ.ViewModels.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace RSFJ.ViewModels
 {
+    /// <summary>
+    /// MainWindow's ViewModel.
+    /// </summary>
     public class MainViewModel
     {
-        RelayCommand _saveCommand;
+        #region Commands
+        /// <summary>
+        /// Command to Save data.
+        /// </summary>
         public ICommand SaveCommand
         {
-            get => _saveCommand ?? (_saveCommand = new RelayCommand(param => this.Save(), param => true));
+            get => _saveCommand ?? (_saveCommand = new RelayCommand(param => DataContextService.Instance.Save(), param => true));
         }
+        private RelayCommand _saveCommand;
 
-        RelayCommand _backupCommand;
+        /// <summary>
+        /// Command to Backup data.
+        /// </summary>
         public ICommand BackupCommand
         {
-            get => _backupCommand ?? (_backupCommand = new RelayCommand(param => this.Backup(), param => true));
+            get => _backupCommand ?? (_backupCommand = new RelayCommand(param => DataContextService.Instance.Backup(), param => true));
         }
+        private RelayCommand _backupCommand;
 
-        RelayCommand _restoreCommand;
+        /// <summary>
+        /// Command to Restore previously backed-up data.
+        /// </summary>
         public ICommand RestoreCommand
         {
-            get => _restoreCommand ?? (_restoreCommand = new RelayCommand(param => this.Restore(param as string), param => true));
+            get => _restoreCommand ?? (_restoreCommand = new RelayCommand(param => DataContextService.Instance.Restore(param as string), param => true));
         }
-
-        public MainViewModel()
-        {
-        }
-
-        private void Save()
-        {
-            DataContextService.Instance.Save();
-        }
-
-        private void Backup()
-        {
-
-        }
-
-        private void Restore(string BackupFile)
-        {
-
-        }
+        RelayCommand _restoreCommand;
+        #endregion
     }
 }
