@@ -109,6 +109,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RojmelPageViewModel.cs" />
     <Compile Include="ViewModels\Utilities\RelayCommand.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="View\BalanceSheetPage.xaml.cs">
       <DependentUpon>BalanceSheetPage.xaml</DependentUpon>
     </Compile>
