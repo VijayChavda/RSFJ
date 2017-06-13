@@ -1,4 +1,5 @@
 ﻿using RSFJ.Services;
+using RSFJ.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,14 +41,14 @@ namespace RSFJ.ViewModels
         private DateTime _Date;
         public DateTime Date { get => _Date; set => SetProperty(ref _Date, value); }
 
-        private string _Account;
-        public string Account { get => _Account; set => SetProperty(ref _Account, value); }
+        private Account _Account;
+        public Account Account { get => _Account; set => SetProperty(ref _Account, value); }
 
         private string _Type;
         public string Type { get => _Type; set => SetProperty(ref _Type, value); }
 
-        private string _StockItem;
-        public string StockItem { get => _StockItem; set => SetProperty(ref _StockItem, value); }
+        private StockItem _StockItem;
+        public StockItem StockItem { get => _StockItem; set => SetProperty(ref _StockItem, value); }
         #endregion
 
         #region General parameters
