@@ -63,6 +63,11 @@ namespace RSFJ.Model
         /// </summary>
         public bool IsLeftSide { get; set; }
 
+        public override string ToString()
+        {
+            return string.Concat("T-", Id);
+        }
+
         // override object.Equals
         public override bool Equals(object obj)
         {
