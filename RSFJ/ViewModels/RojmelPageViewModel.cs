@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace RSFJ.ViewModels
 {
-    public class RojmelPageViewModel
+    public class RojmelPageViewModel : ViewModelBase
     {
         public ObservableCollection<RojmelEntryViewModel> Entries { get; set; }
 
@@ -41,7 +41,7 @@ namespace RSFJ.ViewModels
         }
     }
 
-    public class RojmelEntryViewModel : INotifyPropertyChanged
+    public class RojmelEntryViewModel : ViewModelBase
     {
         public static int InstanceCount;
 
@@ -116,7 +116,6 @@ namespace RSFJ.ViewModels
             Date = DateTime.Now.Date;
             Account = AccountSuggestionsList.First();
             StockItem = StockItemSuggestionsList.First();
-
         }
 
         public RojmelEntryViewModel(Model.RojmelEntry Model)
@@ -162,120 +161,112 @@ namespace RSFJ.ViewModels
             StockItemSuggestionsList = new ObservableCollection<string>() { Cash, Fine999 };
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void SetProperty<T>(ref T Property, T Value, [System.Runtime.CompilerServices.CallerMemberName] string PropertyName = null)
+        protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
         {
-            if (EqualityComparer<T>.Default.Equals(Property, Value) == false)
+            //Account and StockItem should be defined.
+            if (string.IsNullOrWhiteSpace(Account) || string.IsNullOrWhiteSpace(StockItem)) return;
+
+            #region Auto suggestion
+            if (PropertyName == nameof(Account))
             {
-                Property = Value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
-
-                //Account and StockItem should be defined.
-                if (string.IsNullOrWhiteSpace(Account) || string.IsNullOrWhiteSpace(StockItem)) return;
-
-                #region Auto suggestion
-                if (PropertyName == nameof(Account))
+                if (AccountSuggestionsList.Contains(Account) == false)
                 {
-                    if (AccountSuggestionsList.Contains(Account) == false)
-                    {
-                        AccountSuggestionsList.Add(Account);
-                    }
+                    AccountSuggestionsList.Add(Account);
                 }
-
-                if (PropertyName == nameof(StockItem))
-                {
-                    if (StockItemSuggestionsList.Contains(StockItem) == false)
-                    {
-                        StockItemSuggestionsList.Add(StockItem);
-                    }
-                }
-                #endregion
-
-                #region Calculation
-                if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2)
-                            || PropertyName == nameof(Account) || PropertyName == nameof(StockItem)
-                            || PropertyName == nameof(UplakClear))
-                {
-                    if (LParam1 == null)
-                    {
-                        LParam2 = null;
-                        LResult = null;
-                    }
-                    else if (LParam1 != null)
-                    {
-                        LResult = LParam1;
-
-                        if (LParam2 != null)
-                        {
-                            if (UplakClear)
-                            {
-                                LResult = LParam1 / LParam2;
-                            }
-                            else if (StockItem == Fine999)
-                            {
-                                LResult = LParam1 * LParam2;
-                            }
-                            else if (StockItem == Cash)
-                            {
-                                LResult = LParam1 / LParam2;
-                            }
-                            else
-                            {
-                                LResult = LParam1 * LParam2 / 100;
-                            }
-                        }
-
-                        RParam1 = null;
-                    }
-                }
-
-                if (PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2)
-                    || PropertyName == nameof(Account) || PropertyName == nameof(StockItem))
-                {
-                    if (RParam1 == null)
-                    {
-                        RParam2 = null;
-                        RResult = null;
-                    }
-
-                    if (RParam1 != null)
-                    {
-                        RResult = RParam1;
-
-                        if (RParam2 != null)
-                        {
-                            if (Account == Customer)
-                            {
-                                RResult = RParam1 * RParam2;
-                            }
-                            else if (StockItem == Cash)
-                            {
-                                RResult = RParam1 / RParam2;
-                            }
-                            else
-                            {
-                                RResult = RParam1 * RParam2 / 100;
-                            }
-                        }
-
-                        LParam1 = null;
-                    }
-                }
-                #endregion
-
-                #region Model update
-                Model.Id = Id;
-                Model.Date = Date;
-                Model.Account = Account;
-                Model.StockItem = StockItem;
-                Model.UplakClear = UplakClear;
-                Model.Param1 = LParam1 ?? RParam1 ?? 0;
-                Model.Param2 = LParam2 ?? RParam2 ?? 0;
-                Model.Result = LResult ?? RResult ?? 0;
-                Model.IsLeftSide = LResult != null && RResult == null;
-                #endregion
             }
+
+            if (PropertyName == nameof(StockItem))
+            {
+                if (StockItemSuggestionsList.Contains(StockItem) == false)
+                {
+                    StockItemSuggestionsList.Add(StockItem);
+                }
+            }
+            #endregion
+
+            #region Calculation
+            if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2)
+                        || PropertyName == nameof(Account) || PropertyName == nameof(StockItem)
+                        || PropertyName == nameof(UplakClear))
+            {
+                if (LParam1 == null)
+                {
+                    LParam2 = null;
+                    LResult = null;
+                }
+                else if (LParam1 != null)
+                {
+                    LResult = LParam1;
+
+                    if (LParam2 != null)
+                    {
+                        if (UplakClear)
+                        {
+                            LResult = LParam1 / LParam2;
+                        }
+                        else if (StockItem == Fine999)
+                        {
+                            LResult = LParam1 * LParam2;
+                        }
+                        else if (StockItem == Cash)
+                        {
+                            LResult = LParam1 / LParam2;
+                        }
+                        else
+                        {
+                            LResult = LParam1 * LParam2 / 100;
+                        }
+                    }
+
+                    RParam1 = null;
+                }
+            }
+
+            if (PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2)
+                || PropertyName == nameof(Account) || PropertyName == nameof(StockItem))
+            {
+                if (RParam1 == null)
+                {
+                    RParam2 = null;
+                    RResult = null;
+                }
+
+                if (RParam1 != null)
+                {
+                    RResult = RParam1;
+
+                    if (RParam2 != null)
+                    {
+                        if (Account == Customer)
+                        {
+                            RResult = RParam1 * RParam2;
+                        }
+                        else if (StockItem == Cash)
+                        {
+                            RResult = RParam1 / RParam2;
+                        }
+                        else
+                        {
+                            RResult = RParam1 * RParam2 / 100;
+                        }
+                    }
+
+                    LParam1 = null;
+                }
+            }
+            #endregion
+
+            #region Model update
+            Model.Id = Id;
+            Model.Date = Date;
+            Model.Account = Account;
+            Model.StockItem = StockItem;
+            Model.UplakClear = UplakClear;
+            Model.Param1 = LParam1 ?? RParam1 ?? 0;
+            Model.Param2 = LParam2 ?? RParam2 ?? 0;
+            Model.Result = LResult ?? RResult ?? 0;
+            Model.IsLeftSide = LResult != null && RResult == null;
+            #endregion
         }
     }
 }
