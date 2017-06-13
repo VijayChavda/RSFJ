@@ -15,24 +15,10 @@ namespace RSFJ.ViewModels
         {
             Entries = new ObservableCollection<RojmelEntryViewModel>();
 
-            Entries.CollectionChanged += (sender, args) =>
-            {
-                if (args.NewItems != null)
-                {
-                    foreach (var item in args.NewItems.Cast<RojmelEntryViewModel>())
-                    {
-                        if (DataContextService.Instance.DataContext.RojmelEntries.Contains(item.Model) == false)
-                        {
-                            DataContextService.Instance.DataContext.RojmelEntries.Add(item.Model);
-                        }
-                    }
-                }
-            };
-
-            LoadViewModel();
+            LoadData();
         }
 
-        private void LoadViewModel()
+        private void LoadData()
         {
             foreach (var model in DataContextService.Instance.DataContext.RojmelEntries)
             {
@@ -47,10 +33,7 @@ namespace RSFJ.ViewModels
 
         public Model.RojmelEntry Model { get; set; }
 
-        public static ObservableCollection<string> AccountSuggestionsList { get; set; }
-
-        public static ObservableCollection<string> StockItemSuggestionsList { get; set; }
-
+        #region Common parameters
         private int _Id;
         public int Id { get => _Id; set => SetProperty(ref _Id, value); }
 
@@ -60,12 +43,14 @@ namespace RSFJ.ViewModels
         private string _Account;
         public string Account { get => _Account; set => SetProperty(ref _Account, value); }
 
+        private string _Type;
+        public string Type { get => _Type; set => SetProperty(ref _Type, value); }
+
         private string _StockItem;
         public string StockItem { get => _StockItem; set => SetProperty(ref _StockItem, value); }
+        #endregion
 
-        private bool _UplakClear;
-        public bool UplakClear { get => _UplakClear; set => SetProperty(ref _UplakClear, value); }
-
+        #region General parameters
         private double? _LParam1;
         public double? LParam1 { get => _LParam1; set => SetProperty(ref _LParam1, value); }
 
@@ -83,190 +68,42 @@ namespace RSFJ.ViewModels
 
         private double? _RResult;
         public double? RResult { get => _RResult; set => SetProperty(ref _RResult, value); }
+        #endregion
 
-        private double? _Param3;
-        public double? Param3 { get => _Param3; set => SetProperty(ref _Param3, value); }
+        #region Special parameters
+        private double? _Labour;
+        public double? Labour { get => _Labour; set => SetProperty(ref _Labour, value); }
 
-        private double? _Param4;
-        public double? Param4 { get => _Param4; set => SetProperty(ref _Param4, value); }
+        private double? _Loss;
+        public double? Loss { get => _Loss; set => SetProperty(ref _Loss, value); }
 
-        private string _LParam1Name;
-        public string LParam1Name { get => _LParam1Name; set => SetProperty(ref _LParam1Name, value); }
+        private DateTime _InstallmentPaymentDue;
+        public DateTime InstallmentPaymentDue { get => _InstallmentPaymentDue; set => SetProperty(ref _InstallmentPaymentDue, value); }
 
-        private string _LParam2Name;
-        public string LParam2Name { get => _LParam2Name; set => SetProperty(ref _LParam2Name, value); }
-
-        private string _RParam1Name;
-        public string RParam1Name { get => _RParam1Name; set => SetProperty(ref _RParam1Name, value); }
-
-        private string _RParam2Name;
-        public string RParam2Name { get => _RParam2Name; set => SetProperty(ref _RParam2Name, value); }
-
-        private const string Customer = "Customer";
-        private const string Cash = "Cash";
-        private const string Fine999 = "Fine999";
+        private DateTime _PaymentDue;
+        public DateTime PaymentDue { get => _PaymentDue; set => SetProperty(ref _PaymentDue, value); }
+        #endregion
 
         public RojmelEntryViewModel()
         {
-            Model = new Model.RojmelEntry();
-
             InstanceCount++;
+            Model = new Model.RojmelEntry();
 
             Id = InstanceCount;
             Date = DateTime.Now.Date;
-            Account = AccountSuggestionsList.First();
-            StockItem = StockItemSuggestionsList.First();
         }
 
         public RojmelEntryViewModel(Model.RojmelEntry Model)
         {
             InstanceCount++;
-
             this.Model = Model;
 
-            _Id = Model.Id;
-            _Date = Model.Date;
-            _Account = Model.Account;
-            _StockItem = Model.StockItem;
-            _UplakClear = Model.UplakClear;
-            if (Model.IsLeftSide)
-            {
-                _LParam1 = Model.Param1;
-                _LParam2 = Model.Param2;
-                _LResult = Model.Result;
-            }
-            else
-            {
-                _RParam1 = Model.Param1;
-                _RParam2 = Model.Param2;
-                _RResult = Model.Result;
-            }
-
-            #region Add items to Account & StockItem suggestion lists.
-            if (AccountSuggestionsList.Contains(Account) == false)
-            {
-                AccountSuggestionsList.Add(Account);
-            }
-
-            if (StockItemSuggestionsList.Contains(StockItem) == false)
-            {
-                StockItemSuggestionsList.Add(StockItem);
-            }
-            #endregion
-        }
-
-        static RojmelEntryViewModel()
-        {
-            AccountSuggestionsList = new ObservableCollection<string>() { Customer };
-            StockItemSuggestionsList = new ObservableCollection<string>() { Cash, Fine999 };
+            //TODO: Redefine
         }
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
         {
-            //Account and StockItem should be defined.
-            if (string.IsNullOrWhiteSpace(Account) || string.IsNullOrWhiteSpace(StockItem)) return;
-
-            #region Auto suggestion
-            if (PropertyName == nameof(Account))
-            {
-                if (AccountSuggestionsList.Contains(Account) == false)
-                {
-                    AccountSuggestionsList.Add(Account);
-                }
-            }
-
-            if (PropertyName == nameof(StockItem))
-            {
-                if (StockItemSuggestionsList.Contains(StockItem) == false)
-                {
-                    StockItemSuggestionsList.Add(StockItem);
-                }
-            }
-            #endregion
-
-            #region Calculation
-            if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2)
-                        || PropertyName == nameof(Account) || PropertyName == nameof(StockItem)
-                        || PropertyName == nameof(UplakClear))
-            {
-                if (LParam1 == null)
-                {
-                    LParam2 = null;
-                    LResult = null;
-                }
-                else if (LParam1 != null)
-                {
-                    LResult = LParam1;
-
-                    if (LParam2 != null)
-                    {
-                        if (UplakClear)
-                        {
-                            LResult = LParam1 / LParam2;
-                        }
-                        else if (StockItem == Fine999)
-                        {
-                            LResult = LParam1 * LParam2;
-                        }
-                        else if (StockItem == Cash)
-                        {
-                            LResult = LParam1 / LParam2;
-                        }
-                        else
-                        {
-                            LResult = LParam1 * LParam2 / 100;
-                        }
-                    }
-
-                    RParam1 = null;
-                }
-            }
-
-            if (PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2)
-                || PropertyName == nameof(Account) || PropertyName == nameof(StockItem))
-            {
-                if (RParam1 == null)
-                {
-                    RParam2 = null;
-                    RResult = null;
-                }
-
-                if (RParam1 != null)
-                {
-                    RResult = RParam1;
-
-                    if (RParam2 != null)
-                    {
-                        if (Account == Customer)
-                        {
-                            RResult = RParam1 * RParam2;
-                        }
-                        else if (StockItem == Cash)
-                        {
-                            RResult = RParam1 / RParam2;
-                        }
-                        else
-                        {
-                            RResult = RParam1 * RParam2 / 100;
-                        }
-                    }
-
-                    LParam1 = null;
-                }
-            }
-            #endregion
-
-            #region Model update
-            Model.Id = Id;
-            Model.Date = Date;
-            Model.Account = Account;
-            Model.StockItem = StockItem;
-            Model.UplakClear = UplakClear;
-            Model.Param1 = LParam1 ?? RParam1 ?? 0;
-            Model.Param2 = LParam2 ?? RParam2 ?? 0;
-            Model.Result = LResult ?? RResult ?? 0;
-            Model.IsLeftSide = LResult != null && RResult == null;
-            #endregion
+            //TODO: Redefine
         }
     }
 }
