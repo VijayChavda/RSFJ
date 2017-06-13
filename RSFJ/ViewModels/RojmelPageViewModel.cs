@@ -78,11 +78,11 @@ namespace RSFJ.ViewModels
         private double? _Loss;
         public double? Loss { get => _Loss; set => SetProperty(ref _Loss, value); }
 
-        private DateTime _InstallmentPaymentDue;
-        public DateTime InstallmentPaymentDue { get => _InstallmentPaymentDue; set => SetProperty(ref _InstallmentPaymentDue, value); }
-
         private DateTime _PaymentDue;
         public DateTime PaymentDue { get => _PaymentDue; set => SetProperty(ref _PaymentDue, value); }
+
+        private DateTime _InstallmentPaymentDue;
+        public DateTime InstallmentPaymentDue { get => _InstallmentPaymentDue; set => SetProperty(ref _InstallmentPaymentDue, value); }
         #endregion
 
         public RojmelEntryViewModel()
@@ -92,6 +92,11 @@ namespace RSFJ.ViewModels
 
             Id = InstanceCount;
             Date = DateTime.Now.Date;
+            Account = DataContextService.Instance.DataContext.Accounts.FirstOrDefault();
+            Type = RojmelEntryType.Exchange;
+            StockItem = DataContextService.Instance.DataContext.StockItems.FirstOrDefault();
+            PaymentDue = DateTime.Now.Add(TimeSpan.FromDays(60));
+            InstallmentPaymentDue = DateTime.Now.Add(TimeSpan.FromDays(10));
         }
 
         public RojmelEntryViewModel(Model.RojmelEntry Model)
@@ -99,7 +104,24 @@ namespace RSFJ.ViewModels
             InstanceCount++;
             this.Model = Model;
 
-            //TODO: Redefine
+            _Id = Model.Id;
+            _Date = Model.Date;
+            _Account = Model.Account;
+            _Type = Model.Type;
+            _StockItem = Model.StockItem;
+
+            _LParam1 = Model.IsLeftSide ? Model.Param1 : (double?)null;
+            _LParam2 = Model.IsLeftSide ? Model.Param2 : (double?)null;
+            _LResult = Model.IsLeftSide ? Model.Result : (double?)null;
+            _RParam1 = Model.IsLeftSide ? (double?)null : Model.Param1;
+            _RParam2 = Model.IsLeftSide ? (double?)null : Model.Param2;
+            _RResult = Model.IsLeftSide ? (double?)null : Model.Result;
+
+            _Labour = Type == RojmelEntryType.Customer ? (double?)Model.Param3 : null;
+            _Loss = Type == RojmelEntryType.Customer ? (double?)Model.Param4 : null;
+
+            _PaymentDue = Type == RojmelEntryType.Exchange ? (DateTime)Model.Param3 : DateTime.MinValue;
+            _InstallmentPaymentDue = Type == RojmelEntryType.Exchange ? (DateTime)Model.Param3 : DateTime.MinValue;
         }
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
