@@ -24,9 +24,23 @@ namespace RSFJ.ViewModels
         {
             if (EqualityComparer<T>.Default.Equals(Property, NewValue) == false)
             {
+                var oldValue = Property;
                 Property = NewValue;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+
+                APropertyChanged(PropertyName, oldValue, NewValue);
             }
+        }
+
+        /// <summary>
+        /// Called after a property is changed.
+        /// </summary>
+        /// <param name="PropertyName">Name of the property that changed.</param>
+        /// <param name="OldValue">Previous value of the property that changed.</param>
+        /// <param name="NewValue">Newly set value of the property that changed.</param>
+        protected virtual void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
+        {
+            //Child class may implement.
         }
     }
 }
