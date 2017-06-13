@@ -1,11 +1,17 @@
 ﻿using RSFJ.Services;
 using RSFJ.ViewModels.Utilities;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace RSFJ.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : ViewModelBase
     {
+        private readonly View.RojmelPage RojmelPageView = new View.RojmelPage();
+
+        private Page _currentPage;
+        public Page CurrentPage { get => _currentPage; set => SetProperty(ref _currentPage, value); }
+
         RelayCommand _saveCommand;
         public ICommand SaveCommand
         {
@@ -28,6 +34,25 @@ namespace RSFJ.ViewModels
         public ICommand RestoreCommand
         {
             get => _restoreCommand ?? (_restoreCommand = new RelayCommand(param => DataContextService.Instance.Restore(param as string), param => true));
+        }
+
+        RelayCommand _navigateCommand;
+        public ICommand NavigateCommand
+        {
+            get => _navigateCommand ?? (_navigateCommand = new RelayCommand(param =>
+            {
+                var page = param as string;
+
+                if (page == nameof(View.RojmelPage))
+                {
+                    CurrentPage = RojmelPageView;
+                }
+            }, param => true));
+        }
+
+        public MainViewModel()
+        {
+            CurrentPage = RojmelPageView;
         }
     }
 }
