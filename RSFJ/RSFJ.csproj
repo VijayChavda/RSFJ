@@ -100,6 +100,7 @@
     <Compile Include="Model\DataContext.cs" />
     <Compile Include="Model\RojmelEntry.cs" />
     <Compile Include="Model\StockItem.cs" />
+    <Compile Include="Model\RojmelEntryType.cs" />
     <Compile Include="Services\AppVerificationService.cs" />
     <Compile Include="Services\DataContextService.cs" />
     <Compile Include="Services\ReportingService.cs" />
