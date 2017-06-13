@@ -23,14 +23,15 @@ namespace RSFJ.Model
         public string Account { get; set; }
 
         /// <summary>
+        /// The type of this Rojmel entry. Should be one of the constants defined in 
+        /// 'RSFJ.Model.RojmelEntryType'.
+        /// </summary>
+        public string Type { get; set; }
+
+        /// <summary>
         /// Stock item's name.
         /// </summary>
         public string StockItem { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value that determines if uplak is clear.
-        /// </summary>
-        public bool UplakClear { get; set; }
 
         /// <summary>
         /// Parameter 1 of rojmel entry.
@@ -41,6 +42,16 @@ namespace RSFJ.Model
         /// Parameter 2 of rojmel entry.
         /// </summary>
         public double Param2 { get; set; }
+
+        /// <summary>
+        /// Parameter 3 of rojmel entry.
+        /// </summary>
+        public object Param3 { get; set; }
+
+        /// <summary>
+        /// Parameter 4 of rojmel entry.
+        /// </summary>
+        public object Param4 { get; set; }
 
         /// <summary>
         /// Result of rojmel entry.
