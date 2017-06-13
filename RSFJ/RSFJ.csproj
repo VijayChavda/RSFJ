@@ -106,6 +106,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RojmelPageViewModel.cs" />
     <Compile Include="ViewModels\Utilities\RelayCommand.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="View\RojmelPage.xaml.cs">
       <DependentUpon>RojmelPage.xaml</DependentUpon>
     </Compile>
