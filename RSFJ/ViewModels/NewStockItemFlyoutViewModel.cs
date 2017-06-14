@@ -61,7 +61,13 @@ namespace RSFJ.ViewModels
                 Message = "Item was added successfully...";
 
                 var timer = new Timer(800) { AutoReset = false };
-                timer.Elapsed += (sender, e) => FlyoutOpen = !true;
+                timer.Elapsed += (sender, e) =>
+                {
+                    Name = null;
+                    InStock = null;
+                    Rate_Purity = null;
+                    Message = null;
+                };
                 timer.Start();
             }
             else
@@ -72,9 +78,9 @@ namespace RSFJ.ViewModels
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
         {
-            if (string.IsNullOrWhiteSpace(Name) == false && Rate_Purity != null && InStock != null)
+            if (PropertyName != nameof(Message) && string.IsNullOrWhiteSpace(Name) == false && Rate_Purity != null && InStock != null)
             {
-                Message = Message == "Item was added successfully..." ? Message : null;
+                Message = null;
             }
 
             if (PropertyName == nameof(FlyoutOpen))
