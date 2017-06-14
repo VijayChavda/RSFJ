@@ -107,6 +107,7 @@
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\RegistoryService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NewStockItemFlyoutViewModel.cs" />
     <Compile Include="ViewModels\RojmelPageViewModel.cs" />
     <Compile Include="ViewModels\Utilities\RelayCommand.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

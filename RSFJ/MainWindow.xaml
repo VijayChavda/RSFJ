@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:RSFJ"
         xmlns:vm="clr-namespace:RSFJ.ViewModels"
         xmlns:v="clr-namespace:RSFJ.View"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         RightWindowCommandsOverlayBehavior="Never" Icon="/Images/logo.png" ShowIconOnTitleBar="False"
@@ -39,9 +40,59 @@
 
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
+            <Controls:Flyout x:Name="newStockItemFlyout" Theme="Light" Header="New" Position="Right" Width="300" Background="SteelBlue" Foreground="WhiteSmoke" IsOpen="{Binding Path=FlyoutOpen, UpdateSourceTrigger=PropertyChanged}">
+                <Controls:Flyout.DataContext>
+                    <vm:NewStockItemFlyoutViewModel x:Name="NewStockItemFlyoutViewModel" />
+                </Controls:Flyout.DataContext>
+                <Border BorderThickness="1 0 0 0" BorderBrush="SteelBlue">
+                    <Grid Background="WhiteSmoke">
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="DarkSlateGray" />
+                                <Setter Property="FontSize" Value="14pt" />
+                                <Setter Property="Margin" Value="0 0 0 20" />
+                                <Setter Property="VerticalAlignment" Value="Bottom" />
+                            </Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="Foreground" Value="Gray" />
+                                <Setter Property="BorderThickness" Value="0 0 0 1" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="FontSize" Value="13pt" />
+                                <Setter Property="Margin" Value="5 0 0 15" />
+                                <Setter Property="Padding" Value="5 2 10 0" />
+                            </Style>
+                        </Grid.Resources>
+                        <StackPanel Margin="10">
+                            <TextBlock Text="Add new Stock item:" FontSize="16pt" Foreground="LightSlateGray" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="Name: " />
+                                <TextBox Grid.Column="1" Text="{Binding Path=Name}" />
+
+                                <TextBlock Grid.Row="1" Text="Purity: " />
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Rate_Purity, TargetNullValue={x:Static system:String.Empty}, ValidatesOnDataErrors=False, ValidatesOnExceptions=False}" />
+
+                                <TextBlock Grid.Row="2" Text="Initial stock: " />
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=InStock, TargetNullValue={x:Static system:String.Empty}, ValidatesOnDataErrors=False, ValidatesOnExceptions=False}" />
+                            </Grid>
+                            <Button Command="{Binding Path=AddCommand}" Content="Add" HorizontalAlignment="Right" Margin="0 15" Width="100" FocusVisualStyle="{x:Null}" Background="WhiteSmoke" BorderBrush="SteelBlue" Foreground="SteelBlue" Cursor="Hand" />
+                            <TextBlock Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}" FontSize="10pt" Foreground="Navy" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Controls:Flyout>
             <Controls:Flyout x:Name="settingsFlyout" Theme="Accent" Header="Settings" Position="Right" Width="300">
                 <Grid Background="WhiteSmoke">
-
+                    <ToggleButton Content="Add Stock item" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" IsChecked="{Binding ElementName=newStockItemFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="DarkSlateBlue" />
                 </Grid>
             </Controls:Flyout>
             <Controls:Flyout x:Name="aboutFlyout" Theme="Accent" Header="About" Position="Right" Width="300">
