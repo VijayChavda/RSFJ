@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="RSFJ.View.NewStockItemFlyoutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RSFJ.View"
+             xmlns:vm="clr-namespace:RSFJ.ViewModels"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.DataContext>
+        <vm:NewStockItemFlyoutViewModel x:Name="NewStockItemFlyoutViewModel" />
+    </UserControl.DataContext>
+
+    <Border BorderThickness="1 0 0 0" BorderBrush="SteelBlue">
+        <Grid Background="WhiteSmoke">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="DarkSlateGray" />
+                    <Setter Property="FontSize" Value="14pt" />
+                    <Setter Property="Margin" Value="0 0 0 20" />
+                    <Setter Property="VerticalAlignment" Value="Bottom" />
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Foreground" Value="Gray" />
+                    <Setter Property="BorderThickness" Value="0 0 0 1" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="FontSize" Value="13pt" />
+                    <Setter Property="Margin" Value="5 0 0 15" />
+                    <Setter Property="Padding" Value="5 2 10 0" />
+                </Style>
+            </Grid.Resources>
+            <StackPanel Margin="10">
+                <TextBlock Text="Add new Stock item:" FontSize="16pt" Foreground="LightSlateGray" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Name: " />
+                    <TextBox Grid.Column="1" Text="{Binding Path=Name}" />
+
+                    <TextBlock Grid.Row="1" Text="Purity: " />
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Rate_Purity, TargetNullValue={x:Static system:String.Empty}, ValidatesOnDataErrors=False, ValidatesOnExceptions=False}" />
+
+                    <TextBlock Grid.Row="2" Text="Initial stock: " />
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=InStock, TargetNullValue={x:Static system:String.Empty}, ValidatesOnDataErrors=False, ValidatesOnExceptions=False}" />
+                </Grid>
+                <Button Command="{Binding Path=AddCommand}" Content="Add" HorizontalAlignment="Right" Margin="0 15" Width="100" FocusVisualStyle="{x:Null}" Background="WhiteSmoke" BorderBrush="SteelBlue" Foreground="SteelBlue" Cursor="Hand" />
+                <TextBlock Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}" FontSize="10pt" Foreground="Navy" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

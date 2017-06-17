@@ -18,12 +18,12 @@ namespace RSFJ.Model
             Accounts = new HashSet<Account>();
             RojmelEntryTypes = new HashSet<string>()
             {
-                RojmelEntryType.Initital,
-                RojmelEntryType.Exchange,
-                RojmelEntryType.Uplak,
-                RojmelEntryType.UplakClear,
                 RojmelEntryType.Bullion,
                 RojmelEntryType.Customer,
+                RojmelEntryType.Exchange,
+                RojmelEntryType.Initital,
+                RojmelEntryType.Uplak,
+                RojmelEntryType.UplakClear,
             };
         }
 
