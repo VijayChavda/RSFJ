@@ -84,9 +84,11 @@ namespace RSFJ.ViewModels
         #endregion
 
         public static ObservableCollection<StockItem> StockItems { get; set; }
+        public static ObservableCollection<Account> Accounts { get; set; }
 
         static RojmelEntryViewModel()
         {
+            #region StockItems
             StockItems = new ObservableCollection<StockItem>();
 
             DataContextService.Instance.DataContext.StockItemAdded += (s, item) => StockItems.Add(item);
@@ -96,6 +98,19 @@ namespace RSFJ.ViewModels
             {
                 StockItems.Add(item);
             }
+            #endregion
+
+            #region Accounts
+            Accounts = new ObservableCollection<Account>();
+
+            DataContextService.Instance.DataContext.AccountAdded += (s, account) => Accounts.Add(account);
+            DataContextService.Instance.DataContext.AccountRemoved += (s, account) => Accounts.Remove(account);
+
+            foreach (var account in DataContextService.Instance.DataContext.Accounts)
+            {
+                Accounts.Add(account);
+            }
+            #endregion
         }
 
         public RojmelEntryViewModel()

@@ -30,6 +30,9 @@ namespace RSFJ.Model
         public event EventHandler<StockItem> StockItemAdded;
         public event EventHandler<StockItem> StockItemRemoved;
 
+        public event EventHandler<Account> AccountAdded;
+        public event EventHandler<Account> AccountRemoved;
+
         internal void FireStockItemAdded(StockItem Item)
         {
             StockItemAdded?.Invoke(this, Item);
@@ -38,6 +41,16 @@ namespace RSFJ.Model
         internal void FireStockItemRemoved(StockItem Item)
         {
             StockItemRemoved?.Invoke(this, Item);
+        }
+
+        internal void FireAccountAdded(Account Account)
+        {
+            AccountAdded?.Invoke(this, Account);
+        }
+
+        internal void FireAccountRemoved(Account Account)
+        {
+            AccountRemoved?.Invoke(this, Account);
         }
     }
 }
