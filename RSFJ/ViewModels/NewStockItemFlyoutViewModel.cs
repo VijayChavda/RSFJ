@@ -48,13 +48,16 @@ namespace RSFJ.ViewModels
                 return;
             }
 
-            var added = Services.DataContextService.Instance.DataContext.StockItems.Add(new Model.StockItem()
+            var newItem = new Model.StockItem()
             {
                 Name = Name,
                 InStock = (double)InStock,
                 Rate_Purity = (double)Rate_Purity,
                 EquivalentGold = (double)(InStock * Rate_Purity)
-            });
+            };
+
+            var added = Services.DataContextService.Instance.DataContext.StockItems.Add(newItem);
+            Services.DataContextService.Instance.DataContext.FireStockItemAdded(newItem);
 
             if (added)
             {

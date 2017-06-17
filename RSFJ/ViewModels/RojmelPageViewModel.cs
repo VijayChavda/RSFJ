@@ -1,9 +1,7 @@
 ﻿using RSFJ.Services;
 using RSFJ.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 
 namespace RSFJ.ViewModels
@@ -32,7 +30,7 @@ namespace RSFJ.ViewModels
     {
         public static int InstanceCount;
 
-        public Model.RojmelEntry Model { get; set; }
+        public RojmelEntry Model { get; set; }
 
         #region Common parameters
         private int _Id;
@@ -85,10 +83,25 @@ namespace RSFJ.ViewModels
         public DateTime InstallmentPaymentDue { get => _InstallmentPaymentDue; set => SetProperty(ref _InstallmentPaymentDue, value); }
         #endregion
 
+        public static ObservableCollection<StockItem> StockItems { get; set; }
+
+        static RojmelEntryViewModel()
+        {
+            StockItems = new ObservableCollection<StockItem>();
+
+            DataContextService.Instance.DataContext.StockItemAdded += (s, item) => StockItems.Add(item);
+            DataContextService.Instance.DataContext.StockItemRemoved += (s, item) => StockItems.Remove(item);
+
+            foreach (var item in DataContextService.Instance.DataContext.StockItems)
+            {
+                StockItems.Add(item);
+            }
+        }
+
         public RojmelEntryViewModel()
         {
             InstanceCount++;
-            Model = new Model.RojmelEntry();
+            Model = new RojmelEntry();
 
             Id = InstanceCount;
             Date = DateTime.Now.Date;
@@ -99,7 +112,7 @@ namespace RSFJ.ViewModels
             InstallmentPaymentDue = DateTime.Now.Add(TimeSpan.FromDays(10));
         }
 
-        public RojmelEntryViewModel(Model.RojmelEntry Model)
+        public RojmelEntryViewModel(RojmelEntry Model)
         {
             InstanceCount++;
             this.Model = Model;

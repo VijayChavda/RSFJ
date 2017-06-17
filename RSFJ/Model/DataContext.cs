@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace RSFJ.Model
 {
@@ -23,6 +25,19 @@ namespace RSFJ.Model
                 RojmelEntryType.Bullion,
                 RojmelEntryType.Customer,
             };
+        }
+
+        public event EventHandler<StockItem> StockItemAdded;
+        public event EventHandler<StockItem> StockItemRemoved;
+
+        internal void FireStockItemAdded(StockItem Item)
+        {
+            StockItemAdded?.Invoke(this, Item);
+        }
+
+        internal void FireStockItemRemoved(StockItem Item)
+        {
+            StockItemRemoved?.Invoke(this, Item);
         }
     }
 }
