@@ -14,58 +14,53 @@
     </UserControl.DataContext>
 
     <Border BorderThickness="1 0 0 0" BorderBrush="SteelBlue">
-        <Grid Background="WhiteSmoke">
-            <Grid.Resources>
+        <StackPanel Background="WhiteSmoke">
+            <StackPanel.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="DarkSlateGray" />
-                    <Setter Property="FontSize" Value="14pt" />
-                    <Setter Property="Margin" Value="0 0 0 20" />
-                    <Setter Property="VerticalAlignment" Value="Bottom" />
+                    <Setter Property="FontSize" Value="12pt" />
                 </Style>
                 <Style TargetType="TextBox">
                     <Setter Property="Foreground" Value="Gray" />
                     <Setter Property="BorderThickness" Value="0 0 0 1" />
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="FontSize" Value="13pt" />
-                    <Setter Property="Margin" Value="5 0 0 15" />
-                    <Setter Property="Padding" Value="5 2 10 0" />
+                    <Setter Property="Margin" Value="0 5" />
                 </Style>
-            </Grid.Resources>
-            <StackPanel Margin="10">
-                <TextBlock Text="Add new Stock item:" FontSize="16pt" Foreground="LightSlateGray" />
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+            </StackPanel.Resources>
 
+            <StackPanel Margin="10 0">
+                <StackPanel Margin="0 10">
                     <TextBlock Text="Name: " />
-                    <TextBox Grid.Column="1" Text="{Binding Path=Name}" />
+                    <TextBox Text="{Binding Path=Name}" />
+                </StackPanel>
 
-                    <TextBlock Grid.Row="1" Text="Purity: " />
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Rate_Purity, TargetNullValue={x:Static system:String.Empty}, ValidatesOnDataErrors=False, ValidatesOnExceptions=False}" />
+                <StackPanel Margin="0 10">
+                    <TextBlock Text="Purity: " />
+                    <TextBox Text="{Binding Path=Rate_Purity, TargetNullValue={x:Static system:String.Empty}}" />
+                </StackPanel>
 
-                    <TextBlock Grid.Row="2" Text="Initial stock: " />
-                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=InStock, TargetNullValue={x:Static system:String.Empty}, ValidatesOnDataErrors=False, ValidatesOnExceptions=False}" />
-                </Grid>
+                <StackPanel Margin="0 10">
+                    <TextBlock Text="Initial stock: " />
+                    <TextBox Text="{Binding Path=InStock, TargetNullValue={x:Static system:String.Empty}}" />
+                </StackPanel>
 
-                <TextBlock Text="Applies to:" FontSize="12pt" Foreground="LightSlateGray" Margin="0 5" />
-                <ItemsControl ItemsSource="{Binding Path=AppliesToType}" Background="Transparent" BorderThickness="0" FocusVisualStyle="{x:Null}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox Content="{Binding Path=Type}" IsChecked="{Binding Path=Applies, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <StackPanel Margin="0 10">
+                    <TextBlock Text="Applies to:" FontSize="12pt" Margin="0 5" />
+                    <ItemsControl ItemsSource="{Binding Path=AppliesToType}" BorderThickness="0" FocusVisualStyle="{x:Null}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Content="{Binding Path=Type}" IsChecked="{Binding Path=Applies, UpdateSourceTrigger=PropertyChanged}" Padding="5" Foreground="DarkSlateGray" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
 
-                <Button Command="{Binding Path=AddCommand}" Content="Add" HorizontalAlignment="Right" Margin="0 15" Width="100" FocusVisualStyle="{x:Null}" Background="WhiteSmoke" BorderBrush="SteelBlue" Foreground="SteelBlue" Cursor="Hand" />
-                <TextBlock Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}" FontSize="10pt" Foreground="Navy" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" />
+                <StackPanel Margin="0 10">
+                    <Button Command="{Binding Path=AddCommand}" Content="Add" HorizontalAlignment="Right" Margin="0 15" Width="100" FocusVisualStyle="{x:Null}" BorderBrush="SteelBlue" Foreground="SteelBlue" Cursor="Hand" />
+                    <TextBlock Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}" FontSize="10pt" Foreground="Navy" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" />
+                </StackPanel>
             </StackPanel>
-        </Grid>
+        </StackPanel>
     </Border>
 </UserControl>

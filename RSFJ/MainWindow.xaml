@@ -39,10 +39,10 @@
 
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout x:Name="newStockItemFlyout" Theme="Light" Header="New" Position="Right" Width="300" Background="SteelBlue" Foreground="WhiteSmoke" IsOpen="{Binding Path=FlyoutOpen, UpdateSourceTrigger=PropertyChanged}">
+            <Controls:Flyout x:Name="newStockItemFlyout" Theme="Light" Background="SteelBlue" Foreground="White" Header="New Stock item" Position="Right" IsOpen="{Binding Path=FlyoutOpen, UpdateSourceTrigger=PropertyChanged}" Width="300">
                 <v:NewStockItemFlyoutView />
             </Controls:Flyout>
-            <Controls:Flyout x:Name="newAccountFlyout" Theme="Light" Header="New" Position="Right" Width="300" Background="SteelBlue" Foreground="WhiteSmoke" IsOpen="{Binding Path=FlyoutOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <Controls:Flyout x:Name="newAccountFlyout" Theme="Light" Background="SteelBlue" Foreground="White" Header="New Account" Position="Right" IsOpen="{Binding Path=FlyoutOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300">
                 <v:NewAccountFlyoutView />
             </Controls:Flyout>
             <Controls:Flyout x:Name="settingsFlyout" Theme="Accent" Header="Settings" Position="Right" Width="300">

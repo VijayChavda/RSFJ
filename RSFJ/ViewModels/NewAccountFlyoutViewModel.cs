@@ -1,6 +1,5 @@
 ﻿using RSFJ.ViewModels.Utilities;
 using System.Windows.Input;
-using System;
 using System.Linq;
 using System.Timers;
 using RSFJ.Model;
@@ -29,9 +28,6 @@ namespace RSFJ.ViewModels
 
         private string _Message;
         public string Message { get => _Message; set => SetProperty(ref _Message, value); }
-
-        private bool _FlyoutOpen;
-        public bool FlyoutOpen { get => _FlyoutOpen; set => SetProperty(ref _FlyoutOpen, value); }
 
         RelayCommand _addCommand;
         public ICommand AddCommand
@@ -120,19 +116,6 @@ namespace RSFJ.ViewModels
             if (PropertyName != nameof(Message) && string.IsNullOrWhiteSpace(Name) == false && Phone != null && Phone.Count(c => !char.IsDigit(c)) == 0 && Phone.Length <= 10)
             {
                 Message = null;
-            }
-
-            if (PropertyName == nameof(FlyoutOpen))
-            {
-                if (FlyoutOpen)
-                {
-                    Name = null;
-                    Phone = null;
-                    Group = null;
-                    Note = null;
-                    PreferredTransactionType = PreferredTransactionTypes[0];
-                    Message = null;
-                }
             }
         }
     }

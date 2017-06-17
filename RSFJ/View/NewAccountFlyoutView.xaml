@@ -14,58 +14,57 @@
     </UserControl.DataContext>
 
     <Border BorderThickness="1 0 0 0" BorderBrush="SteelBlue">
-        <Grid Background="WhiteSmoke">
-            <Grid.Resources>
+        <StackPanel Background="WhiteSmoke">
+            <StackPanel.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="DarkSlateGray" />
-                    <Setter Property="FontSize" Value="14pt" />
-                    <Setter Property="Margin" Value="0 0 0 20" />
-                    <Setter Property="VerticalAlignment" Value="Bottom" />
+                    <Setter Property="FontSize" Value="12pt" />
+                    <Setter Property="Margin" Value="0 0 0 5" />
                 </Style>
                 <Style TargetType="TextBox">
                     <Setter Property="Foreground" Value="Gray" />
                     <Setter Property="BorderThickness" Value="0 0 0 1" />
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="FontSize" Value="13pt" />
-                    <Setter Property="Margin" Value="5 0 0 15" />
-                    <Setter Property="Padding" Value="5 2 10 0" />
                 </Style>
-            </Grid.Resources>
+            </StackPanel.Resources>
             <StackPanel Margin="10">
-                <TextBlock Text="Add new Account:" FontSize="16pt" Foreground="LightSlateGray" />
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Text="Name: " />
-                    <TextBox Grid.Column="1" Text="{Binding Path=Name}" />
-
-                    <TextBlock Grid.Row="1" Text="Phone: " />
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Phone}" />
-
-                    <TextBlock Grid.Row="2" Text="Group: " />
-                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Group}" />
-
-                    <TextBlock Grid.Row="3" Text="Note: " VerticalAlignment="Center" />
-                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=Note}" AcceptsReturn="True" MinLines="1" MaxLines="3" BorderThickness="1" />
-
-                    <StackPanel Grid.Row="4" Grid.ColumnSpan="2">
-                        <TextBlock Text="Preferred transaction type: " Margin="0 5" />
-                        <ComboBox SelectedItem="{Binding Path=PreferredTransactionType}" ItemsSource="{Binding Path=PreferredTransactionTypes}" />
+                    <StackPanel Margin="0 10">
+                        <TextBlock Text="Name: " />
+                        <TextBox Text="{Binding Path=Name}" />
                     </StackPanel>
-                </Grid>
-                <Button Command="{Binding Path=AddCommand}" Content="Add" HorizontalAlignment="Right" Margin="0 15" Width="100" FocusVisualStyle="{x:Null}" Background="WhiteSmoke" BorderBrush="SteelBlue" Foreground="SteelBlue" Cursor="Hand" />
-                <TextBlock Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}" FontSize="10pt" Foreground="Navy" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" />
+                    
+                    <StackPanel Margin="0 10">
+                        <TextBlock Text="Phone: " />
+                        <TextBox Text="{Binding Path=Phone}" />
+                    </StackPanel>
+                    
+                    <StackPanel Margin="0 10">
+                        <TextBlock Text="Note: " VerticalAlignment="Center" />
+                        <TextBox Text="{Binding Path=Note}" AcceptsReturn="True" MinLines="1" MaxLines="3" />
+                    </StackPanel>
+                    
+                    <StackPanel Margin="0 10">
+                        <TextBlock Text="Group: " />
+                        <TextBox Text="{Binding Path=Group}" />
+                    </StackPanel>
+                    
+                    <StackPanel Margin="0 10">
+                        <TextBlock Text="Preferred transaction type: " />
+                        <ComboBox SelectedItem="{Binding Path=PreferredTransactionType}" ItemsSource="{Binding Path=PreferredTransactionTypes}" Foreground="Gray" FocusVisualStyle="{x:Null}" FontSize="13pt">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" Foreground="Gray" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                </StackPanel>
+
+                <StackPanel Margin="0 10">
+                    <Button Command="{Binding Path=AddCommand}" Content="Add" HorizontalAlignment="Right" Margin="0 15" Width="100" FocusVisualStyle="{x:Null}" Background="WhiteSmoke" BorderBrush="SteelBlue" Foreground="SteelBlue" Cursor="Hand" />
+                    <TextBlock Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}" FontSize="10pt" Foreground="Navy" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" />
+                </StackPanel>
             </StackPanel>
-        </Grid>
+        </StackPanel>
     </Border>
 </UserControl>

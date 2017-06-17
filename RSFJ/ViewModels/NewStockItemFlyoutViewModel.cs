@@ -1,6 +1,5 @@
 ﻿using RSFJ.ViewModels.Utilities;
 using System.Windows.Input;
-using System;
 using System.Timers;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +19,6 @@ namespace RSFJ.ViewModels
 
         private string _Message;
         public string Message { get => _Message; set => SetProperty(ref _Message, value); }
-
-        private bool _FlyoutOpen;
-        public bool FlyoutOpen { get => _FlyoutOpen; set => SetProperty(ref _FlyoutOpen, value); }
 
         public List<AppliesToTypeViewModel> AppliesToType { get; set; }
 
@@ -84,6 +80,7 @@ namespace RSFJ.ViewModels
                     InStock = null;
                     Rate_Purity = null;
                     Message = null;
+                    AppliesToType.ForEach(x => x.Applies = false);
                 };
                 timer.Start();
             }
@@ -98,17 +95,6 @@ namespace RSFJ.ViewModels
             if (PropertyName != nameof(Message) && string.IsNullOrWhiteSpace(Name) == false && Rate_Purity != null && InStock != null)
             {
                 Message = null;
-            }
-
-            if (PropertyName == nameof(FlyoutOpen))
-            {
-                if (FlyoutOpen)
-                {
-                    Name = null;
-                    InStock = null;
-                    Rate_Purity = null;
-                    Message = null;
-                }
             }
         }
     }
