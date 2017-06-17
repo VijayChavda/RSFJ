@@ -118,13 +118,13 @@ namespace RSFJ.ViewModels
             InstanceCount++;
             Model = new RojmelEntry();
 
-            Id = InstanceCount;
-            Date = DateTime.Now.Date;
-            Account = DataContextService.Instance.DataContext.Accounts.FirstOrDefault();
-            Type = RojmelEntryType.Exchange;
-            StockItem = DataContextService.Instance.DataContext.StockItems.FirstOrDefault();
-            PaymentDue = DateTime.Now.Add(TimeSpan.FromDays(60));
-            InstallmentPaymentDue = DateTime.Now.Add(TimeSpan.FromDays(10));
+            _Id = InstanceCount;
+            _Date = DateTime.Now.Date;
+            _Account = DataContextService.Instance.DataContext.Accounts.FirstOrDefault();
+            _Type = _Account.PreferredTransactionType;
+            _StockItem = DataContextService.Instance.DataContext.StockItems.FirstOrDefault();
+            _PaymentDue = DateTime.Now.Add(TimeSpan.FromDays(60));
+            _InstallmentPaymentDue = DateTime.Now.Add(TimeSpan.FromDays(10));
         }
 
         public RojmelEntryViewModel(RojmelEntry Model)
@@ -154,7 +154,10 @@ namespace RSFJ.ViewModels
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
         {
-            //TODO: Redefine
+            if (PropertyName == nameof(Account))
+            {
+                Type = Account.PreferredTransactionType;
+            }
         }
     }
 }

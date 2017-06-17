@@ -40,9 +40,9 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridComboBoxColumn Header="Type" SelectedItemBinding="{Binding Path=Type}" ItemsSource="{Binding Path=DataContext.RojmelEntryTypes, Source={x:Static services:DataContextService.Instance}}" Width="2*" />
-                <DataGridComboBoxColumn Header="Account" SelectedItemBinding="{Binding Path=Account}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.Accounts}}" Width="2*" />
-                <DataGridComboBoxColumn Header="Item" SelectedItemBinding="{Binding Path=StockItem}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.StockItems}}" Width="2*" />
+                <DataGridComboBoxColumn Header="Account" SelectedItemBinding="{Binding Path=Account, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.Accounts}}" Width="2*" />
+                <DataGridComboBoxColumn Header="Type" SelectedItemBinding="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=DataContext.RojmelEntryTypes, Source={x:Static services:DataContextService.Instance}}" Width="2*" />
+                <DataGridComboBoxColumn Header="Item" SelectedItemBinding="{Binding Path=StockItem, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.StockItems}}" Width="2*" />
 
                 <DataGridTextColumn Header="LParam1" Binding="{Binding Path=LParam1, UpdateSourceTrigger=LostFocus}" Width="*" />
                 <DataGridTextColumn Header="LParam2" Binding="{Binding Path=LParam2, UpdateSourceTrigger=LostFocus}" Width="*" />
