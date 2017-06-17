@@ -82,11 +82,10 @@ namespace RSFJ.ViewModels
             };
 
             var added = Services.DataContextService.Instance.DataContext.Accounts.Add(newItem);
-            Services.DataContextService.Instance.DataContext.FireAccountAdded(newItem);
-
             if (added)
             {
                 Message = "A new Account was added successfully...";
+                Services.DataContextService.Instance.DataContext.FireAccountAdded(newItem);
 
                 var timer = new Timer(800) { AutoReset = false };
                 timer.Elapsed += (sender, e) =>

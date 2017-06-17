@@ -57,10 +57,9 @@ namespace RSFJ.ViewModels
             };
 
             var added = Services.DataContextService.Instance.DataContext.StockItems.Add(newItem);
-            Services.DataContextService.Instance.DataContext.FireStockItemAdded(newItem);
-
             if (added)
             {
+                Services.DataContextService.Instance.DataContext.FireStockItemAdded(newItem);
                 Message = "Item was added successfully...";
 
                 var timer = new Timer(800) { AutoReset = false };
