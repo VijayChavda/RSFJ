@@ -1,4 +1,6 @@
-﻿namespace RSFJ.Model
+﻿using System.Collections.Generic;
+
+namespace RSFJ.Model
 {
     /// <summary>
     /// Represents a stock item.
@@ -24,6 +26,13 @@
         /// Normalised value of this stock item as gold.
         /// </summary>
         public double EquivalentGold { get; set; }
+
+        public List<string> AppliesToType { get; set; }
+
+        public StockItem()
+        {
+            AppliesToType = new List<string>();
+        }
 
         public override string ToString()
         {

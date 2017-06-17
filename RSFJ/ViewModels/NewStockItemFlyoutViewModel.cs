@@ -2,6 +2,8 @@
 using System.Windows.Input;
 using System;
 using System.Timers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RSFJ.ViewModels
 {
@@ -22,10 +24,22 @@ namespace RSFJ.ViewModels
         private bool _FlyoutOpen;
         public bool FlyoutOpen { get => _FlyoutOpen; set => SetProperty(ref _FlyoutOpen, value); }
 
+        public List<AppliesToTypeViewModel> AppliesToType { get; set; }
+
         RelayCommand _addCommand;
         public ICommand AddCommand
         {
             get => _addCommand ?? (_addCommand = new RelayCommand(param => Add(), param => true));
+        }
+
+        public NewStockItemFlyoutViewModel()
+        {
+            var types = Services.DataContextService.Instance.DataContext.RojmelEntryTypes.ToList();
+            AppliesToType = new List<AppliesToTypeViewModel>() {
+                new AppliesToTypeViewModel(){ Type = types[0] },
+                new AppliesToTypeViewModel(){ Type = types[1] },
+                new AppliesToTypeViewModel(){ Type = types[2] }
+            };
         }
 
         private void Add()
@@ -53,7 +67,8 @@ namespace RSFJ.ViewModels
                 Name = Name,
                 InStock = (double)InStock,
                 Rate_Purity = (double)Rate_Purity,
-                EquivalentGold = (double)(InStock * Rate_Purity)
+                EquivalentGold = (double)(InStock * Rate_Purity),
+                AppliesToType = AppliesToType.Where(x => x.Applies).AsQueryable().Select(x => x.Type).ToList()
             };
 
             var added = Services.DataContextService.Instance.DataContext.StockItems.Add(newItem);

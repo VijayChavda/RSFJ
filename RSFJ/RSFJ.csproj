@@ -106,6 +106,7 @@
     <Compile Include="Services\ReportingService.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\RegistoryService.cs" />
+    <Compile Include="ViewModels\AppliesToTypeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NewAccountFlyoutViewModel.cs" />
     <Compile Include="ViewModels\NewStockItemFlyoutViewModel.cs" />

@@ -53,6 +53,16 @@
                     <TextBlock Grid.Row="2" Text="Initial stock: " />
                     <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=InStock, TargetNullValue={x:Static system:String.Empty}, ValidatesOnDataErrors=False, ValidatesOnExceptions=False}" />
                 </Grid>
+
+                <TextBlock Text="Applies to:" FontSize="12pt" Foreground="LightSlateGray" Margin="0 5" />
+                <ItemsControl ItemsSource="{Binding Path=AppliesToType}" Background="Transparent" BorderThickness="0" FocusVisualStyle="{x:Null}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Path=Type}" IsChecked="{Binding Path=Applies, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
                 <Button Command="{Binding Path=AddCommand}" Content="Add" HorizontalAlignment="Right" Margin="0 15" Width="100" FocusVisualStyle="{x:Null}" Background="WhiteSmoke" BorderBrush="SteelBlue" Foreground="SteelBlue" Cursor="Hand" />
                 <TextBlock Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}" FontSize="10pt" Foreground="Navy" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" />
             </StackPanel>
