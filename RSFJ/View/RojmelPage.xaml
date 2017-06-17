@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:RSFJ.View"
       xmlns:vm="clr-namespace:RSFJ.ViewModels"
+      xmlns:services="clr-namespace:RSFJ.Services"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="RojmelPage">
@@ -39,41 +40,10 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Account" Width="2*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Path=Account, UpdateSourceTrigger=LostFocus}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ComboBox x:Name="comboBox" ItemsSource="{Binding Path=AccountSuggestionsList}" SelectedItem="{Binding Path=Account, UpdateSourceTrigger=PropertyChanged}" Text="{Binding Path=Account}" IsEditable="True" />
-                            <DataTemplate.Triggers>
-                                <Trigger SourceName="comboBox" Property="IsVisible" Value="True">
-                                    <Setter TargetName="comboBox" Property="FocusManager.FocusedElement" Value="{Binding ElementName=comboBox}" />
-                                </Trigger>
-                            </DataTemplate.Triggers>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="StockItem" Width="2*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Path=StockItem, UpdateSourceTrigger=LostFocus}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ComboBox x:Name="comboBox" ItemsSource="{Binding Path=StockItemSuggestionsList}" SelectedItem="{Binding Path=StockItem, UpdateSourceTrigger=PropertyChanged}" Text="{Binding Path=StockItem}" IsEditable="True" />
-                            <DataTemplate.Triggers>
-                                <Trigger SourceName="comboBox" Property="IsVisible" Value="True">
-                                    <Setter TargetName="comboBox" Property="FocusManager.FocusedElement" Value="{Binding ElementName=comboBox}" />
-                                </Trigger>
-                            </DataTemplate.Triggers>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-                <DataGridCheckBoxColumn Header="UC" Binding="{Binding Path=UplakClear, UpdateSourceTrigger=PropertyChanged}" Width="Auto" />
+                <DataGridComboBoxColumn Header="Type" SelectedItemBinding="{Binding Path=Type}" ItemsSource="{Binding Path=DataContext.RojmelEntryTypes, Source={x:Static services:DataContextService.Instance}}" Width="2*" />
+                <DataGridComboBoxColumn Header="Account" SelectedItemBinding="{Binding Path=Account}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.Accounts}}" Width="2*" />
+                <DataGridComboBoxColumn Header="Item" SelectedItemBinding="{Binding Path=StockItem}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.StockItems}}" Width="2*" />
+
                 <DataGridTextColumn Header="LParam1" Binding="{Binding Path=LParam1, UpdateSourceTrigger=LostFocus}" Width="*" />
                 <DataGridTextColumn Header="LParam2" Binding="{Binding Path=LParam2, UpdateSourceTrigger=LostFocus}" Width="*" />
                 <DataGridTextColumn Header="LResult" Binding="{Binding Path=LResult, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
