@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:RSFJ.View"
       xmlns:vm="clr-namespace:RSFJ.ViewModels"
       xmlns:services="clr-namespace:RSFJ.Services"
+      xmlns:system="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="RojmelPage">
@@ -67,12 +68,12 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam1}" Binding="{Binding Path=LParam1, UpdateSourceTrigger=LostFocus}" Width="*" />
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam2}" Binding="{Binding Path=LParam2, UpdateSourceTrigger=LostFocus}" Width="*" />
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingResult}" Binding="{Binding Path=LResult, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam1}" Binding="{Binding Path=RParam1, UpdateSourceTrigger=LostFocus}" Width="*" />
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam2}" Binding="{Binding Path=RParam2, UpdateSourceTrigger=LostFocus}" Width="*" />
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingResult}" Binding="{Binding Path=RResult, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam1}" Binding="{Binding Path=LParam1, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam2}" Binding="{Binding Path=LParam2, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingResult}" Binding="{Binding Path=LResult, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam1}" Binding="{Binding Path=RParam1, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam2}" Binding="{Binding Path=RParam2, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingResult}" Binding="{Binding Path=RResult, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
 
