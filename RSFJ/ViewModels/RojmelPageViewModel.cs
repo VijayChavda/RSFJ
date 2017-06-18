@@ -123,6 +123,8 @@ namespace RSFJ.ViewModels
             Account = DataContextService.Instance.DataContext.Accounts.FirstOrDefault();
             PaymentDue = DateTime.Now.Add(TimeSpan.FromDays(60));
             InstallmentPaymentDue = DateTime.Now.Add(TimeSpan.FromDays(10));
+
+            DataContextService.Instance.DataContext.RojmelEntries.Add(Model);
         }
 
         public RojmelEntryViewModel(RojmelEntry Model)
@@ -148,6 +150,8 @@ namespace RSFJ.ViewModels
 
             _PaymentDue = Type == RojmelEntryType.Exchange ? (DateTime)Model.Param3 : DateTime.MinValue;
             _InstallmentPaymentDue = Type == RojmelEntryType.Exchange ? (DateTime)Model.Param3 : DateTime.MinValue;
+
+            DataContextService.Instance.DataContext.RojmelEntries.Add(Model);
         }
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
@@ -274,6 +278,18 @@ namespace RSFJ.ViewModels
                 RParam2 = param2;
                 RResult = result;
             }
+            #endregion
+
+            #region Model update
+            Model.Id = Id;
+            Model.Date = Date;
+            Model.Account = Account;
+            Model.Type = Type;
+            Model.StockItem = StockItem;
+            Model.IsLeftSide = isLeft;
+            Model.Param1 = isLeft ? LParam1 ?? 0 : RParam1 ?? 0;
+            Model.Param2 = isLeft ? LParam2 ?? 0 : RParam2 ?? 0;
+            Model.Result = isLeft ? LResult ?? 0 : RResult ?? 0;
             #endregion
         }
     }
