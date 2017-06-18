@@ -84,6 +84,17 @@ namespace RSFJ.ViewModels
         public DateTime InstallmentPaymentDue { get => _InstallmentPaymentDue; set => SetProperty(ref _InstallmentPaymentDue, value); }
         #endregion
 
+        #region Column Headings
+        private string _HeadingParam1;
+        public string HeadingParam1 { get => _HeadingParam1; set => SetProperty(ref _HeadingParam1, value); }
+
+        private string _HeadingParam2;
+        public string HeadingParam2 { get => _HeadingParam2; set => SetProperty(ref _HeadingParam2, value); }
+
+        private string _HeadingResult;
+        public string HeadingResult { get => _HeadingResult; set => SetProperty(ref _HeadingResult, value); }
+        #endregion
+
         public List<StockItem> StockItems { get; set; }
         public static ObservableCollection<Account> Accounts { get; set; }
 
@@ -152,6 +163,46 @@ namespace RSFJ.ViewModels
                 StockItems = dataContext.StockItems.Where(x => x.AppliesToType.Contains(Type)).ToList();
                 StockItem = StockItems.FirstOrDefault();
             }
+
+            #region Setting heading
+            const string h_rupees = "Rs.";
+            const string h_gram = "Grams";
+            const string h_percent = "%";
+            const string h_rate = "Rate";
+            const string h_fine = "Fine";
+            const string h_na = "-";
+
+            if (Type == RojmelEntryType.Exchange)
+            {
+                HeadingParam1 = h_gram;
+                HeadingParam2 = h_percent;
+                HeadingResult = h_fine;
+            }
+            else if (Type == RojmelEntryType.Customer)
+            {
+                HeadingParam1 = h_gram;
+                HeadingParam2 = h_rate;
+                HeadingResult = h_rupees;
+            }
+            else if (Type == RojmelEntryType.Bullion)
+            {
+                HeadingParam1 = StockItem == DataContext.Cash ? h_rupees : h_gram;
+                HeadingParam2 = StockItem == DataContext.Cash ? h_na : h_rate;
+                HeadingResult = h_rupees;
+            }
+            else if (Type == RojmelEntryType.Uplak)
+            {
+                HeadingParam1 = h_rupees;
+                HeadingParam2 = h_na;
+                HeadingResult = h_rupees;
+            }
+            else if (Type == RojmelEntryType.UplakClear)
+            {
+                HeadingParam1 = h_rupees;
+                HeadingParam2 = h_rate;
+                HeadingResult = h_fine;
+            }
+            #endregion
         }
     }
 }
