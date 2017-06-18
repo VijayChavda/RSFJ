@@ -204,24 +204,30 @@ namespace RSFJ.ViewModels
             }
             #endregion
 
-            if (LParam1 == null)
+            if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2))
             {
-                LParam2 = null;
-                LResult = null;
-            }
-            else
-            {
-                RParam1 = null;
+                if (LParam1 == null)
+                {
+                    LParam2 = null;
+                    LResult = null;
+                }
+                else
+                {
+                    RParam1 = null;
+                }
             }
 
-            if (RParam1 == null)
+            if (PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2))
             {
-                RParam2 = null;
-                RResult = null;
-            }
-            else
-            {
-                LParam1 = null;
+                if (RParam1 == null)
+                {
+                    RParam2 = null;
+                    RResult = null;
+                }
+                else
+                {
+                    LParam1 = null;
+                }
             }
 
             if (LParam1 == null && RParam1 == null)
