@@ -203,6 +203,70 @@ namespace RSFJ.ViewModels
                 HeadingResult = h_fine;
             }
             #endregion
+
+            if (LParam1 == null)
+            {
+                LParam2 = null;
+                LResult = null;
+            }
+            else
+            {
+                RParam1 = null;
+            }
+
+            if (RParam1 == null)
+            {
+                RParam2 = null;
+                RResult = null;
+            }
+            else
+            {
+                LParam1 = null;
+            }
+
+            if (LParam1 == null && RParam1 == null)
+            {
+                return;
+            }
+
+            bool isLeft = RParam1 == null;
+            double? param1 = isLeft ? LParam1 : RParam1;
+            double? param2 = isLeft ? LParam2 : RParam2;
+            double? result = isLeft ? LResult : RResult;
+
+            if (Type == RojmelEntryType.Exchange)
+            {
+                result = param1 * param2 / 100;
+            }
+            else if (Type == RojmelEntryType.Customer)
+            {
+                result = param1 * param2;   //TODO
+            }
+            else if (Type == RojmelEntryType.Bullion)
+            {
+                result = StockItem == DataContext.Cash ? param1 : param1 * param2;
+            }
+            else if (Type == RojmelEntryType.Uplak)
+            {
+                result = param1;
+            }
+            else if (Type == RojmelEntryType.UplakClear)
+            {
+                result = param1 / param2;
+            }
+
+            if (isLeft)
+            {
+                LParam1 = param1;
+                LParam2 = param2;
+                LResult = result;
+            }
+            else
+            {
+                RParam1 = param1;
+                RParam2 = param2;
+                RResult = result;
+            }
         }
     }
 }
