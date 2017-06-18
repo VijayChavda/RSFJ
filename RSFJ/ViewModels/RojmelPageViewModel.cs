@@ -124,6 +124,8 @@ namespace RSFJ.ViewModels
             PaymentDue = DateTime.Now.Add(TimeSpan.FromDays(60));
             InstallmentPaymentDue = DateTime.Now.Add(TimeSpan.FromDays(10));
 
+            SetHeadings();
+
             DataContextService.Instance.DataContext.RojmelEntries.Add(Model);
         }
 
@@ -151,6 +153,8 @@ namespace RSFJ.ViewModels
             _PaymentDue = Type == RojmelEntryType.Exchange ? (DateTime)Model.Param3 : DateTime.MinValue;
             _InstallmentPaymentDue = Type == RojmelEntryType.Exchange ? (DateTime)Model.Param3 : DateTime.MinValue;
 
+            SetHeadings();
+
             DataContextService.Instance.DataContext.RojmelEntries.Add(Model);
         }
 
@@ -168,45 +172,7 @@ namespace RSFJ.ViewModels
                 StockItem = StockItems.FirstOrDefault();
             }
 
-            #region Headings
-            const string h_rupees = "Rs.";
-            const string h_gram = "Grams";
-            const string h_percent = "%";
-            const string h_rate = "Rate";
-            const string h_fine = "Fine";
-            const string h_na = "-";
-
-            if (Type == RojmelEntryType.Exchange)
-            {
-                HeadingParam1 = h_gram;
-                HeadingParam2 = h_percent;
-                HeadingResult = h_fine;
-            }
-            else if (Type == RojmelEntryType.Customer)
-            {
-                HeadingParam1 = h_gram;
-                HeadingParam2 = h_rate;
-                HeadingResult = h_rupees;
-            }
-            else if (Type == RojmelEntryType.Bullion)
-            {
-                HeadingParam1 = StockItem == DataContext.Cash ? h_rupees : h_gram;
-                HeadingParam2 = StockItem == DataContext.Cash ? h_na : h_rate;
-                HeadingResult = h_rupees;
-            }
-            else if (Type == RojmelEntryType.Uplak)
-            {
-                HeadingParam1 = h_rupees;
-                HeadingParam2 = h_na;
-                HeadingResult = h_rupees;
-            }
-            else if (Type == RojmelEntryType.UplakClear)
-            {
-                HeadingParam1 = h_rupees;
-                HeadingParam2 = h_rate;
-                HeadingResult = h_fine;
-            }
-            #endregion
+            SetHeadings();
 
             #region Calculations
             if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2))
@@ -295,6 +261,47 @@ namespace RSFJ.ViewModels
             Model.Param3 = Type == RojmelEntryType.Customer ? (object)0 : (object)DateTime.MinValue;
             Model.Param4 = Type == RojmelEntryType.Customer ? (object)0 : (object)DateTime.MinValue;
             #endregion
+        }
+
+        private void SetHeadings()
+        {
+            const string h_rupees = "Rs.";
+            const string h_gram = "Grams";
+            const string h_percent = "%";
+            const string h_rate = "Rate";
+            const string h_fine = "Fine";
+            const string h_na = "-";
+
+            if (Type == RojmelEntryType.Exchange)
+            {
+                HeadingParam1 = h_gram;
+                HeadingParam2 = h_percent;
+                HeadingResult = h_fine;
+            }
+            else if (Type == RojmelEntryType.Customer)
+            {
+                HeadingParam1 = h_gram;
+                HeadingParam2 = h_rate;
+                HeadingResult = h_rupees;
+            }
+            else if (Type == RojmelEntryType.Bullion)
+            {
+                HeadingParam1 = StockItem == DataContext.Cash ? h_rupees : h_gram;
+                HeadingParam2 = StockItem == DataContext.Cash ? h_na : h_rate;
+                HeadingResult = h_rupees;
+            }
+            else if (Type == RojmelEntryType.Uplak)
+            {
+                HeadingParam1 = h_rupees;
+                HeadingParam2 = h_na;
+                HeadingResult = h_rupees;
+            }
+            else if (Type == RojmelEntryType.UplakClear)
+            {
+                HeadingParam1 = h_rupees;
+                HeadingParam2 = h_rate;
+                HeadingResult = h_fine;
+            }
         }
     }
 }
