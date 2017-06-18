@@ -23,6 +23,7 @@
         <DataGrid x:Name="V_DataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="WhiteSmoke"
                   ItemsSource="{Binding Path=Entries}" AutoGenerateColumns="False" CanUserAddRows="True" 
                   BorderBrush="Gray" BorderThickness="0 0 0 2" CanUserDeleteRows="True"
+                  CellEditEnding="V_DataGrid_CellEditEnding"
                   d:DataContext="{Binding Source={d:DesignInstance Type=vm:RojmelEntryViewModel, CreateList=False}}">
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
@@ -41,8 +42,20 @@
                 </DataGridTemplateColumn>
 
                 <DataGridComboBoxColumn Header="Account" SelectedItemBinding="{Binding Path=Account, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.Accounts}}" Width="2*" />
-                <DataGridComboBoxColumn Header="Type" SelectedItemBinding="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=DataContext.RojmelEntryTypes, Source={x:Static services:DataContextService.Instance}}" Width="2*" />
-                <DataGridComboBoxColumn Header="Item" SelectedItemBinding="{Binding Path=StockItem, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.StockItems}}" Width="2*" />
+                <DataGridComboBoxColumn x:Name="V_TypeColumn"  Header="Type" SelectedItemBinding="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=DataContext.RojmelEntryTypes, Source={x:Static services:DataContextService.Instance}}" Width="2*" />
+
+                <DataGridTemplateColumn Header="Item" Width="2*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding StockItem}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedItem="{Binding StockItem}" ItemsSource="{Binding StockItems}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
 
                 <DataGridTextColumn Header="LParam1" Binding="{Binding Path=LParam1, UpdateSourceTrigger=LostFocus}" Width="*" />
                 <DataGridTextColumn Header="LParam2" Binding="{Binding Path=LParam2, UpdateSourceTrigger=LostFocus}" Width="*" />

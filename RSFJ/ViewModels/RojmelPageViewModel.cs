@@ -3,6 +3,7 @@ using RSFJ.Model;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace RSFJ.ViewModels
 {
@@ -83,23 +84,11 @@ namespace RSFJ.ViewModels
         public DateTime InstallmentPaymentDue { get => _InstallmentPaymentDue; set => SetProperty(ref _InstallmentPaymentDue, value); }
         #endregion
 
-        public static ObservableCollection<StockItem> StockItems { get; set; }
+        public List<StockItem> StockItems { get; set; }
         public static ObservableCollection<Account> Accounts { get; set; }
 
         static RojmelEntryViewModel()
         {
-            #region StockItems
-            StockItems = new ObservableCollection<StockItem>();
-
-            DataContextService.Instance.DataContext.StockItemAdded += (s, item) => StockItems.Add(item);
-            DataContextService.Instance.DataContext.StockItemRemoved += (s, item) => StockItems.Remove(item);
-
-            foreach (var item in DataContextService.Instance.DataContext.StockItems)
-            {
-                StockItems.Add(item);
-            }
-            #endregion
-
             #region Accounts
             Accounts = new ObservableCollection<Account>();
 
@@ -118,13 +107,11 @@ namespace RSFJ.ViewModels
             InstanceCount++;
             Model = new RojmelEntry();
 
-            _Id = InstanceCount;
-            _Date = DateTime.Now.Date;
-            _Account = DataContextService.Instance.DataContext.Accounts.FirstOrDefault();
-            _Type = _Account.PreferredTransactionType;
-            _StockItem = DataContextService.Instance.DataContext.StockItems.FirstOrDefault();
-            _PaymentDue = DateTime.Now.Add(TimeSpan.FromDays(60));
-            _InstallmentPaymentDue = DateTime.Now.Add(TimeSpan.FromDays(10));
+            Id = InstanceCount;
+            Date = DateTime.Now.Date;
+            Account = DataContextService.Instance.DataContext.Accounts.FirstOrDefault();
+            PaymentDue = DateTime.Now.Add(TimeSpan.FromDays(60));
+            InstallmentPaymentDue = DateTime.Now.Add(TimeSpan.FromDays(10));
         }
 
         public RojmelEntryViewModel(RojmelEntry Model)
@@ -156,7 +143,14 @@ namespace RSFJ.ViewModels
         {
             if (PropertyName == nameof(Account))
             {
-                Type = Account.PreferredTransactionType;
+                Type = Account != null ? Account.PreferredTransactionType : RojmelEntryType.Exchange;
+            }
+
+            if (PropertyName == nameof(Type))
+            {
+                var dataContext = DataContextService.Instance.DataContext;
+                StockItems = dataContext.StockItems.Where(x => x.AppliesToType.Contains(Type)).ToList();
+                StockItem = StockItems.FirstOrDefault();
             }
         }
     }

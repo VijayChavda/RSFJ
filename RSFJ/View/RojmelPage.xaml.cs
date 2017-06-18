@@ -20,9 +20,25 @@ namespace RSFJ.View
     /// </summary>
     public partial class RojmelPage : Page
     {
+        private bool isManualEditCommit;
+
         public RojmelPage()
         {
             InitializeComponent();
+        }
+
+        private void V_DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.Column == V_TypeColumn)
+            {
+                //if (!isManualEditCommit)
+                //{
+                //    isManualEditCommit = true;
+                //    DataGrid grid = (DataGrid)sender;
+                //    grid.CommitEdit(DataGridEditingUnit.Row, true);
+                //    isManualEditCommit = false;
+                //}
+            }
         }
     }
 }
