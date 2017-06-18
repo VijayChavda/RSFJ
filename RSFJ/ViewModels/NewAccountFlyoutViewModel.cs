@@ -37,7 +37,7 @@ namespace RSFJ.ViewModels
 
         public NewAccountFlyoutViewModel()
         {
-            var types = Services.DataContextService.Instance.DataContext.RojmelEntryTypes.ToList();
+            var types = DataContext.RojmelEntryTypes.ToList();
             PreferredTransactionTypes = new List<string>() { types[0], types[1], types[2] };
 
             Group = "Others";

@@ -9,13 +9,13 @@ namespace RSFJ.Model
         public HashSet<RojmelEntry> RojmelEntries { get; set; }
         public HashSet<StockItem> StockItems { get; set; }
         public HashSet<Account> Accounts { get; set; }
-        public HashSet<string> RojmelEntryTypes { get; set; }
 
-        public DataContext()
+        public static HashSet<string> RojmelEntryTypes { get; set; }
+
+        public static readonly StockItem Cash;
+
+        static DataContext()
         {
-            RojmelEntries = new HashSet<RojmelEntry>();
-            StockItems = new HashSet<StockItem>();
-            Accounts = new HashSet<Account>();
             RojmelEntryTypes = new HashSet<string>()
             {
                 RojmelEntryType.Exchange,
@@ -25,6 +25,24 @@ namespace RSFJ.Model
                 RojmelEntryType.Uplak,
                 RojmelEntryType.UplakClear,
             };
+
+            Cash = new StockItem()
+            {
+                Name = "Cash",
+                AppliesToType = new List<string>()
+                {
+                    RojmelEntryType.Bullion,
+                    RojmelEntryType.Uplak,
+                    RojmelEntryType.UplakClear
+                }
+            };
+        }
+
+        public DataContext()
+        {
+            RojmelEntries = new HashSet<RojmelEntry>();
+            StockItems = new HashSet<StockItem>() { Cash };
+            Accounts = new HashSet<Account>();
         }
 
         public event EventHandler<StockItem> StockItemAdded;

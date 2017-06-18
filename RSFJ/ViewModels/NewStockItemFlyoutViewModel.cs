@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Timers;
 using System.Collections.Generic;
 using System.Linq;
+using RSFJ.Model;
 
 namespace RSFJ.ViewModels
 {
@@ -30,7 +31,7 @@ namespace RSFJ.ViewModels
 
         public NewStockItemFlyoutViewModel()
         {
-            var types = Services.DataContextService.Instance.DataContext.RojmelEntryTypes.ToList();
+            var types = DataContext.RojmelEntryTypes.ToList();
             AppliesToType = new List<AppliesToTypeViewModel>() {
                 new AppliesToTypeViewModel(){ Type = types[0] },
                 new AppliesToTypeViewModel(){ Type = types[1] },
@@ -58,7 +59,7 @@ namespace RSFJ.ViewModels
                 return;
             }
 
-            var newItem = new Model.StockItem()
+            var newItem = new StockItem()
             {
                 Name = Name,
                 InStock = (double)InStock,
