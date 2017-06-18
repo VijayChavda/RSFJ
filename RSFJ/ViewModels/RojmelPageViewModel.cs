@@ -164,7 +164,7 @@ namespace RSFJ.ViewModels
                 StockItem = StockItems.FirstOrDefault();
             }
 
-            #region Setting heading
+            #region Headings
             const string h_rupees = "Rs.";
             const string h_gram = "Grams";
             const string h_percent = "%";
@@ -204,6 +204,7 @@ namespace RSFJ.ViewModels
             }
             #endregion
 
+            #region Calculations
             if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2))
             {
                 if (LParam1 == null)
@@ -273,6 +274,7 @@ namespace RSFJ.ViewModels
                 RParam2 = param2;
                 RResult = result;
             }
+            #endregion
         }
     }
 }
