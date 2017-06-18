@@ -290,6 +290,10 @@ namespace RSFJ.ViewModels
             Model.Param1 = isLeft ? LParam1 ?? 0 : RParam1 ?? 0;
             Model.Param2 = isLeft ? LParam2 ?? 0 : RParam2 ?? 0;
             Model.Result = isLeft ? LResult ?? 0 : RResult ?? 0;
+
+            //Following is temporary.
+            Model.Param3 = Type == RojmelEntryType.Customer ? (object)0 : (object)DateTime.MinValue;
+            Model.Param4 = Type == RojmelEntryType.Customer ? (object)0 : (object)DateTime.MinValue;
             #endregion
         }
     }
