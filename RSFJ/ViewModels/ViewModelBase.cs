@@ -42,5 +42,14 @@ namespace RSFJ.ViewModels
         {
             //Child class may implement.
         }
+
+        /// <summary>
+        /// Directly invokes PropertyChanged event, for the given property, regardless of value actually changed.
+        /// </summary>
+        /// <param name="PropertyName">Name of the property to notify change.</param>
+        protected void NotifyPropertyChanged(string PropertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        }
     }
 }
