@@ -4,12 +4,17 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace RSFJ.ViewModels
 {
     public class RojmelPageViewModel : ViewModelBase
     {
         public ObservableCollection<RojmelEntryViewModel> Entries { get; set; }
+
+        private RojmelEntryViewModel _SelectedEntry;
+        public RojmelEntryViewModel SelectedEntry { get => _SelectedEntry; set => SetProperty(ref _SelectedEntry, value); }
 
         public RojmelPageViewModel()
         {
@@ -24,6 +29,8 @@ namespace RSFJ.ViewModels
             {
                 Entries.Add(new RojmelEntryViewModel(model));
             }
+
+            SelectedEntry = Entries.FirstOrDefault();
         }
     }
 
@@ -83,6 +90,9 @@ namespace RSFJ.ViewModels
         private DateTime _InstallmentPaymentDue;
         public DateTime InstallmentPaymentDue { get => _InstallmentPaymentDue; set => SetProperty(ref _InstallmentPaymentDue, value); }
         #endregion
+
+        private double? _AggregateInStock;
+        public double? AggregateInStock { get => _AggregateInStock; set => SetProperty(ref _AggregateInStock, value); }
 
         #region Column Headings
         private string _HeadingParam1;
@@ -302,6 +312,28 @@ namespace RSFJ.ViewModels
                 HeadingParam2 = h_rate;
                 HeadingResult = h_fine;
             }
+        }
+
+        public async Task CalculateAggregateAsync()
+        {
+            if (StockItem == null || Account == null)
+            {
+                return;
+            }
+
+            AggregateInStock = null;
+            _AggregateInStock = 0;
+
+            await Task.Run(() =>
+            {
+                var items = DataContextService.Instance.DataContext.RojmelEntries.Where(x => x.StockItem == StockItem).Where(x => x.Id <= Id);
+                foreach (var item in items)
+                {
+                    _AggregateInStock += item.IsLeftSide ? item.Param1 : -item.Param1;
+                }
+            });
+
+            base.NotifyPropertyChanged(nameof(AggregateInStock));
         }
     }
 }

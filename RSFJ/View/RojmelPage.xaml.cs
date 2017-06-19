@@ -23,6 +23,24 @@ namespace RSFJ.View
         public RojmelPage()
         {
             InitializeComponent();
+
+            Loaded += RojmelPage_Loaded;
+        }
+
+        private async void RojmelPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in ViewModel.Entries)
+            {
+                await item.CalculateAggregateAsync();
+            }
+        }
+
+        private async void DataGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            foreach (var item in ViewModel.Entries)
+            {
+                await item.CalculateAggregateAsync();
+            }
         }
     }
 }
