@@ -33,7 +33,6 @@ namespace RSFJ.Model
                 {
                     RojmelEntryType.Bullion,
                     RojmelEntryType.Uplak,
-                    RojmelEntryType.UplakClear
                 }
             };
         }
