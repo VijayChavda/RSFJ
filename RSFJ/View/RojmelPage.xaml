@@ -73,7 +73,12 @@
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ComboBox SelectedItem="{Binding StockItem, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding StockItems}" />
+                            <ComboBox x:Name="V_stockItem" SelectedItem="{Binding StockItem, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding StockItems}" />
+                            <DataTemplate.Triggers>
+                                <Trigger SourceName="V_stockItem" Property="IsVisible" Value="True">
+                                    <Setter TargetName="V_stockItem" Property="FocusManager.FocusedElement" Value="{Binding ElementName=V_stockItem}" />
+                                </Trigger>
+                            </DataTemplate.Triggers>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
