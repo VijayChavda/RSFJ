@@ -5,6 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:RSFJ.View"
       xmlns:vm="clr-namespace:RSFJ.ViewModels"
+      xmlns:m="clr-namespace:RSFJ.Model"
+      xmlns:utilities="clr-namespace:RSFJ.ViewModels.Utilities"
       xmlns:services="clr-namespace:RSFJ.Services"
       xmlns:system="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
@@ -15,6 +17,11 @@
     <Page.DataContext>
         <vm:RojmelPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
+
+    <Page.Resources>
+        <utilities:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <utilities:RojmelEntryTypeToVisibilityConverter x:Key="RojmelEntryTypeToVisibilityConverter" />
+    </Page.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -107,7 +114,7 @@
                             </Style>
                         </StackPanel.Resources>
 
-                        <StackPanel Margin="10" Visibility="Collapsed">
+                        <StackPanel Margin="10" Visibility="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryTypeToVisibilityConverter}, ConverterParameter=Exchange}">
                             <StackPanel Margin="0 10">
                                 <TextBlock Text="Partial payment due on: " />
                                 <DatePicker SelectedDate="{Binding Path=InstallmentPaymentDue}" />
@@ -118,7 +125,7 @@
                                 <DatePicker SelectedDate="{Binding Path=PaymentDue}" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Margin="10" Visibility="Collapsed">
+                        <StackPanel Margin="10" Visibility="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryTypeToVisibilityConverter}, ConverterParameter=Customer}">
                             <StackPanel Margin="0 10">
                                 <TextBlock Text="Labour rate: " />
                                 <TextBox Text="{Binding Path=Labour, TargetNullValue={x:Static system:String.Empty}}" />
@@ -128,7 +135,7 @@
                                 <TextBox Text="{Binding Path=Loss, TargetNullValue={x:Static system:String.Empty}}" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Margin="10">
+                        <StackPanel Margin="10" Visibility="{Binding Path=Account, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
                             <Border Padding="5" BorderBrush="LightSlateGray" BorderThickness="0 0 0 1">
                                 <TextBlock Text="{Binding Path=Account.Name}" FontSize="14pt" />
                             </Border>
@@ -141,7 +148,7 @@
                                 <TextBlock Text="{Binding Path=Account.FineInMoney}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
                         </StackPanel>
-                        <StackPanel Margin="10">
+                        <StackPanel Margin="10" Visibility="{Binding Path=StockItem, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
                             <Border Padding="5" BorderBrush="LightSlateGray" BorderThickness="0 0 0 1">
                                 <TextBlock Text="{Binding Path=StockItem.Name}" FontSize="14pt" />
                             </Border>

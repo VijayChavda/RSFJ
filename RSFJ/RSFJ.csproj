@@ -111,7 +111,9 @@
     <Compile Include="ViewModels\NewAccountFlyoutViewModel.cs" />
     <Compile Include="ViewModels\NewStockItemFlyoutViewModel.cs" />
     <Compile Include="ViewModels\RojmelPageViewModel.cs" />
+    <Compile Include="ViewModels\Utilities\NullToVisibilityConverter.cs" />
     <Compile Include="ViewModels\Utilities\RelayCommand.cs" />
+    <Compile Include="ViewModels\Utilities\RojmelEntryTypeToVisibilityConverter.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="View\NewAccountFlyoutView.xaml.cs">
       <DependentUpon>NewAccountFlyoutView.xaml</DependentUpon>
