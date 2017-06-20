@@ -126,7 +126,7 @@ namespace RSFJ.ViewModels
         public RojmelEntryViewModel()
         {
             InstanceCount++;
-            Model = new RojmelEntry();
+            Model = new RojmelEntry() { Id = InstanceCount };
 
             Id = InstanceCount;
             Date = DateTime.Now.Date;
