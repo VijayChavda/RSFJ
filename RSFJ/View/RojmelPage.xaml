@@ -8,13 +8,14 @@
       xmlns:services="clr-namespace:RSFJ.Services"
       xmlns:system="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="768" d:DesignWidth="1024"
+      Background="White"
       Title="RojmelPage">
 
     <Page.DataContext>
         <vm:RojmelPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -22,7 +23,8 @@
         </Grid.ColumnDefinitions>
 
         <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="WhiteSmoke"
-                  ItemsSource="{Binding Path=Entries}" AutoGenerateColumns="False" CanUserAddRows="True" 
+                  ItemsSource="{Binding Path=Entries}" SelectedItem="{Binding Path=SelectedEntry, UpdateSourceTrigger=PropertyChanged}"
+                  AutoGenerateColumns="False" CanUserAddRows="True" 
                   BorderBrush="Gray" BorderThickness="0 0 0 2" CanUserDeleteRows="True"
                   RowEditEnding="DataGrid_RowEditEnding"
                   d:DataContext="{Binding Source={d:DesignInstance Type=vm:RojmelEntryViewModel, CreateList=False}}">
@@ -80,8 +82,81 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Border Grid.Column="1" Background="WhiteSmoke" Width="300" BorderBrush="Gray" BorderThickness="1 0 0 0">
+        <Grid Grid.Column="1" DataContext="{Binding Path=SelectedEntry}" Width="300">
+            <Border Background="WhiteSmoke" BorderBrush="DarkSlateBlue" BorderThickness="1 0 0 0" Padding="10">
+                <Grid>
+                    <StackPanel Background="WhiteSmoke">
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="DarkSlateGray" />
+                                <Setter Property="FontSize" Value="12pt" />
+                            </Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="Foreground" Value="Gray" />
+                                <Setter Property="BorderThickness" Value="0 0 0 1" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="FontSize" Value="13pt" />
+                                <Setter Property="Margin" Value="0 5" />
+                            </Style>
+                            <Style TargetType="DatePicker">
+                                <Setter Property="Foreground" Value="Gray" />
+                                <Setter Property="BorderThickness" Value="0 0 0 1" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="FontSize" Value="14pt" />
+                                <Setter Property="Margin" Value="0 5" />
+                            </Style>
+                        </StackPanel.Resources>
 
-        </Border>
+                        <StackPanel Margin="10" Visibility="Collapsed">
+                            <StackPanel Margin="0 10">
+                                <TextBlock Text="Partial payment due on: " />
+                                <DatePicker SelectedDate="{Binding Path=InstallmentPaymentDue}" />
+                            </StackPanel>
+
+                            <StackPanel Margin="0 10">
+                                <TextBlock Text="Total payment due on: " />
+                                <DatePicker SelectedDate="{Binding Path=PaymentDue}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Margin="10" Visibility="Collapsed">
+                            <StackPanel Margin="0 10">
+                                <TextBlock Text="Labour rate: " />
+                                <TextBox Text="{Binding Path=Labour, TargetNullValue={x:Static system:String.Empty}}" />
+                            </StackPanel>
+                            <StackPanel Margin="0 10">
+                                <TextBlock Text="Waste: " />
+                                <TextBox Text="{Binding Path=Loss, TargetNullValue={x:Static system:String.Empty}}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Border Padding="5" BorderBrush="LightSlateGray" BorderThickness="0 0 0 1">
+                                <TextBlock Text="{Binding Path=Account.Name}" FontSize="14pt" />
+                            </Border>
+                            <Grid Margin="10 2">
+                                <TextBlock Text="Fine due:" FontSize="12pt" Foreground="SlateGray" />
+                                <TextBlock Text="{Binding Path=Account.FineInGold}" FontSize="12pt" HorizontalAlignment="Right" />
+                            </Grid>
+                            <Grid Margin="10 2">
+                                <TextBlock Text="Money due:" FontSize="12pt" Foreground="SlateGray" />
+                                <TextBlock Text="{Binding Path=Account.FineInMoney}" FontSize="12pt" HorizontalAlignment="Right" />
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Border Padding="5" BorderBrush="LightSlateGray" BorderThickness="0 0 0 1">
+                                <TextBlock Text="{Binding Path=StockItem.Name}" FontSize="14pt" />
+                            </Border>
+                            <Grid Margin="10 2">
+                                <TextBlock Text="In stock:" FontSize="12pt" Foreground="SlateGray" />
+                                <TextBlock Text="{Binding Path=StockItem.InStock}" FontSize="12pt" HorizontalAlignment="Right" />
+                            </Grid>
+                            <Grid Margin="10 2">
+                                <TextBlock Text="Equivalent gold:" FontSize="12pt" Foreground="SlateGray" />
+                                <TextBlock Text="{Binding Path=StockItem.EquivalentGold}" FontSize="12pt" HorizontalAlignment="Right" />
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Page>
