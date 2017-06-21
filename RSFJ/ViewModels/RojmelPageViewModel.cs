@@ -157,11 +157,14 @@ namespace RSFJ.ViewModels
             _RParam2 = Model.IsLeftSide ? (double?)null : Model.Param2;
             _RResult = Model.IsLeftSide ? (double?)null : Model.Result;
 
-            _Labour = Type == RojmelEntryType.Customer ? (double?)Model.Param3 : null;
-            _Loss = Type == RojmelEntryType.Customer ? (double?)Model.Param4 : null;
+            if (Type == RojmelEntryType.Customer)
+            {
+                _Labour = Model.Param3 == null ? (double?)null : Convert.ToDouble(Model.Param3);
+                _Loss = Model.Param4 == null ? (double?)null : Convert.ToDouble(Model.Param4);
+            }
 
-            _PaymentDue = Type == RojmelEntryType.Exchange ? (DateTime)Model.Param3 : DateTime.MinValue;
-            _InstallmentPaymentDue = Type == RojmelEntryType.Exchange ? (DateTime)Model.Param3 : DateTime.MinValue;
+            _PaymentDue = Type == RojmelEntryType.Exchange ? Convert.ToDateTime(Model.Param3) : DateTime.MaxValue;
+            _InstallmentPaymentDue = Type == RojmelEntryType.Exchange ? Convert.ToDateTime(Model.Param4) : DateTime.MaxValue;
 
             SetHeadings();
 
@@ -268,8 +271,8 @@ namespace RSFJ.ViewModels
             Model.Result = isLeft ? LResult ?? 0 : RResult ?? 0;
 
             //Following is temporary.
-            Model.Param3 = Type == RojmelEntryType.Customer ? (object)0 : (object)DateTime.MinValue;
-            Model.Param4 = Type == RojmelEntryType.Customer ? (object)0 : (object)DateTime.MinValue;
+            Model.Param3 = Type == RojmelEntryType.Customer ? Labour : (object)InstallmentPaymentDue;
+            Model.Param4 = Type == RojmelEntryType.Customer ? Loss : (object)PaymentDue;
             #endregion
         }
 
