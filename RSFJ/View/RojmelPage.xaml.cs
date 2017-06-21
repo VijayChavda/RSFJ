@@ -29,18 +29,12 @@ namespace RSFJ.View
 
         private async void RojmelPage_Loaded(object sender, RoutedEventArgs e)
         {
-            foreach (var item in ViewModel.Entries)
-            {
-                await item.CalculateAggregateAsync();
-            }
+            await ViewModel.CalculateAggregateAsync();
         }
 
         private async void DataGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
-            foreach (var item in ViewModel.Entries)
-            {
-                await item.CalculateAggregateAsync();
-            }
+            await ViewModel.CalculateAggregateAsync();
         }
     }
 }

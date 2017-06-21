@@ -32,6 +32,30 @@ namespace RSFJ.ViewModels
 
             SelectedEntry = Entries.FirstOrDefault();
         }
+
+        public async Task CalculateAggregateAsync()
+        {
+            await Task.Run(() =>
+            {
+                var groupedEntries = Entries.Where(x => x.StockItem != null).GroupBy(x => x.StockItem);
+
+                foreach (var sameStockEntries in groupedEntries)
+                {
+                    var stockItem = sameStockEntries.Key;
+                    double inStock = 0;
+
+                    foreach (var entry in sameStockEntries)
+                    {
+                        var model = entry.Model;
+                        inStock += model.IsLeftSide ? model.Param1 : -model.Param1;
+
+                        entry.AggregateInStock = inStock;
+                    }
+
+                    stockItem.InStock = inStock;
+                }
+            });
+        }
     }
 
     public class RojmelEntryViewModel : ViewModelBase
@@ -315,28 +339,6 @@ namespace RSFJ.ViewModels
                 HeadingParam2 = h_rate;
                 HeadingResult = h_fine;
             }
-        }
-
-        public async Task CalculateAggregateAsync()
-        {
-            if (StockItem == null || Account == null)
-            {
-                return;
-            }
-
-            AggregateInStock = null;
-            _AggregateInStock = 0;
-
-            await Task.Run(() =>
-            {
-                var items = DataContextService.Instance.DataContext.RojmelEntries.Where(x => x.StockItem == StockItem).Where(x => x.Id <= Id);
-                foreach (var item in items)
-                {
-                    _AggregateInStock += item.IsLeftSide ? item.Param1 : -item.Param1;
-                }
-            });
-
-            base.NotifyPropertyChanged(nameof(AggregateInStock));
         }
     }
 }
