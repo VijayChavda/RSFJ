@@ -24,20 +24,24 @@
         <utilities:RojmelEntryViewModelTypeToVisibilityConverter x:Key="RojmelEntryViewModelTypeToVisibilityConverter" />
     </Page.Resources>
 
-    <Grid>
+    <Grid Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="300" />
         </Grid.ColumnDefinitions>
 
-        <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="WhiteSmoke"
-                  ItemsSource="{Binding Path=Entries}" 
+        <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                  ItemsSource="{Binding Path=Entries}"
                   SelectedItem="{Binding Path=SelectedEntry, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryViewModelTypeToVisibilityConverter}}"
-                  AutoGenerateColumns="False" CanUserAddRows="True" 
-                  BorderBrush="Gray" BorderThickness="0 0 0 2" CanUserDeleteRows="True"
+                  AutoGenerateColumns="False" CanUserAddRows="True" GridLinesVisibility="All"
+                  BorderBrush="Gray" BorderThickness="0 0 0 2" CanUserDeleteRows="True" CanUserResizeColumns="False"
                   RowEditEnding="DataGrid_RowEditEnding"
                   d:DataContext="{Binding Source={d:DesignInstance Type=vm:RojmelEntryViewModel, CreateList=False}}">
             <DataGrid.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                <Style x:Key="CenteredTextBlock" TargetType="TextBlock">
+                    <Setter Property="TextAlignment" Value="Center" />
+                </Style>
                 <DataTemplate x:Key="HeadingParam1">
                     <TextBlock Text="{Binding Path=SelectedItem.HeadingParam1, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
                 </DataTemplate>
@@ -47,26 +51,52 @@
                 <DataTemplate x:Key="HeadingResult">
                     <TextBlock Text="{Binding Path=SelectedItem.HeadingResult, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
                 </DataTemplate>
-            </DataGrid.Resources>
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="BorderBrush" Value="LightGray" />
-                    <Setter Property="BorderThickness" Value="1 1 0 0" />
+                <DataTemplate x:Key="ColumnSeperator">
+                    <Rectangle IsHitTestVisible="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="DarkSlateGray" />
+                </DataTemplate>
+                <Style x:Key="SeperatorCellStyle" TargetType="{x:Type DataGridCell}">
+                    <Setter Property="BorderBrush" Value="DarkSlateGray" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="Focusable" Value="False" />
                 </Style>
-            </DataGrid.CellStyle>
+                <Style x:Key="DefaultCellStyle" TargetType="{x:Type DataGridCell}">
+                    <Setter Property="Foreground" Value="DarkSlateGray" />
+                    <Setter Property="Background" Value="Red" />
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Padding" Value="0" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{x:Null}" />
+                            <Setter Property="BorderBrush" Value="{x:Null}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style x:Key="LightCellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource DefaultCellStyle}">
+                    <Setter Property="FontWeight" Value="Light" />
+                </Style>
+                <Style x:Key="ResultCellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource DefaultCellStyle}">
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                    <Setter Property="Focusable" Value="False" />
+                </Style>
+                <Style x:Key="AggregateCellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource ResultCellStyle}">
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                    <Setter Property="Foreground" Value="Black" />
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="T-ID" IsReadOnly="True" Binding="{Binding Path=Id}" Width="Auto" />
-                <DataGridTemplateColumn Header="Date" Width="Auto">
+                <DataGridTextColumn ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource DefaultCellStyle}" Header="T-ID" IsReadOnly="True" Binding="{Binding Path=Id}" Width="Auto" />
+                <DataGridTemplateColumn CellStyle="{StaticResource DefaultCellStyle}" Header="Date" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <DatePicker SelectedDate="{Binding Path=Date, UpdateSourceTrigger=LostFocus}" />
+                            <DatePicker SelectedDate="{Binding Path=Date, UpdateSourceTrigger=LostFocus}" SelectedDateFormat="Short" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-
+                
                 <DataGridComboBoxColumn Header="Account" SelectedItemBinding="{Binding Path=Account, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.Accounts}}" Width="2*" />
+                
                 <DataGridComboBoxColumn Header="Type" SelectedItemBinding="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=DataContext.RojmelEntryTypes, Source={x:Static services:DataContextService.Instance}}" Width="2*" />
-
+                
                 <DataGridTemplateColumn Header="Item" Width="2*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -84,24 +114,31 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
+                
+                <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam1}" Binding="{Binding Path=LParam1, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam2}" Binding="{Binding Path=LParam2, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingResult}" Binding="{Binding Path=LResult, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam1}" Binding="{Binding Path=RParam1, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam2}" Binding="{Binding Path=RParam2, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
-                <DataGridTextColumn HeaderTemplate="{StaticResource HeadingResult}" Binding="{Binding Path=RResult, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn CellStyle="{StaticResource LightCellStyle}" HeaderTemplate="{StaticResource HeadingParam1}" Binding="{Binding Path=LParam1, StringFormat={}{0:#.##}, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn CellStyle="{StaticResource LightCellStyle}" HeaderTemplate="{StaticResource HeadingParam2}" Binding="{Binding Path=LParam2, StringFormat={}{0:#.##}, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource ResultCellStyle}" HeaderTemplate="{StaticResource HeadingResult}" Binding="{Binding Path=LResult, StringFormat={}{0:#.##}, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
 
-                <DataGridTextColumn Header="Due" Binding="{Binding Path=AggregateFineInMoney, TargetNullValue=..., UpdateSourceTrigger=PropertyChanged}" Width="1.5*" IsReadOnly="True" />
-                <DataGridTextColumn Header="Fine" Binding="{Binding Path=AggregateFineInGold, TargetNullValue=..., UpdateSourceTrigger=PropertyChanged}" Width="1.5*" IsReadOnly="True" />
-                <DataGridTextColumn Header="In Stock" Binding="{Binding Path=AggregateInStock, TargetNullValue=..., UpdateSourceTrigger=PropertyChanged}" Width="1.5*" IsReadOnly="True" />
+                <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+
+                <DataGridTextColumn CellStyle="{StaticResource LightCellStyle}" HeaderTemplate="{StaticResource HeadingParam1}" Binding="{Binding Path=RParam1, StringFormat={}{0:#.##}, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn CellStyle="{StaticResource LightCellStyle}" HeaderTemplate="{StaticResource HeadingParam2}" Binding="{Binding Path=RParam2, StringFormat={}{0:#.##}, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
+                <DataGridTextColumn ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource ResultCellStyle}" HeaderTemplate="{StaticResource HeadingResult}" Binding="{Binding Path=RResult, StringFormat={}{0:#.##}, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
+                
+                <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+
+                <DataGridTextColumn ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource AggregateCellStyle}" Header="Due" Binding="{Binding Path=AggregateFineInMoney, TargetNullValue=..., StringFormat={}{0:#.##}, UpdateSourceTrigger=PropertyChanged}" Width="1.3*" IsReadOnly="True" />
+                <DataGridTextColumn ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource AggregateCellStyle}" Header="Fine" Binding="{Binding Path=AggregateFineInGold, TargetNullValue=..., StringFormat={}{0:#.##}, UpdateSourceTrigger=PropertyChanged}" Width="1.3*" IsReadOnly="True" />
+                <DataGridTextColumn ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource AggregateCellStyle}" Header="In Stock" Binding="{Binding Path=AggregateInStock, TargetNullValue=..., StringFormat={}{0:#.##}, UpdateSourceTrigger=PropertyChanged}" Width="1.3*" IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
 
         <Grid Grid.Column="1" DataContext="{Binding Path=SelectedEntry}" Width="300">
             <Border Background="WhiteSmoke" BorderBrush="DarkSlateBlue" BorderThickness="1 0 0 0" Padding="10">
                 <Grid Visibility="{Binding ElementName=ViewModel, Path=SelectedEntry, Converter={StaticResource NullToVisibilityConverter}}">
-                    <StackPanel Background="WhiteSmoke">
+                    <StackPanel>
                         <StackPanel.Resources>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Foreground" Value="DarkSlateGray" />
