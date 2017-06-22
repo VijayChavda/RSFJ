@@ -110,6 +110,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NewAccountFlyoutViewModel.cs" />
     <Compile Include="ViewModels\NewStockItemFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\Utilities\RojmelEntryViewModelTypeToVisibilityConverter.cs" />
     <Compile Include="ViewModels\RojmelPageViewModel.cs" />
     <Compile Include="ViewModels\Utilities\NullToVisibilityConverter.cs" />
     <Compile Include="ViewModels\Utilities\RelayCommand.cs" />
