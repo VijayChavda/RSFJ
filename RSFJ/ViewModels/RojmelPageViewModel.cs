@@ -55,6 +55,42 @@ namespace RSFJ.ViewModels
                     stockItem.InStock = inStock;
                 }
             });
+
+            await Task.Run(() =>
+            {
+                var groupedEntries = Entries.Where(x => x.Account != null).GroupBy(x => x.Account);
+
+                foreach (var sameAccountEntries in groupedEntries)
+                {
+                    var account = sameAccountEntries.Key;
+                    double fineInMoney = 0;
+                    double fineInGold = 0;
+
+                    foreach (var entry in sameAccountEntries)
+                    {
+                        var model = entry.Model;
+                        if (entry.Type == RojmelEntryType.Exchange)
+                        {
+                            fineInGold += model.IsLeftSide ? -model.Result : model.Result;
+                        }
+                        else if (entry.Type == RojmelEntryType.UplakClear)
+                        {
+                            fineInGold += model.IsLeftSide ? -model.Result : model.Result;
+                            fineInMoney += model.IsLeftSide ? model.Param1 : -model.Param1;
+                        }
+                        else
+                        {
+                            fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
+                        }
+
+                        entry.AggregateFineInMoney = fineInMoney;
+                        entry.AggregateFineInGold = fineInGold;
+                    }
+
+                    account.FineInGold = fineInGold;
+                    account.FineInMoney = fineInMoney;
+                }
+            });
         }
     }
 
@@ -115,8 +151,16 @@ namespace RSFJ.ViewModels
         public DateTime InstallmentPaymentDue { get => _InstallmentPaymentDue; set => SetProperty(ref _InstallmentPaymentDue, value); }
         #endregion
 
+        #region Aggregate parameters
         private double? _AggregateInStock;
         public double? AggregateInStock { get => _AggregateInStock; set => SetProperty(ref _AggregateInStock, value); }
+
+        private double? _AggregateFineInMoney;
+        public double? AggregateFineInMoney { get => _AggregateFineInMoney; set => SetProperty(ref _AggregateFineInMoney, value); }
+
+        private double? _AggregateFineInGold;
+        public double? AggregateFineInGold { get => _AggregateFineInGold; set => SetProperty(ref _AggregateFineInGold, value); }
+        #endregion
 
         #region Column Headings
         private string _HeadingParam1;

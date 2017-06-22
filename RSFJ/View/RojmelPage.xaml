@@ -92,7 +92,9 @@
                 <DataGridTextColumn HeaderTemplate="{StaticResource HeadingParam2}" Binding="{Binding Path=RParam2, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
                 <DataGridTextColumn HeaderTemplate="{StaticResource HeadingResult}" Binding="{Binding Path=RResult, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
 
-                <DataGridTextColumn Header="In Stock" Binding="{Binding Path=AggregateInStock, TargetNullValue=..., UpdateSourceTrigger=PropertyChanged}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn Header="Due" Binding="{Binding Path=AggregateFineInMoney, TargetNullValue=..., UpdateSourceTrigger=PropertyChanged}" Width="1.5*" IsReadOnly="True" />
+                <DataGridTextColumn Header="Fine" Binding="{Binding Path=AggregateFineInGold, TargetNullValue=..., UpdateSourceTrigger=PropertyChanged}" Width="1.5*" IsReadOnly="True" />
+                <DataGridTextColumn Header="In Stock" Binding="{Binding Path=AggregateInStock, TargetNullValue=..., UpdateSourceTrigger=PropertyChanged}" Width="1.5*" IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
 
