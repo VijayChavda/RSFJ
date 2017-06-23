@@ -61,7 +61,6 @@
                 </Style>
                 <Style x:Key="DefaultCellStyle" TargetType="{x:Type DataGridCell}">
                     <Setter Property="Foreground" Value="DarkSlateGray" />
-                    <Setter Property="Background" Value="Red" />
                     <Setter Property="Margin" Value="0" />
                     <Setter Property="Padding" Value="0" />
                     <Style.Triggers>
