@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="RSFJ.View.SettingsFlyoutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RSFJ.View"
+             xmlns:vm="clr-namespace:RSFJ.ViewModels"
+             xmlns:v="clr-namespace:RSFJ.View"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.DataContext>
+        <vm:SettingsFlyoutViewModel x:Name="ViewModel" />
+    </UserControl.DataContext>
+
+    <Grid>
+        <Border BorderThickness="1 0 0 0" BorderBrush="SteelBlue">
+            <StackPanel Background="WhiteSmoke">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="DarkSlateGray" />
+                        <Setter Property="FontSize" Value="12pt" />
+                    </Style>
+                </StackPanel.Resources>
+                <StackPanel Margin="10 0">
+                    <StackPanel Margin="0 10">
+                        <Controls:ToggleSwitch IsChecked="{Binding Path=ShowAggregateColumns, UpdateSourceTrigger=PropertyChanged}" Content="Show aggregate columns" Foreground="DarkSlateGray" />
+                    </StackPanel>
+                    <StackPanel Margin="0 10">
+                        <TextBlock Text="Actions: " />
+                        <TextBlock Margin="10 5">
+                        <Hyperlink Command="{Binding Path=NewStockItemCommand}">Add new Stock item</Hyperlink>
+                        </TextBlock>
+                        <TextBlock Margin="10 5">
+                        <Hyperlink Command="{Binding Path=NewAccountCommand}">Add new Account</Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Controls:Flyout Theme="Light" Background="CornflowerBlue" Foreground="White" Header="New Stock item" Position="Right" IsOpen="{Binding Path=IsShowingNewStockItemFlyout, UpdateSourceTrigger=PropertyChanged}" Width="300">
+            <v:NewStockItemFlyoutView />
+        </Controls:Flyout>
+        <Controls:Flyout Theme="Light" Background="CornflowerBlue" Foreground="White" Header="New Account" Position="Right" IsOpen="{Binding Path=IsShowingNewAccountFlyout, UpdateSourceTrigger=PropertyChanged}" Width="300">
+            <v:NewAccountFlyoutView />
+        </Controls:Flyout>
+    </Grid>
+</UserControl>

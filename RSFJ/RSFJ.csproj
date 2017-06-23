@@ -110,6 +110,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NewAccountFlyoutViewModel.cs" />
     <Compile Include="ViewModels\NewStockItemFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\SettingsFlyoutViewModel.cs" />
     <Compile Include="ViewModels\Utilities\RojmelEntryViewModelTypeToVisibilityConverter.cs" />
     <Compile Include="ViewModels\RojmelPageViewModel.cs" />
     <Compile Include="ViewModels\Utilities\NullToVisibilityConverter.cs" />
@@ -124,6 +125,9 @@
     </Compile>
     <Compile Include="View\RojmelPage.xaml.cs">
       <DependentUpon>RojmelPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsFlyoutView.xaml.cs">
+      <DependentUpon>SettingsFlyoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Verification.xaml.cs">
       <DependentUpon>Verification.xaml</DependentUpon>
@@ -149,6 +153,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\RojmelPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsFlyoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

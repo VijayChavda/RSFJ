@@ -39,18 +39,9 @@
 
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout x:Name="newStockItemFlyout" Theme="Light" Background="SteelBlue" Foreground="White" Header="New Stock item" Position="Right" IsOpen="{Binding Path=FlyoutOpen, UpdateSourceTrigger=PropertyChanged}" Width="300">
-                <v:NewStockItemFlyoutView />
-            </Controls:Flyout>
-            <Controls:Flyout x:Name="newAccountFlyout" Theme="Light" Background="SteelBlue" Foreground="White" Header="New Account" Position="Right" IsOpen="{Binding Path=FlyoutOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300">
-                <v:NewAccountFlyoutView />
-            </Controls:Flyout>
-            <Controls:Flyout x:Name="settingsFlyout" Theme="Accent" Header="Settings" Position="Right" Width="300">
+            <Controls:Flyout x:Name="settingsFlyout" Theme="Light" Background="SteelBlue" Foreground="White" Header="Settings" Position="Right" Width="300">
                 <Grid Background="WhiteSmoke">
-                    <StackPanel>
-                        <ToggleButton Content="Add Stock item" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" IsChecked="{Binding ElementName=newStockItemFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="DarkSlateBlue" />
-                        <ToggleButton Content="Add Account" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" IsChecked="{Binding ElementName=newAccountFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="DarkSlateBlue" />
-                    </StackPanel>
+                    <v:SettingsFlyoutView />
                 </Grid>
             </Controls:Flyout>
             <Controls:Flyout x:Name="aboutFlyout" Theme="Accent" Header="About" Position="Right" Width="300">
