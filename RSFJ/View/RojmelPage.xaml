@@ -19,6 +19,7 @@
     </Page.DataContext>
 
     <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <utilities:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
         <utilities:RojmelEntryTypeToVisibilityConverter x:Key="RojmelEntryTypeToVisibilityConverter" />
         <utilities:RojmelEntryViewModelTypeToVisibilityConverter x:Key="RojmelEntryViewModelTypeToVisibilityConverter" />
@@ -30,7 +31,9 @@
             <ColumnDefinition Width="300" />
         </Grid.ColumnDefinitions>
 
-        <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Top"
+        <FrameworkElement x:Name="dummyElement" Visibility="Collapsed"/>
+
+        <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Top" x:Name="EntriesDataGrid"
                   ItemsSource="{Binding Path=Entries}"
                   SelectedItem="{Binding Path=SelectedEntry, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryViewModelTypeToVisibilityConverter}}"
                   AutoGenerateColumns="False" CanUserAddRows="True" GridLinesVisibility="All"
@@ -91,11 +94,11 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridComboBoxColumn Header="Account" SelectedItemBinding="{Binding Path=Account, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.Accounts}}" Width="2*" />
-                
+
                 <DataGridComboBoxColumn Header="Type" SelectedItemBinding="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=DataContext.RojmelEntryTypes, Source={x:Static services:DataContextService.Instance}}" Width="2*" />
-                
+
                 <DataGridTemplateColumn Header="Item" Width="2*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -113,7 +116,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
                 <DataGridTextColumn CellStyle="{StaticResource LightCellStyle}" HeaderTemplate="{StaticResource HeadingParam1}" Binding="{Binding Path=LParam1, StringFormat={}{0:#.##}, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
@@ -125,12 +128,12 @@
                 <DataGridTextColumn CellStyle="{StaticResource LightCellStyle}" HeaderTemplate="{StaticResource HeadingParam1}" Binding="{Binding Path=RParam1, StringFormat={}{0:#.##}, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
                 <DataGridTextColumn CellStyle="{StaticResource LightCellStyle}" HeaderTemplate="{StaticResource HeadingParam2}" Binding="{Binding Path=RParam2, StringFormat={}{0:#.##}, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" />
                 <DataGridTextColumn ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource ResultCellStyle}" HeaderTemplate="{StaticResource HeadingResult}" Binding="{Binding Path=RResult, StringFormat={}{0:#.##}, TargetNullValue={x:Static system:String.Empty}, UpdateSourceTrigger=LostFocus}" Width="*" IsReadOnly="True" />
-                
+
                 <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
-                <DataGridTextColumn ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource AggregateCellStyle}" Header="Due" Binding="{Binding Path=AggregateFineInMoney, TargetNullValue=..., StringFormat={}{0:#.##}, UpdateSourceTrigger=PropertyChanged}" Width="1.3*" IsReadOnly="True" />
-                <DataGridTextColumn ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource AggregateCellStyle}" Header="Fine" Binding="{Binding Path=AggregateFineInGold, TargetNullValue=..., StringFormat={}{0:#.##}, UpdateSourceTrigger=PropertyChanged}" Width="1.3*" IsReadOnly="True" />
-                <DataGridTextColumn ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource AggregateCellStyle}" Header="In Stock" Binding="{Binding Path=AggregateInStock, TargetNullValue=..., StringFormat={}{0:#.##}, UpdateSourceTrigger=PropertyChanged}" Width="1.3*" IsReadOnly="True" />
+                <DataGridTextColumn Visibility="{Binding Source={x:Reference dummyElement}, Path=DataContext.ShowAggregateColumns, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource AggregateCellStyle}" Header="Due" Binding="{Binding Path=AggregateFineInMoney, TargetNullValue=..., StringFormat={}{0:#.##}, UpdateSourceTrigger=PropertyChanged}" Width="1.3*" IsReadOnly="True" />
+                <DataGridTextColumn Visibility="{Binding Source={x:Reference dummyElement}, Path=DataContext.ShowAggregateColumns, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource AggregateCellStyle}" Header="Fine" Binding="{Binding Path=AggregateFineInGold, TargetNullValue=..., StringFormat={}{0:#.##}, UpdateSourceTrigger=PropertyChanged}" Width="1.3*" IsReadOnly="True" />
+                <DataGridTextColumn Visibility="{Binding Source={x:Reference dummyElement}, Path=DataContext.ShowAggregateColumns, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource AggregateCellStyle}" Header="In Stock" Binding="{Binding Path=AggregateInStock, TargetNullValue=..., StringFormat={}{0:#.##}, UpdateSourceTrigger=PropertyChanged}" Width="1.3*" IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
 

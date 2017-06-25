@@ -16,11 +16,22 @@ namespace RSFJ.ViewModels
         private RojmelEntryViewModel _SelectedEntry;
         public RojmelEntryViewModel SelectedEntry { get => _SelectedEntry; set => SetProperty(ref _SelectedEntry, value); }
 
+        private bool _ShowAggregateColumns;
+        public bool ShowAggregateColumns { get => _ShowAggregateColumns; set => SetProperty(ref _ShowAggregateColumns, value); }
+
         public RojmelPageViewModel()
         {
             Entries = new ObservableCollection<RojmelEntryViewModel>();
 
             LoadData();
+
+            RegistoryService.Instance.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(RegistoryService.ShowAggregateColumns))
+                {
+                    ShowAggregateColumns = RegistoryService.Instance.ShowAggregateColumns;
+                }
+            };
         }
 
         private void LoadData()
@@ -31,6 +42,8 @@ namespace RSFJ.ViewModels
             }
 
             SelectedEntry = Entries.FirstOrDefault();
+
+            ShowAggregateColumns = RegistoryService.Instance.ShowAggregateColumns;
         }
 
         public async Task CalculateAggregateAsync()

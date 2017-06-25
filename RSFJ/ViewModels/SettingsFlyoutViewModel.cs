@@ -32,5 +32,18 @@ namespace RSFJ.ViewModels
         {
             get => _newAccount ?? (_newAccount = new RelayCommand(param => IsShowingNewAccountFlyout = true, param => true));
         }
+
+        public SettingsFlyoutViewModel()
+        {
+            ShowAggregateColumns = Services.RegistoryService.Instance.ShowAggregateColumns;
+        }
+
+        protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
+        {
+            if (PropertyName == nameof(ShowAggregateColumns))
+            {
+                Services.RegistoryService.Instance.ShowAggregateColumns = ShowAggregateColumns;
+            }
+        }
     }
 }
