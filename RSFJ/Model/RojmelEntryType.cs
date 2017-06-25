@@ -26,6 +26,11 @@
         public const string UplakClear = "Uplak Clear";
 
         /// <summary>
+        /// Exchanging and instantly paying money.
+        /// </summary>
+        public const string InstantCash = "InstantCash";
+
+        /// <summary>
         /// Exchange of fine gold with a bullion.
         /// </summary>
         public const string Bullion = "Bullion";

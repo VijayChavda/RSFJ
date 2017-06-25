@@ -186,7 +186,7 @@ namespace RSFJ.ViewModels
         public string HeadingResult { get => _HeadingResult; set => SetProperty(ref _HeadingResult, value); }
         #endregion
 
-        public List<StockItem> StockItems { get; set; }
+        public static ObservableCollection<StockItem> StockItems { get; set; }
         public static ObservableCollection<Account> Accounts { get; set; }
 
         static RojmelEntryViewModel()
@@ -200,6 +200,18 @@ namespace RSFJ.ViewModels
             foreach (var account in DataContextService.Instance.DataContext.Accounts)
             {
                 Accounts.Add(account);
+            }
+            #endregion
+
+            #region StockItems
+            StockItems = new ObservableCollection<StockItem>();
+
+            DataContextService.Instance.DataContext.StockItemAdded += (s, stockItem) => StockItems.Add(stockItem);
+            DataContextService.Instance.DataContext.StockItemRemoved += (s, stockItem) => StockItems.Remove(stockItem);
+
+            foreach (var stockItem in DataContextService.Instance.DataContext.StockItems)
+            {
+                StockItems.Add(stockItem);
             }
             #endregion
         }
@@ -254,16 +266,25 @@ namespace RSFJ.ViewModels
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
         {
-            if (PropertyName == nameof(Account))
+            if (Account == null || StockItem == null)
             {
-                Type = Account != null ? Account.PreferredTransactionType : RojmelEntryType.Exchange;
+                return;
             }
 
-            if (PropertyName == nameof(Type))
+            if (PropertyName == nameof(Account))
             {
-                var dataContext = DataContextService.Instance.DataContext;
-                StockItems = dataContext.StockItems.Where(x => x.AppliesToType.Contains(Type)).ToList();
-                StockItem = StockItems.FirstOrDefault();
+                Type = Account.PreferredTransactionType;
+
+                LParam1 = RParam1 = null;
+            }
+
+            if (PropertyName == nameof(StockItem))
+            {
+                Type = StockItem == DataContext.None ? RojmelEntryType.UplakClear :
+                    StockItem == DataContext.Cash ? RojmelEntryType.Uplak :
+                    Account.PreferredTransactionType;
+
+                LParam1 = RParam1 = null;
             }
 
             SetHeadings();
@@ -295,65 +316,78 @@ namespace RSFJ.ViewModels
                 }
             }
 
-            if (LParam1 == null && RParam1 == null)
+            if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2) ||
+                PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2))
             {
-                return;
-            }
+                if (LParam1 == null && RParam1 == null)
+                {
+                    return;
+                }
 
-            bool isLeft = RParam1 == null;
-            double? param1 = isLeft ? LParam1 : RParam1;
-            double? param2 = isLeft ? LParam2 : RParam2;
-            double? result = isLeft ? LResult : RResult;
+                bool isLeft = RParam1 == null;
+                double? param1 = isLeft ? LParam1 : RParam1;
+                double? param2 = isLeft ? LParam2 : RParam2;
+                double? result = isLeft ? LResult : RResult;
 
-            if (Type == RojmelEntryType.Exchange)
-            {
-                result = param1 * param2 / 100;
-            }
-            else if (Type == RojmelEntryType.Customer)
-            {
-                result = param1 * param2;   //TODO
-            }
-            else if (Type == RojmelEntryType.Bullion)
-            {
-                result = StockItem == DataContext.Cash ? param1 : param1 * param2;
-            }
-            else if (Type == RojmelEntryType.Uplak)
-            {
-                result = param1;
-            }
-            else if (Type == RojmelEntryType.UplakClear)
-            {
-                result = param1 / param2;
-            }
+                //Uplak or InstantCash?
+                if (param2 != null)
+                {
+                    if (StockItem == DataContext.Cash)
+                    {
+                        Type = (isLeft ? LParam2 : RParam2) == null ? RojmelEntryType.Uplak : RojmelEntryType.InstantCash;
+                    }
+                }
 
-            if (isLeft)
-            {
-                LParam1 = param1;
-                LParam2 = param2;
-                LResult = result;
-            }
-            else
-            {
-                RParam1 = param1;
-                RParam2 = param2;
-                RResult = result;
-            }
-            #endregion
+                if (Type == RojmelEntryType.Exchange)
+                {
+                    result = param1 * param2 / 100;
+                }
+                else if (Type == RojmelEntryType.Customer)
+                {
+                    result = param1 * param2;   //TODO
+                }
+                else if (Type == RojmelEntryType.Bullion)
+                {
+                    result = StockItem == DataContext.Cash ? param1 : param1 * param2;
+                }
+                else if (Type == RojmelEntryType.Uplak)
+                {
+                    result = param1;
+                }
+                else if (Type == RojmelEntryType.UplakClear)
+                {
+                    result = param1 / param2;
+                }
 
-            #region Model update
-            Model.Id = Id;
-            Model.Date = Date;
-            Model.Account = Account;
-            Model.Type = Type;
-            Model.StockItem = StockItem;
-            Model.IsLeftSide = isLeft;
-            Model.Param1 = isLeft ? LParam1 ?? 0 : RParam1 ?? 0;
-            Model.Param2 = isLeft ? LParam2 ?? 0 : RParam2 ?? 0;
-            Model.Result = isLeft ? LResult ?? 0 : RResult ?? 0;
+                if (isLeft)
+                {
+                    LParam1 = param1;
+                    LParam2 = param2;
+                    LResult = result;
+                }
+                else
+                {
+                    RParam1 = param1;
+                    RParam2 = param2;
+                    RResult = result;
+                }
 
-            //Following is temporary.
-            Model.Param3 = Type == RojmelEntryType.Customer ? Labour : (object)InstallmentPaymentDue;
-            Model.Param4 = Type == RojmelEntryType.Customer ? Loss : (object)PaymentDue;
+                #region Model update
+                Model.Id = Id;
+                Model.Date = Date;
+                Model.Account = Account;
+                Model.Type = Type;
+                Model.StockItem = StockItem;
+                Model.IsLeftSide = isLeft;
+                Model.Param1 = isLeft ? LParam1 ?? 0 : RParam1 ?? 0;
+                Model.Param2 = isLeft ? LParam2 ?? 0 : RParam2 ?? 0;
+                Model.Result = isLeft ? LResult ?? 0 : RResult ?? 0;
+
+                //Following is temporary.
+                Model.Param3 = Type == RojmelEntryType.Customer ? Labour : (object)InstallmentPaymentDue;
+                Model.Param4 = Type == RojmelEntryType.Customer ? Loss : (object)PaymentDue;
+                #endregion
+            }
             #endregion
         }
 

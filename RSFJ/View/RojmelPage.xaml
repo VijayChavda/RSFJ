@@ -97,25 +97,7 @@
 
                 <DataGridComboBoxColumn Header="Account" SelectedItemBinding="{Binding Path=Account, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.Accounts}}" Width="2*" />
 
-                <DataGridComboBoxColumn Header="Type" SelectedItemBinding="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=DataContext.RojmelEntryTypes, Source={x:Static services:DataContextService.Instance}}" Width="2*" />
-
-                <DataGridTemplateColumn Header="Item" Width="2*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding StockItem}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ComboBox x:Name="V_stockItem" SelectedItem="{Binding StockItem, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding StockItems}" />
-                            <DataTemplate.Triggers>
-                                <Trigger SourceName="V_stockItem" Property="IsVisible" Value="True">
-                                    <Setter TargetName="V_stockItem" Property="FocusManager.FocusedElement" Value="{Binding ElementName=V_stockItem}" />
-                                </Trigger>
-                            </DataTemplate.Triggers>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                <DataGridComboBoxColumn Header="Item" SelectedItemBinding="{Binding Path=StockItem, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={x:Static vm:RojmelEntryViewModel.StockItems}}" Width="2*" />
 
                 <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
@@ -162,6 +144,10 @@
                             </Style>
                         </StackPanel.Resources>
 
+                        <StackPanel Margin="10" Visibility="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}" Orientation="Horizontal">
+                            <TextBlock Text="Transaction type: " />
+                            <TextBlock Text="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" FontWeight="SemiBold" />
+                        </StackPanel>
                         <StackPanel Margin="10" Visibility="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryTypeToVisibilityConverter}, ConverterParameter=Exchange}">
                             <StackPanel Margin="0 10">
                                 <TextBlock Text="Partial payment due on: " />
