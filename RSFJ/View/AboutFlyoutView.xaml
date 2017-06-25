@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="RSFJ.View.AboutFlyoutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RSFJ.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Border Background="WhiteSmoke" BorderThickness="1 0 0 0" BorderBrush="DarkSlateGray">
+        <Border.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="DarkSlateGray" />
+            </Style>
+        </Border.Resources>
+        <StackPanel Margin="10 0">
+            <StackPanel Margin="0 0 0 30">
+                <TextBlock Text="RSFJ" FontSize="26pt" FontWeight="SemiBold" />
+                <TextBlock Text="Rojmel Software for Jewellers" FontSize="14pt" />
+                <TextBlock Text="Version 0.1" FontSize="10pt" FontWeight="Light" />
+                <TextBlock Text="©Augment Software, 2017" FontSize="10pt" FontWeight="Light" />
+            </StackPanel>
+            <StackPanel Margin="0 0 0 30">
+                <TextBlock Text="Augment Software" FontSize="14pt" FontWeight="SemiBold" />
+                <TextBlock FontSize="10pt">
+                        <Hyperlink NavigateUri="https://augmentsoftware.000webhostapp.com/privacy/" RequestNavigate="OpenWebsite">Privacy</Hyperlink>
+                </TextBlock>
+                <TextBlock FontSize="10pt">
+                        <Hyperlink NavigateUri="https://augmentsoftware.000webhostapp.com/" RequestNavigate="OpenWebsite">Visit website</Hyperlink>
+                </TextBlock>
+                <TextBlock FontSize="10pt">
+                        <Hyperlink NavigateUri="mailto:vijaychavda@gmail.com" RequestNavigate="OpenWebsite">Send an email</Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -59,11 +59,5 @@ namespace RSFJ
                 ViewModel.RestoreCommand.Execute(null);
             }
         }
-
-        private void OpenWebsite(object sender, RequestNavigateEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
-            e.Handled = true;
-        }
     }
 }

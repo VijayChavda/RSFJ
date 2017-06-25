@@ -40,38 +40,10 @@
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
             <Controls:Flyout x:Name="settingsFlyout" Theme="Light" Background="SteelBlue" Foreground="White" Header="Settings" Position="Right" Width="300">
-                <Grid Background="WhiteSmoke">
-                    <v:SettingsFlyoutView />
-                </Grid>
+                <v:SettingsFlyoutView />
             </Controls:Flyout>
             <Controls:Flyout x:Name="aboutFlyout" Theme="Accent" Header="About" Position="Right" Width="300">
-                <Border Background="WhiteSmoke" BorderThickness="2 0 0 0" BorderBrush="DarkSlateGray">
-                    <Border.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="DarkSlateGray" />
-                        </Style>
-                    </Border.Resources>
-                    <StackPanel Margin="10 0">
-                        <StackPanel Margin="0 0 0 30">
-                            <TextBlock Text="RSFJ" FontSize="26pt" FontWeight="SemiBold" />
-                            <TextBlock Text="Rojmel Software for Jewellers" FontSize="14pt" />
-                            <TextBlock Text="Version 0.1" FontSize="10pt" FontWeight="Light" />
-                            <TextBlock Text="©Augment Software, 2017" FontSize="10pt" FontWeight="Light" />
-                        </StackPanel>
-                        <StackPanel Margin="0 0 0 30">
-                            <TextBlock Text="Augment Software" FontSize="14pt" FontWeight="SemiBold" />
-                            <TextBlock FontSize="10pt">
-                        <Hyperlink NavigateUri="https://augmentsoftware.000webhostapp.com/privacy/" RequestNavigate="OpenWebsite">Privacy</Hyperlink>
-                            </TextBlock>
-                            <TextBlock FontSize="10pt">
-                        <Hyperlink NavigateUri="https://augmentsoftware.000webhostapp.com/" RequestNavigate="OpenWebsite">Visit website</Hyperlink>
-                            </TextBlock>
-                            <TextBlock FontSize="10pt">
-                        <Hyperlink NavigateUri="mailto:vijaychavda@gmail.com" RequestNavigate="OpenWebsite">Send an email</Hyperlink>
-                            </TextBlock>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
+                <v:AboutFlyoutView />
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
