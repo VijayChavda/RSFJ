@@ -91,7 +91,7 @@ namespace RSFJ.View
 
             V_Commands.Visibility = Visibility.Collapsed;
             IsVerifying = true;
-            var response = await AppVerificationService.Instance.RequestActivationAsync(V_KeyBox.Text);
+            var response = await AppVerificationService.Instance.RequestActivationAsync(V_KeyBox.Text.Replace("-", ""));
             IsVerifying = false;
             V_Commands.Visibility = Visibility.Visible;
 
@@ -205,6 +205,60 @@ namespace RSFJ.View
             B_Activate.Visibility = Visibility.Visible;
             B_Navigate.Visibility = Visibility.Collapsed;
             V_Activation.Visibility = Visibility.Visible;
+        }
+
+        private void TextBlock_KeyDown(object sender, KeyEventArgs e)
+        {
+            var tb = sender as TextBox;
+
+            if (tb.Text.Length == 23)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            if ((e.Key >= Key.A) && (e.Key <= Key.Z) || ((e.Key >= Key.D0) && (e.Key <= Key.D9)))
+            {
+                char ch = new KeyConverter().ConvertToString(e.Key)[0];
+
+                tb.Text += char.ToUpper(ch);
+
+                if (tb.Text.Length == 5 || tb.Text.Length == 11 || tb.Text.Length == 17)
+                {
+                    tb.Text += "-";
+                }
+
+                tb.SelectionStart = tb.Text.Length;
+                tb.SelectionLength = 0;
+            }
+
+            e.Handled = true;
+        }
+
+        private void V_KeyBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            var tb = sender as TextBox;
+
+            if (e.Key == Key.Back)
+            {
+                if (tb.Text.Length == 5 || tb.Text.Length == 11 || tb.Text.Length == 17)
+                {
+                    tb.Text = tb.Text.Substring(0, tb.Text.Length - 1);
+
+                    tb.SelectionStart = tb.Text.Length;
+                    tb.SelectionLength = 0;
+                }
+            }
+        }
+
+        private void V_KeyBox_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Copy || e.Command == ApplicationCommands.Cut ||
+                e.Command == ApplicationCommands.Paste || e.Command == ApplicationCommands.Undo ||
+                e.Command == ApplicationCommands.Redo)
+            {
+                e.Handled = true;
+            }
         }
     }
 }

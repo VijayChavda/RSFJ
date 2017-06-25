@@ -41,8 +41,8 @@
                                        TextWrapping="Wrap" FontWeight="SemiBold" />
                                     <StackPanel x:Name="V_Activation" Visibility="Collapsed">
                                         <Grid>
-                                            <TextBox x:Name="V_KeyBox" Margin="5" />
-                                            <TextBlock IsHitTestVisible="False" Text="XXXX-XXXX-XXXX-XXXX-XXXX" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
+                                            <TextBox x:Name="V_KeyBox" Margin="5" FontFamily="Times New Roman" KeyDown="TextBlock_KeyDown" KeyUp="V_KeyBox_KeyUp" AllowDrop="False" CommandManager.PreviewExecuted="V_KeyBox_PreviewExecuted" ContextMenu="{x:Null}" />
+                                            <TextBlock IsHitTestVisible="False" Text="XXXXX-XXXXX-XXXXX-XXXXX" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
                                                 <TextBlock.Style>
                                                     <Style TargetType="{x:Type TextBlock}">
                                                         <Setter Property="Visibility" Value="Collapsed"/>
