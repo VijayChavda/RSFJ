@@ -28,25 +28,8 @@ namespace RSFJ.Model
                 RojmelEntryType.InstantCash,
             };
 
-            Cash = new StockItem()
-            {
-                Name = "Cash",
-                AppliesToType = new List<string>()
-                {
-                    RojmelEntryType.Exchange,
-                    RojmelEntryType.Bullion,
-                    RojmelEntryType.Uplak,
-                }
-            };
-
-            None = new StockItem()
-            {
-                Name = "None",
-                AppliesToType = new List<string>()
-                {
-                    RojmelEntryType.Exchange
-                }
-            };
+            Cash = new StockItem() { Name = "Cash" };
+            None = new StockItem() { Name = "None" };
         }
 
         public DataContext()

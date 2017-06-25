@@ -46,17 +46,6 @@
                 </StackPanel>
 
                 <StackPanel Margin="0 10">
-                    <TextBlock Text="Applies to:" FontSize="12pt" Margin="0 5" />
-                    <ItemsControl ItemsSource="{Binding Path=AppliesToType}" BorderThickness="0" FocusVisualStyle="{x:Null}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <CheckBox Content="{Binding Path=Type}" IsChecked="{Binding Path=Applies, UpdateSourceTrigger=PropertyChanged}" Padding="5" Foreground="DarkSlateGray" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-
-                <StackPanel Margin="0 10">
                     <Button Command="{Binding Path=AddCommand}" Content="Add" HorizontalAlignment="Right" Margin="0 15" Width="100" FocusVisualStyle="{x:Null}" BorderBrush="SteelBlue" Foreground="SteelBlue" Cursor="Hand" />
                     <TextBlock Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}" FontSize="10pt" Foreground="Navy" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" />
                 </StackPanel>

@@ -21,8 +21,6 @@ namespace RSFJ.ViewModels
         private string _Message;
         public string Message { get => _Message; set => SetProperty(ref _Message, value); }
 
-        public List<AppliesToTypeViewModel> AppliesToType { get; set; }
-
         RelayCommand _addCommand;
         public ICommand AddCommand
         {
@@ -32,11 +30,6 @@ namespace RSFJ.ViewModels
         public NewStockItemFlyoutViewModel()
         {
             var types = DataContext.RojmelEntryTypes.ToList();
-            AppliesToType = new List<AppliesToTypeViewModel>() {
-                new AppliesToTypeViewModel(){ Type = types[0] },
-                new AppliesToTypeViewModel(){ Type = types[1] },
-                new AppliesToTypeViewModel(){ Type = types[2] }
-            };
         }
 
         private void Add()
@@ -65,7 +58,6 @@ namespace RSFJ.ViewModels
                 InStock = (double)InStock,
                 Rate_Purity = (double)Rate_Purity,
                 EquivalentGold = (double)(InStock * Rate_Purity),
-                AppliesToType = AppliesToType.Where(x => x.Applies).AsQueryable().Select(x => x.Type).ToList()
             };
 
             var added = Services.DataContextService.Instance.DataContext.StockItems.Add(newItem);
@@ -81,7 +73,6 @@ namespace RSFJ.ViewModels
                     InStock = null;
                     Rate_Purity = null;
                     Message = null;
-                    AppliesToType.ForEach(x => x.Applies = false);
                 };
                 timer.Start();
             }

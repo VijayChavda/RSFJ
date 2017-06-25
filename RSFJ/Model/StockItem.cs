@@ -27,13 +27,6 @@ namespace RSFJ.Model
         /// </summary>
         public double EquivalentGold { get; set; }
 
-        public List<string> AppliesToType { get; set; }
-
-        public StockItem()
-        {
-            AppliesToType = new List<string>();
-        }
-
         public override string ToString()
         {
             return Name;
