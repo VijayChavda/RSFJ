@@ -27,11 +27,6 @@ namespace RSFJ.ViewModels
             get => _addCommand ?? (_addCommand = new RelayCommand(param => Add(), param => true));
         }
 
-        public NewStockItemFlyoutViewModel()
-        {
-            var types = DataContext.RojmelEntryTypes.ToList();
-        }
-
         private void Add()
         {
             if (string.IsNullOrWhiteSpace(Name))

@@ -5,10 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RSFJ.View"
              xmlns:vm="clr-namespace:RSFJ.ViewModels"
-             xmlns:services="clr-namespace:RSFJ.Services"
+             xmlns:m="clr-namespace:RSFJ.Model"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="AccountTypes" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="m:AccountType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    
     <UserControl.DataContext>
         <vm:NewAccountFlyoutViewModel x:Name="NewAccountFlyoutViewModel" />
     </UserControl.DataContext>
@@ -51,7 +60,7 @@
                     
                     <StackPanel Margin="0 10">
                         <TextBlock Text="Preferred transaction type: " />
-                        <ComboBox SelectedItem="{Binding Path=PreferredTransactionType}" ItemsSource="{Binding Path=PreferredTransactionTypes}" Foreground="Gray" FocusVisualStyle="{x:Null}" FontSize="13pt">
+                        <ComboBox SelectedItem="{Binding Path=Type}" ItemsSource="{Binding Source={StaticResource AccountTypes}}" Foreground="Gray" FocusVisualStyle="{x:Null}" FontSize="13pt">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" Foreground="Gray" />

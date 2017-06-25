@@ -23,10 +23,9 @@ namespace RSFJ.Model
         public Account Account { get; set; }
 
         /// <summary>
-        /// The type of this Rojmel entry. Should be one of the constants defined in 
-        /// 'RSFJ.Model.RojmelEntryType'.
+        /// The type of this Rojmel entry.
         /// </summary>
-        public string Type { get; set; }
+        public RojmelEntryType Type { get; set; }
 
         /// <summary>
         /// Stock item's name.
@@ -41,22 +40,37 @@ namespace RSFJ.Model
         /// <summary>
         /// Parameter 2 of rojmel entry.
         /// </summary>
-        public double Param2 { get; set; }
-
-        /// <summary>
-        /// Parameter 3 of rojmel entry.
-        /// </summary>
-        public object Param3 { get; set; }
-
-        /// <summary>
-        /// Parameter 4 of rojmel entry.
-        /// </summary>
-        public object Param4 { get; set; }
+        public double? Param2 { get; set; }
 
         /// <summary>
         /// Result of rojmel entry.
         /// </summary>
         public double Result { get; set; }
+
+        /// <summary>
+        /// Special parameter when Account type is Customer.
+        /// </summary>
+        public double? Labour { get; set; }
+
+        /// <summary>
+        /// Special parameter when Account type is Customer.
+        /// </summary>
+        public double? Waste { get; set; }
+
+        /// <summary>
+        /// Due date for partial payment of this entry.
+        /// </summary>
+        public DateTime PartialPaymentDueDate { get; set; }
+
+        /// <summary>
+        /// Due date for total payment of this entry.
+        /// </summary>
+        public DateTime TotalPaymentDueDate { get; set; }
+
+        /// <summary>
+        /// Determines if Labour is interpreted as an Amount or otherwise as Rate.
+        /// </summary>
+        public bool IsLabourAsAmount { get; set; }
 
         /// <summary>
         /// Direction of rojmel entry. Represents credit/debit.

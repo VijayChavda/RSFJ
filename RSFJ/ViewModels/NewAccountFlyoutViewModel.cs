@@ -21,10 +21,8 @@ namespace RSFJ.ViewModels
         private string _Note;
         public string Note { get => _Note; set => SetProperty(ref _Note, value); }
 
-        private string _PreferredTransactionType;
-        public string PreferredTransactionType { get => _PreferredTransactionType; set => SetProperty(ref _PreferredTransactionType, value); }
-
-        public List<string> PreferredTransactionTypes { get; set; }
+        private AccountType _Type;
+        public AccountType Type { get => _Type; set => SetProperty(ref _Type, value); }
 
         private string _Message;
         public string Message { get => _Message; set => SetProperty(ref _Message, value); }
@@ -37,11 +35,8 @@ namespace RSFJ.ViewModels
 
         public NewAccountFlyoutViewModel()
         {
-            var types = DataContext.RojmelEntryTypes.ToList();
-            PreferredTransactionTypes = new List<string>() { types[0], types[1], types[2] };
-
             Group = "Others";
-            PreferredTransactionType = PreferredTransactionTypes[0];
+            Type = AccountType.Regular;
         }
 
         private void Add()
@@ -74,7 +69,7 @@ namespace RSFJ.ViewModels
                 FineInMoney = 0,
                 Group = Group,
                 Note = Note,
-                PreferredTransactionType = PreferredTransactionType
+                Type = Type
             };
 
             var added = Services.DataContextService.Instance.DataContext.Accounts.Add(newItem);
@@ -90,7 +85,7 @@ namespace RSFJ.ViewModels
                     Phone = null;
                     Group = null;
                     Note = null;
-                    PreferredTransactionType = null;
+                    Type = AccountType.Regular;
                     Message = null;
                 };
                 timer.Start();
@@ -106,11 +101,6 @@ namespace RSFJ.ViewModels
             if (PropertyName == nameof(Group))
             {
                 Group = string.IsNullOrWhiteSpace(Group) ? "Others" : Group;
-            }
-
-            if (PropertyName == nameof(PreferredTransactionType))
-            {
-                PreferredTransactionType = string.IsNullOrWhiteSpace(PreferredTransactionType) ? PreferredTransactionTypes[0] : PreferredTransactionType;
             }
 
             if (PropertyName != nameof(Message) && string.IsNullOrWhiteSpace(Name) == false && Phone != null && Phone.Count(c => !char.IsDigit(c)) == 0 && Phone.Length <= 10)

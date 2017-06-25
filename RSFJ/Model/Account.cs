@@ -36,9 +36,9 @@
         public string Note { get; set; }
 
         /// <summary>
-        /// They usual type of transaction done with this account.
+        /// Type of this account.
         /// </summary>
-        public string PreferredTransactionType { get; set; }
+        public AccountType Type { get; set; }
 
         public override string ToString()
         {

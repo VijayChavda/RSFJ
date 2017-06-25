@@ -62,7 +62,7 @@ namespace RSFJ.ViewModels
                         var model = entry.Model;
                         inStock += model.IsLeftSide ? model.Param1 : -model.Param1;
 
-                        entry.AggregateInStock = inStock;
+                        entry.StockItemBalance = inStock;
                     }
 
                     stockItem.InStock = inStock;
@@ -82,26 +82,27 @@ namespace RSFJ.ViewModels
                     foreach (var entry in sameAccountEntries)
                     {
                         var model = entry.Model;
-                        if (entry.Type == RojmelEntryType.Exchange)
+
+                        switch (entry.Type)
                         {
-                            fineInGold += model.IsLeftSide ? -model.Result : model.Result;
-                        }
-                        else if (entry.Type == RojmelEntryType.UplakClear)
-                        {
-                            fineInGold += model.IsLeftSide ? -model.Result : model.Result;
-                            fineInMoney += model.IsLeftSide ? model.Param1 : -model.Param1;
-                        }
-                        else if (entry.Type == RojmelEntryType.InstantCash)
-                        {
-                            fineInGold += model.IsLeftSide ? -model.Result : model.Result;
-                        }
-                        else
-                        {
-                            fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
+                            case RojmelEntryType.ItemExchangeFine:
+                                fineInGold += model.IsLeftSide ? -model.Result : model.Result;
+                                break;
+                            case RojmelEntryType.ItemExchangeCash:
+                                fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
+                                fineInGold += model.IsLeftSide ? model.Param1 : -model.Param1;
+                                break;
+                            case RojmelEntryType.SimpleCashExchange:
+                                fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
+                                break;
+                            case RojmelEntryType.UseCash:
+                                fineInGold += model.IsLeftSide ? -model.Result : model.Result;
+                                fineInMoney += model.IsLeftSide ? model.Param1 : -model.Param1;
+                                break;
                         }
 
-                        entry.AggregateFineInMoney = fineInMoney;
-                        entry.AggregateFineInGold = fineInGold;
+                        entry.AccountMoneyBalance = fineInMoney;
+                        entry.AccountFineBalance = fineInGold;
                     }
 
                     account.FineInGold = fineInGold;
@@ -127,11 +128,17 @@ namespace RSFJ.ViewModels
         private Account _Account;
         public Account Account { get => _Account; set => SetProperty(ref _Account, value); }
 
-        private string _Type;
-        public string Type { get => _Type; set => SetProperty(ref _Type, value); }
-
         private StockItem _StockItem;
         public StockItem StockItem { get => _StockItem; set => SetProperty(ref _StockItem, value); }
+
+        private RojmelEntryType _Type;
+        public RojmelEntryType Type { get => _Type; set => SetProperty(ref _Type, value); }
+
+        private DateTime _TotalPaymentDueDate;
+        public DateTime TotalPaymentDueDate { get => _TotalPaymentDueDate; set => SetProperty(ref _TotalPaymentDueDate, value); }
+
+        private DateTime _PartialPaymentDueDate;
+        public DateTime PartialPaymentDueDate { get => _PartialPaymentDueDate; set => SetProperty(ref _PartialPaymentDueDate, value); }
         #endregion
 
         #region General parameters
@@ -158,36 +165,67 @@ namespace RSFJ.ViewModels
         private double? _Labour;
         public double? Labour { get => _Labour; set => SetProperty(ref _Labour, value); }
 
-        private double? _Loss;
-        public double? Loss { get => _Loss; set => SetProperty(ref _Loss, value); }
+        private double? _Waste;
+        public double? Waste { get => _Waste; set => SetProperty(ref _Waste, value); }
 
-        private DateTime _PaymentDue;
-        public DateTime PaymentDue { get => _PaymentDue; set => SetProperty(ref _PaymentDue, value); }
-
-        private DateTime _InstallmentPaymentDue;
-        public DateTime InstallmentPaymentDue { get => _InstallmentPaymentDue; set => SetProperty(ref _InstallmentPaymentDue, value); }
+        private bool _IsLabourAsAmount;
+        public bool IsLabourAsAmount { get => _IsLabourAsAmount; set => SetProperty(ref _IsLabourAsAmount, value); }
         #endregion
 
         #region Aggregate parameters
-        private double? _AggregateInStock;
-        public double? AggregateInStock { get => _AggregateInStock; set => SetProperty(ref _AggregateInStock, value); }
+        private double? _StockItemBalance;
+        public double? StockItemBalance { get => _StockItemBalance; set => SetProperty(ref _StockItemBalance, value); }
 
-        private double? _AggregateFineInMoney;
-        public double? AggregateFineInMoney { get => _AggregateFineInMoney; set => SetProperty(ref _AggregateFineInMoney, value); }
+        private double? _AccountMoneyBalance;
+        public double? AccountMoneyBalance { get => _AccountMoneyBalance; set => SetProperty(ref _AccountMoneyBalance, value); }
 
-        private double? _AggregateFineInGold;
-        public double? AggregateFineInGold { get => _AggregateFineInGold; set => SetProperty(ref _AggregateFineInGold, value); }
+        private double? _AccountFineBalance;
+        public double? AccountFineBalance { get => _AccountFineBalance; set => SetProperty(ref _AccountFineBalance, value); }
         #endregion
 
-        #region Column Headings
-        private string _HeadingParam1;
-        public string HeadingParam1 { get => _HeadingParam1; set => SetProperty(ref _HeadingParam1, value); }
+        #region Getters & Setters for one-side entries
+        public bool IsLeftSide
+        {
+            get
+            {
+                return (LParam1 != null && RParam1 == null);
+            }
+        }
 
-        private string _HeadingParam2;
-        public string HeadingParam2 { get => _HeadingParam2; set => SetProperty(ref _HeadingParam2, value); }
+        public double? Param1
+        {
+            get => IsLeftSide ? LParam1 : RParam1;
+            set
+            {
+                if (IsLeftSide) LParam1 = value;
+                else RParam1 = value;
+            }
+        }
 
-        private string _HeadingResult;
-        public string HeadingResult { get => _HeadingResult; set => SetProperty(ref _HeadingResult, value); }
+        public double? Param2
+        {
+            get => IsLeftSide ? LParam2 : RParam2;
+            set
+            {
+                if (IsLeftSide) LParam2 = value;
+                else RParam2 = value;
+            }
+        }
+
+        public double? Result
+        {
+            get => IsLeftSide ? LResult : RResult;
+            set
+            {
+                if (IsLeftSide) LResult = value;
+                else RResult = value;
+            }
+        }
+        #endregion
+
+        #region UI parameters
+        private bool _IsParam2Disabled;
+        public bool IsParam2Disabled { get => _IsParam2Disabled; set => SetProperty(ref _IsParam2Disabled, value); }
         #endregion
 
         public static ObservableCollection<StockItem> StockItems { get; set; }
@@ -228,10 +266,8 @@ namespace RSFJ.ViewModels
             Id = InstanceCount;
             Date = DateTime.Now.Date;
             Account = DataContextService.Instance.DataContext.Accounts.FirstOrDefault();
-            PaymentDue = DateTime.Now.Add(TimeSpan.FromDays(60));
-            InstallmentPaymentDue = DateTime.Now.Add(TimeSpan.FromDays(10));
-
-            SetHeadings();
+            TotalPaymentDueDate = DateTime.Now.Add(TimeSpan.FromDays(60));    //TODO: Take the last value
+            PartialPaymentDueDate = DateTime.Now.Add(TimeSpan.FromDays(10));    //TODO: Take the last value
 
             DataContextService.Instance.DataContext.RojmelEntries.Add(Model);
         }
@@ -253,48 +289,18 @@ namespace RSFJ.ViewModels
             _RParam1 = Model.IsLeftSide ? (double?)null : Model.Param1;
             _RParam2 = Model.IsLeftSide ? (double?)null : Model.Param2;
             _RResult = Model.IsLeftSide ? (double?)null : Model.Result;
-
-            if (Type == RojmelEntryType.Customer)
-            {
-                _Labour = Model.Param3 == null ? (double?)null : Convert.ToDouble(Model.Param3);
-                _Loss = Model.Param4 == null ? (double?)null : Convert.ToDouble(Model.Param4);
-            }
-
-            _PaymentDue = Type == RojmelEntryType.Exchange ? Convert.ToDateTime(Model.Param3) : DateTime.MaxValue;
-            _InstallmentPaymentDue = Type == RojmelEntryType.Exchange ? Convert.ToDateTime(Model.Param4) : DateTime.MaxValue;
-
-            SetHeadings();
+            _Labour = Model.Labour;
+            _Waste = Model.Waste;
+            _PartialPaymentDueDate = Model.PartialPaymentDueDate;
+            _TotalPaymentDueDate = Model.TotalPaymentDueDate;
+            _IsLabourAsAmount = Model.IsLabourAsAmount;
 
             DataContextService.Instance.DataContext.RojmelEntries.Add(Model);
         }
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
         {
-            if (Account == null || StockItem == null)
-            {
-                return;
-            }
-
-            if (PropertyName == nameof(Account))
-            {
-                Type = Account.PreferredTransactionType;
-
-                StockItem = null;
-                LParam1 = RParam1 = null;
-            }
-
-            if (PropertyName == nameof(StockItem))
-            {
-                Type = StockItem == DataContext.None ? RojmelEntryType.UplakClear :
-                    StockItem == DataContext.Cash ? RojmelEntryType.Uplak :
-                    Account.PreferredTransactionType;
-
-                LParam1 = RParam1 = null;
-            }
-
-            SetHeadings();
-
-            #region Calculations
+            #region Validate simultaneous two side inputs.
             if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2))
             {
                 if (LParam1 == null)
@@ -321,65 +327,80 @@ namespace RSFJ.ViewModels
                 }
             }
 
-            if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2) ||
-                PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2))
+            //Do not proceed if Account and StockItem are unset.
+            if (Account == null || StockItem == null)
             {
-                if (LParam1 == null && RParam1 == null)
-                {
-                    return;
-                }
+                LParam1 = RParam1 = null;
+                return;
+            }
+            #endregion
 
-                bool isLeft = RParam1 == null;
-                double? param1 = isLeft ? LParam1 : RParam1;
-                double? param2 = isLeft ? LParam2 : RParam2;
-                double? result = isLeft ? LResult : RResult;
+            #region Determine the Type of entry
+            if (PropertyName == nameof(LParam2) || PropertyName == nameof(RParam2))
+            {
+                if (StockItem == StockItem.Cash)
+                {
+                    Type = Param2 == null ? RojmelEntryType.SimpleCashExchange :
+                        (Account.Type == AccountType.Regular ? RojmelEntryType.UseCash : RojmelEntryType.Invalid);
+                }
+            }
 
-                //Uplak or InstantCash?
-                if (param2 != null)
+            if (PropertyName == nameof(Account) || PropertyName == nameof(StockItem))
+            {
+                if (StockItem == StockItem.Cash)
                 {
-                    if (StockItem == DataContext.Cash)
-                    {
-                        Type = (isLeft ? LParam2 : RParam2) == null ? RojmelEntryType.Uplak : RojmelEntryType.InstantCash;
-                    }
+                    Type = RojmelEntryType.SimpleCashExchange;    //May change due to change in Param2.
                 }
-
-                if (Type == RojmelEntryType.Exchange)
+                else if (StockItem == StockItem.None)
                 {
-                    result = param1 * param2 / 100;
-                }
-                else if (Type == RojmelEntryType.Customer)
-                {
-                    result = param1 * param2;   //TODO
-                }
-                else if (Type == RojmelEntryType.Bullion)
-                {
-                    result = StockItem == DataContext.Cash ? param1 : param1 * param2;
-                }
-                else if (Type == RojmelEntryType.Uplak)
-                {
-                    result = param1;
-                }
-                else if (Type == RojmelEntryType.UplakClear)
-                {
-                    result = param1 / param2;
-                }
-                else if (Type == RojmelEntryType.InstantCash)
-                {
-                    result = param1 / param2;
-                }
-
-                if (isLeft)
-                {
-                    LParam1 = param1;
-                    LParam2 = param2;
-                    LResult = result;
+                    Type = Account.Type == AccountType.Regular ? RojmelEntryType.UseCash : RojmelEntryType.Invalid;
                 }
                 else
                 {
-                    RParam1 = param1;
-                    RParam2 = param2;
-                    RResult = result;
+                    Type = Account.Type == AccountType.Regular ? RojmelEntryType.ItemExchangeFine : RojmelEntryType.ItemExchangeCash;
                 }
+
+                //Reset dependent properties
+                if (PropertyName == nameof(Account))
+                {
+                    StockItem = null;
+                }
+
+                if (PropertyName == nameof(StockItem))
+                {
+                    LParam1 = RParam1 = null;
+                }
+            }
+            #endregion
+
+            #region Calculations
+            if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2) ||
+                PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2))
+            {
+                if (Param1 == null)
+                    return;
+
+                switch (Type)
+                {
+                    case RojmelEntryType.ItemExchangeFine:
+                        Result = Param1 * Param2 / 100;
+                        break;
+                    case RojmelEntryType.ItemExchangeCash:
+                        Result = Param1 * Param2;
+                        break;
+                    case RojmelEntryType.SimpleCashExchange:
+                        Result = Param1;
+                        break;
+                    case RojmelEntryType.UseCash:
+                        Result = Param1 / Param2;
+                        break;
+                    case RojmelEntryType.Invalid:
+                        Result = null;
+                        break;
+                }
+
+                if (Result == null)
+                    return;
 
                 #region Model update
                 Model.Id = Id;
@@ -387,64 +408,18 @@ namespace RSFJ.ViewModels
                 Model.Account = Account;
                 Model.Type = Type;
                 Model.StockItem = StockItem;
-                Model.IsLeftSide = isLeft;
-                Model.Param1 = isLeft ? LParam1 ?? 0 : RParam1 ?? 0;
-                Model.Param2 = isLeft ? LParam2 ?? 0 : RParam2 ?? 0;
-                Model.Result = isLeft ? LResult ?? 0 : RResult ?? 0;
-
-                //Following is temporary.
-                Model.Param3 = Type == RojmelEntryType.Customer ? Labour : (object)InstallmentPaymentDue;
-                Model.Param4 = Type == RojmelEntryType.Customer ? Loss : (object)PaymentDue;
+                Model.Param1 = Param1 ?? throw new Exception();
+                Model.Param2 = Param2;
+                Model.Result = Result ?? throw new Exception();
+                Model.Labour = Labour;
+                Model.Waste = Waste;
+                Model.PartialPaymentDueDate = PartialPaymentDueDate;
+                Model.TotalPaymentDueDate = TotalPaymentDueDate;
+                Model.IsLabourAsAmount = IsLabourAsAmount;
+                Model.IsLeftSide = IsLeftSide;
                 #endregion
             }
             #endregion
-        }
-
-        private void SetHeadings()
-        {
-            const string h_rupees = "Rs.";
-            const string h_gram = "Grams";
-            const string h_percent = "%";
-            const string h_rate = "Rate";
-            const string h_fine = "Fine";
-            const string h_na = "-";
-
-            if (Type == RojmelEntryType.Exchange)
-            {
-                HeadingParam1 = h_gram;
-                HeadingParam2 = h_percent;
-                HeadingResult = h_fine;
-            }
-            else if (Type == RojmelEntryType.Customer)
-            {
-                HeadingParam1 = h_gram;
-                HeadingParam2 = h_rate;
-                HeadingResult = h_rupees;
-            }
-            else if (Type == RojmelEntryType.Bullion)
-            {
-                HeadingParam1 = StockItem == DataContext.Cash ? h_rupees : h_gram;
-                HeadingParam2 = StockItem == DataContext.Cash ? h_na : h_rate;
-                HeadingResult = h_rupees;
-            }
-            else if (Type == RojmelEntryType.Uplak)
-            {
-                HeadingParam1 = h_rupees;
-                HeadingParam2 = h_na;
-                HeadingResult = h_rupees;
-            }
-            else if (Type == RojmelEntryType.UplakClear)
-            {
-                HeadingParam1 = h_rupees;
-                HeadingParam2 = h_rate;
-                HeadingResult = h_fine;
-            }
-            else if (Type == RojmelEntryType.InstantCash)
-            {
-                HeadingParam1 = h_rupees;
-                HeadingParam2 = h_rate;
-                HeadingResult = h_fine;
-            }
         }
     }
 }

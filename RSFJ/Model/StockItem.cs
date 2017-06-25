@@ -7,6 +7,9 @@ namespace RSFJ.Model
     /// </summary>
     public class StockItem
     {
+        public static readonly StockItem Cash;
+        public static readonly StockItem None;
+
         /// <summary>
         /// Name of the stock item.
         /// </summary>
@@ -26,6 +29,12 @@ namespace RSFJ.Model
         /// Normalised value of this stock item as gold.
         /// </summary>
         public double EquivalentGold { get; set; }
+
+        static StockItem()
+        {
+            Cash = new StockItem() { Name = "Cash" };
+            None = new StockItem() { Name = "None" };
+        }
 
         public override string ToString()
         {

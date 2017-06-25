@@ -100,6 +100,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\Account.cs" />
+    <Compile Include="Model\AccountType.cs" />
     <Compile Include="Model\DataContext.cs" />
     <Compile Include="Model\RojmelEntry.cs" />
     <Compile Include="Model\StockItem.cs" />

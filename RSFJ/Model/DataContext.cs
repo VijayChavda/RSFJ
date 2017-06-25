@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace RSFJ.Model
@@ -10,32 +9,10 @@ namespace RSFJ.Model
         public HashSet<StockItem> StockItems { get; set; }
         public HashSet<Account> Accounts { get; set; }
 
-        public static HashSet<string> RojmelEntryTypes { get; set; }
-
-        public static readonly StockItem Cash;
-        public static readonly StockItem None;
-
-        static DataContext()
-        {
-            RojmelEntryTypes = new HashSet<string>()
-            {
-                RojmelEntryType.Exchange,
-                RojmelEntryType.Customer,
-                RojmelEntryType.Bullion,
-                RojmelEntryType.Initital,
-                RojmelEntryType.Uplak,
-                RojmelEntryType.UplakClear,
-                RojmelEntryType.InstantCash,
-            };
-
-            Cash = new StockItem() { Name = "Cash" };
-            None = new StockItem() { Name = "None" };
-        }
-
         public DataContext()
         {
             RojmelEntries = new HashSet<RojmelEntry>();
-            StockItems = new HashSet<StockItem>() { Cash, None };
+            StockItems = new HashSet<StockItem>() { StockItem.Cash, StockItem.None };
             Accounts = new HashSet<Account>();
         }
 
