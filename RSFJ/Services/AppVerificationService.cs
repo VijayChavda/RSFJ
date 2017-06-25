@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Management;
 using System.Net;
 using System.Security.Cryptography;
@@ -104,9 +105,15 @@ namespace RSFJ.Services
         /// <returns></returns>
         private string Hash(string secret)
         {
-            var sha1 = new SHA1CryptoServiceProvider();
-            var sha1data = sha1.ComputeHash(Encoding.ASCII.GetBytes(secret));
-            return Encoding.ASCII.GetString(sha1data);
+            if (String.IsNullOrEmpty(secret))
+                return String.Empty;
+
+            using (var sha = new SHA256Managed())
+            {
+                byte[] textData = Encoding.UTF8.GetBytes(secret);
+                byte[] hash = sha.ComputeHash(textData);
+                return BitConverter.ToString(hash).Replace("-", String.Empty);
+            }
         }
 
         /// <summary>
