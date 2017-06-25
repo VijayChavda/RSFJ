@@ -91,6 +91,10 @@ namespace RSFJ.ViewModels
                             fineInGold += model.IsLeftSide ? -model.Result : model.Result;
                             fineInMoney += model.IsLeftSide ? model.Param1 : -model.Param1;
                         }
+                        else if (entry.Type == RojmelEntryType.InstantCash)
+                        {
+                            fineInGold += model.IsLeftSide ? -model.Result : model.Result;
+                        }
                         else
                         {
                             fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
@@ -356,6 +360,10 @@ namespace RSFJ.ViewModels
                     result = param1;
                 }
                 else if (Type == RojmelEntryType.UplakClear)
+                {
+                    result = param1 / param2;
+                }
+                else if (Type == RojmelEntryType.InstantCash)
                 {
                     result = param1 / param2;
                 }
