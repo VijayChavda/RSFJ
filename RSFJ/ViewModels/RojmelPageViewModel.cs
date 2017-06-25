@@ -439,6 +439,12 @@ namespace RSFJ.ViewModels
                 HeadingParam2 = h_rate;
                 HeadingResult = h_fine;
             }
+            else if (Type == RojmelEntryType.InstantCash)
+            {
+                HeadingParam1 = h_rupees;
+                HeadingParam2 = h_rate;
+                HeadingResult = h_fine;
+            }
         }
     }
 }
