@@ -27,7 +27,7 @@
                     <StackPanel Margin="10">
                         <TextBlock Text="RSFJ" FontSize="26pt" FontWeight="SemiBold" />
                         <TextBlock Text="Rojmel Software for Jewellers" FontSize="14pt" />
-                        <TextBlock Text="Version 0.1" FontSize="10pt" FontWeight="Light" />
+                        <TextBlock Text="Version 0.2" FontSize="10pt" FontWeight="Light" />
                         <TextBlock Text="©Augment Software, 2017" FontSize="10pt" FontWeight="Light" />
                     </StackPanel>
                     <Border Background="LightSlateGray">
