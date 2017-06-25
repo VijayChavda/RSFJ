@@ -275,6 +275,7 @@ namespace RSFJ.ViewModels
             {
                 Type = Account.PreferredTransactionType;
 
+                StockItem = null;
                 LParam1 = RParam1 = null;
             }
 
