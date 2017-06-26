@@ -115,6 +115,7 @@
     <Compile Include="ViewModels\NewAccountFlyoutViewModel.cs" />
     <Compile Include="ViewModels\NewStockItemFlyoutViewModel.cs" />
     <Compile Include="ViewModels\SettingsFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\Utilities\RojmelEntryTypeToHeadingConverter.cs" />
     <Compile Include="ViewModels\Utilities\RojmelEntryViewModelTypeToVisibilityConverter.cs" />
     <Compile Include="ViewModels\RojmelPageViewModel.cs" />
     <Compile Include="ViewModels\Utilities\NullToVisibilityConverter.cs" />

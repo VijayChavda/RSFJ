@@ -23,6 +23,7 @@
         <utilities:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
         <utilities:RojmelEntryTypeToVisibilityConverter x:Key="RojmelEntryTypeToVisibilityConverter" />
         <utilities:RojmelEntryViewModelTypeToVisibilityConverter x:Key="RojmelEntryViewModelTypeToVisibilityConverter" />
+        <utilities:RojmelEntryTypeToHeadingConverter x:Key="RojmelEntryTypeToHeadingConverter" />
     </Page.Resources>
 
     <Grid Background="WhiteSmoke">
@@ -46,13 +47,13 @@
                     <Setter Property="TextAlignment" Value="Center" />
                 </Style>
                 <DataTemplate x:Key="HeadingParam1">
-                    <TextBlock Text="{Binding Path=SelectedItem.HeadingParam1, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                    <TextBlock Text="{Binding Path=SelectedItem.Type, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource RojmelEntryTypeToHeadingConverter}, ConverterParameter=0}" />
                 </DataTemplate>
                 <DataTemplate x:Key="HeadingParam2">
-                    <TextBlock Text="{Binding Path=SelectedItem.HeadingParam2, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                    <TextBlock Text="{Binding Path=SelectedItem.Type, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource RojmelEntryTypeToHeadingConverter}, ConverterParameter=1}" />
                 </DataTemplate>
                 <DataTemplate x:Key="HeadingResult">
-                    <TextBlock Text="{Binding Path=SelectedItem.HeadingResult, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                    <TextBlock Text="{Binding Path=SelectedItem.Type, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource RojmelEntryTypeToHeadingConverter}, ConverterParameter=2}" />
                 </DataTemplate>
                 <DataTemplate x:Key="ColumnSeperator">
                     <Rectangle IsHitTestVisible="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="DarkSlateGray" />
