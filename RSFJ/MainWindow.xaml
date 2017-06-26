@@ -12,10 +12,6 @@
         GlowBrush="SlateGray" TitleCharacterCasing="Normal" WindowStartupLocation="CenterScreen"
         MinHeight="768" MinWidth="1024" Height="768" Width="1024" TitlebarHeight="75" KeyDown="MetroWindow_KeyDown">
 
-    <Controls:MetroWindow.Resources>
-        <v:RojmelPage x:Key="RojmelPage" />
-    </Controls:MetroWindow.Resources>
-
     <Controls:MetroWindow.DataContext>
         <vm:MainViewModel x:Name="ViewModel" />
     </Controls:MetroWindow.DataContext>
@@ -31,6 +27,7 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="RojmelPage" Content="Rojmel" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
+            <Button Command="{Binding Path=NavigateCommand}" CommandParameter="AccountPage" Content="Accounts" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
 
             <ToggleButton Content="About" IsChecked="{Binding ElementName=aboutFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="DarkSlateBlue" VerticalAlignment="Center" />
             <ToggleButton Content="Settings" IsChecked="{Binding ElementName=settingsFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="DarkSlateBlue" VerticalAlignment="Center" />
