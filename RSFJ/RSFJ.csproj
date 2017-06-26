@@ -110,6 +110,7 @@
     <Compile Include="Services\ReportingService.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\RegistoryService.cs" />
+    <Compile Include="ViewModels\AccountPageViewModel.cs" />
     <Compile Include="ViewModels\AppliesToTypeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NewAccountFlyoutViewModel.cs" />
@@ -124,6 +125,9 @@
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="View\AboutFlyoutView.xaml.cs">
       <DependentUpon>AboutFlyoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AccountPage.xaml.cs">
+      <DependentUpon>AccountPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\NewAccountFlyoutView.xaml.cs">
       <DependentUpon>NewAccountFlyoutView.xaml</DependentUpon>
@@ -153,6 +157,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\AboutFlyoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AccountPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
