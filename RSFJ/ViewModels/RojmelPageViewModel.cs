@@ -403,11 +403,11 @@ namespace RSFJ.ViewModels
                     return;
 
             }
-            Model.Date = Date;
             #endregion
 
             #region Model update
             Model.Id = Id;
+            Model.Date = Date;
             Model.Account = Account;
             Model.Type = Type;
             Model.StockItem = StockItem;
