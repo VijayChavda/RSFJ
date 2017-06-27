@@ -380,6 +380,11 @@ namespace RSFJ.ViewModels
                 if (Param1 == null)
                     return;
 
+                //Round off the parameters first.
+                Param1 = Math.Round(Param1 ?? 0, 2);
+                Param2 = Math.Round(Param2 ?? 0, 2);
+                Result = Math.Round(Result ?? 0, 2);
+
                 switch (Type)
                 {
                     case RojmelEntryType.ItemExchangeFine:
