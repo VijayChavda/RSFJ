@@ -62,7 +62,7 @@ namespace RSFJ.ViewModels
 
         private void AnalyzeHistory(RojmelEntry[] lendingEntries, RojmelEntry[] paybackEntries)
         {
-            int jStart = 0;
+            int j = -1;
             double? paybackStillRemaining = null;
             for (int i = 0; i < lendingEntries.Length; i++)
             {
@@ -70,8 +70,10 @@ namespace RSFJ.ViewModels
                 var lendingEntry = new HistoryItemViewModel(lendingEntryModel);
                 double lendingRemaining = lendingEntryModel.Result;
 
-                for (int j = jStart; j < paybackEntries.Length; j++)
+                for (; j + 1 < paybackEntries.Length;)
                 {
+                    j++;
+
                     var paybackEntryModel = paybackEntries[j];
                     var paybackEntry = new HistoryItemViewModel(paybackEntryModel);
                     double paybackRemaining = paybackStillRemaining ?? paybackEntryModel.Result;
@@ -102,7 +104,6 @@ namespace RSFJ.ViewModels
                     {
                         paybackStillRemaining = paybackStillRemaining ?? paybackRemaining;    //If it is null, make it current payback value.
                         paybackStillRemaining -= lendingRemaining;
-                        jStart = j;
                         break;
                     }
                     else break;
