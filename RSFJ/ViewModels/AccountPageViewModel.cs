@@ -66,8 +66,20 @@ namespace RSFJ.ViewModels
                         var leftEntry = new HistoryItemViewModel(leftEntryModel);
                         double leftRemaining = leftStillRemaining ?? leftEntryModel.Result;
 
-                        leftEntry.PaymentAfter = j == 0 ? TimeSpan.FromDays(0) : leftEntry.Date - leftEntries[j - 1].Date;
-                        leftEntry.PaymentLate = leftEntry.Date > rightEntry.TotalPaymentDueDate ? leftEntry.Date - rightEntry.TotalPaymentDueDate : TimeSpan.FromDays(0);
+                        #region Calculate delay in partial and full payments
+                        var daysPassedSinceBought = (leftEntry.Date - rightEntry.Date).Days;
+                        if (j == 0)
+                        {
+                            leftEntry.PartialPaymentLate = (daysPassedSinceBought > rightEntry.PartialPaymentInterval ? daysPassedSinceBought - rightEntry.PartialPaymentInterval : (int?)null);
+                        }
+                        else
+                        {
+                            var daysPassedSinceLastPayback = (leftEntry.Date - leftEntries[j - 1].Date).Days;
+                            leftEntry.PartialPaymentLate = (daysPassedSinceLastPayback > rightEntry.PartialPaymentInterval ? daysPassedSinceLastPayback - rightEntry.PartialPaymentInterval : (int?)null);
+                        }
+                        leftEntry.FullPaymentLate = daysPassedSinceBought > rightEntry.TotalPaymentDueDays ? daysPassedSinceBought - rightEntry.TotalPaymentDueDays : (int?)null;
+                        #endregion
+
                         rightEntry.PaybackEntries.Add(leftEntry);
 
                         if (rightRemaining > leftRemaining)
