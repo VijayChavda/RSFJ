@@ -24,8 +24,8 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Background="DimGray">
-            <TreeView ItemsSource="{Binding Path=GroupedAccounts}" SelectedItemChanged="TreeView_SelectedItemChanged" Background="Gray" Margin="0 0 0 100">
+        <Grid Background="Gray">
+            <TreeView ItemsSource="{Binding Path=GroupedAccounts}" SelectedItemChanged="TreeView_SelectedItemChanged" Background="LightGray" Margin="0 0 0 100">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Accounts}">
                         <TextBlock Text="{Binding}" />
@@ -34,13 +34,12 @@
                 <TreeView.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="IsExpanded" Value="True"/>
-                        <Setter Property="Foreground" Value="White" />
                         <Setter Property="FontSize" Value="12pt" />
                         <Setter Property="Margin" Value="5 0" />
                         <Setter Property="Padding" Value="5 2" />
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" Value="Yellow" />
+                                <Setter Property="Foreground" Value="White" />
                                 <Setter Property="Cursor" Value="Hand" />
                             </Trigger>
                         </Style.Triggers>
@@ -50,7 +49,7 @@
             <StackPanel VerticalAlignment="Bottom" Margin="5 10" Visibility="{Binding Path=SelectedAccount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
                 <StackPanel.Resources>
                     <Style x:Key="KeyStyle" TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="Foreground" Value="LightGray" />
                         <Setter Property="FontSize" Value="14pt" />
                     </Style>
                     <Style x:Key="ValueStyle" TargetType="TextBlock">
@@ -59,8 +58,8 @@
                         <Setter Property="HorizontalAlignment" Value="Right" />
                     </Style>
                 </StackPanel.Resources>
-                <Border Padding="5" BorderBrush="LightSlateGray" BorderThickness="0 0 0 1">
-                    <TextBlock Text="{Binding Path=SelectedAccount.Name}" Style="{StaticResource KeyStyle}" />
+                <Border Padding="5" BorderBrush="LightGray" BorderThickness="0 0 0 1">
+                    <TextBlock Text="{Binding Path=SelectedAccount.Name}" Foreground="White" FontSize="18pt" />
                 </Border>
                 <Grid Margin="10 2">
                     <TextBlock Text="Fine due:" FontSize="12pt" Style="{StaticResource KeyStyle}" />
@@ -73,7 +72,7 @@
             </StackPanel>
         </Grid>
 
-        <Border Grid.Column="1" BorderBrush="SlateGray" BorderThickness="1 0">
+        <Border Grid.Column="1" BorderBrush="SlateGray" BorderThickness="1 0" Visibility="{Binding Path=SelectedAccount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
             <Grid Background="Red">
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -132,19 +131,19 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="Auto" Binding="{Binding Path=Id}" Header="Id" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
-                        <DataGridTextColumn Width="1.2*" Binding="{Binding Path=Date, StringFormat={}{0:dd/MM/yyyy}}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="1.2*" Binding="{Binding Path=Date, StringFormat={}{0:dd MMMM\, yyyy}}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTextColumn Width="1.5*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
-                        
+
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=PartialPaymentInterval, StringFormat=\{0\}  days}" Header="Interval" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=TotalPaymentDueDays, StringFormat=\{0\}  days}" Header="Payback in" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
-                        
+
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=LResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
                         <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
-                        
+
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=RResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
@@ -167,7 +166,7 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="Auto" Binding="{Binding Path=Id}" Header="Id" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
-                        <DataGridTextColumn Width="1.2*" Binding="{Binding Path=Date, StringFormat={}{0:dd/MM/yyyy}}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="1.2*" Binding="{Binding Path=Date, StringFormat={}{0:dd MMMM\, yyyy}}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTextColumn Width="1.5*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
