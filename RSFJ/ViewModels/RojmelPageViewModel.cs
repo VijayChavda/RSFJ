@@ -402,23 +402,24 @@ namespace RSFJ.ViewModels
                 if (Result == null)
                     return;
 
-                #region Model update
-                Model.Id = Id;
-                Model.Account = Account;
-                Model.Type = Type;
-                Model.StockItem = StockItem;
-                Model.Param1 = Param1 ?? throw new Exception();
-                Model.Param2 = Param2;
-                Model.Result = Result ?? throw new Exception();
-                Model.Labour = Labour;
-                Model.Waste = Waste;
-                Model.PartialPaymentDueDate = PartialPaymentDueDate;
-                Model.TotalPaymentDueDate = TotalPaymentDueDate;
-                Model.IsLabourAsAmount = IsLabourAsAmount;
-                Model.IsLeftSide = IsLeftSide;
-                #endregion
             }
             Model.Date = Date;
+            #endregion
+
+            #region Model update
+            Model.Id = Id;
+            Model.Account = Account;
+            Model.Type = Type;
+            Model.StockItem = StockItem;
+            Model.Param1 = Param1 ?? 0;
+            Model.Param2 = Param2;
+            Model.Result = Result ?? 0;
+            Model.Labour = Labour;
+            Model.Waste = Waste;
+            Model.PartialPaymentDueDate = PartialPaymentDueDate;
+            Model.TotalPaymentDueDate = TotalPaymentDueDate;
+            Model.IsLabourAsAmount = IsLabourAsAmount;
+            Model.IsLeftSide = IsLeftSide;
             #endregion
         }
     }
