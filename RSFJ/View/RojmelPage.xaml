@@ -24,6 +24,7 @@
         <utilities:RojmelEntryTypeToVisibilityConverter x:Key="RojmelEntryTypeToVisibilityConverter" />
         <utilities:RojmelEntryViewModelTypeToVisibilityConverter x:Key="RojmelEntryViewModelTypeToVisibilityConverter" />
         <utilities:RojmelEntryTypeToHeadingConverter x:Key="RojmelEntryTypeToHeadingConverter" />
+        <utilities:LendingEntryVisibilityConverter x:Key="LendingEntryVisibilityConverter" />
     </Page.Resources>
 
     <Grid Background="WhiteSmoke">
@@ -121,13 +122,14 @@
         </DataGrid>
 
         <Grid Grid.Column="1" DataContext="{Binding Path=SelectedEntry}" Width="300">
-            <Border Background="WhiteSmoke" BorderBrush="DarkSlateBlue" BorderThickness="1 0 0 0" Padding="10">
+            <Border Background="WhiteSmoke" BorderBrush="DarkSlateBlue" BorderThickness="1 0 0 0" Padding="0 10">
                 <Grid Visibility="{Binding ElementName=ViewModel, Path=SelectedEntry, Converter={StaticResource NullToVisibilityConverter}}">
                     <StackPanel>
                         <StackPanel.Resources>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Foreground" Value="DarkSlateGray" />
                                 <Setter Property="FontSize" Value="12pt" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
                             </Style>
                             <Style TargetType="TextBox">
                                 <Setter Property="Foreground" Value="Gray" />
@@ -145,31 +147,6 @@
                             </Style>
                         </StackPanel.Resources>
 
-                        <StackPanel Margin="10">
-                            <Grid Margin="0 10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Partial payment interval: " HorizontalAlignment="Left" />
-                                <TextBox Grid.Column="1" Text="{Binding Path=PartialPaymentInterval, UpdateSourceTrigger=PropertyChanged}" FontWeight="SemiBold" TextAlignment="Center" />
-                            </Grid>
-
-                            <StackPanel Margin="0 10">
-                                <TextBlock Text="Total payment due on: " />
-                                <DatePicker SelectedDate="{Binding Path=TotalPaymentDueDate, UpdateSourceTrigger=PropertyChanged}" />
-                            </StackPanel>
-                        </StackPanel>
-                        <StackPanel Margin="10" Visibility="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryTypeToVisibilityConverter}, ConverterParameter=Customer}">
-                            <StackPanel Margin="0 10">
-                                <TextBlock Text="Labour rate: " />
-                                <TextBox Text="{Binding Path=Labour, TargetNullValue={x:Static system:String.Empty}}" />
-                            </StackPanel>
-                            <StackPanel Margin="0 10">
-                                <TextBlock Text="Waste: " />
-                                <TextBox Text="{Binding Path=Loss, TargetNullValue={x:Static system:String.Empty}}" />
-                            </StackPanel>
-                        </StackPanel>
                         <StackPanel Margin="10" Visibility="{Binding Path=Account, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
                             <Border Padding="5" BorderBrush="LightSlateGray" BorderThickness="0 0 0 1">
                                 <TextBlock Text="{Binding Path=Account.Name}" FontSize="14pt" />
@@ -195,6 +172,37 @@
                                 <TextBlock Text="Equivalent gold:" FontSize="12pt" Foreground="SlateGray" />
                                 <TextBlock Text="{Binding Path=StockItem.EquivalentGold}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
+                        </StackPanel>
+                        
+                        <Separator Margin="0 20 0 0" Background="DimGray" />
+                        
+                        <StackPanel Margin="10" Visibility="{Binding UpdateSourceTrigger=PropertyChanged, Converter={StaticResource LendingEntryVisibilityConverter}}">
+                            <Grid Margin="0 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock Text="Payment Interval: " />
+                                <TextBox Grid.Column="1" Text="{Binding Path=PartialPaymentInterval, UpdateSourceTrigger=PropertyChanged}" FontWeight="SemiBold" TextAlignment="Center" />
+                                
+                                <TextBlock Grid.Row="1" Text="Payment before: " />
+                                <DatePicker Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Path=TotalPaymentDueDate, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Margin="10" Visibility="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryTypeToVisibilityConverter}, ConverterParameter=Customer}">
+                            <StackPanel Margin="0 10">
+                                <TextBlock Text="Labour rate: " />
+                                <TextBox Text="{Binding Path=Labour, TargetNullValue={x:Static system:String.Empty}}" />
+                            </StackPanel>
+                            <StackPanel Margin="0 10">
+                                <TextBlock Text="Waste: " />
+                                <TextBox Text="{Binding Path=Loss, TargetNullValue={x:Static system:String.Empty}}" />
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
