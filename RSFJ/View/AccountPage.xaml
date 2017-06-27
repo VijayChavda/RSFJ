@@ -2,12 +2,9 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:RSFJ.View"
-      xmlns:vm="clr-namespace:RSFJ.ViewModels"
-      xmlns:m="clr-namespace:RSFJ.Model"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:utilities="clr-namespace:RSFJ.ViewModels.Utilities"
-      xmlns:services="clr-namespace:RSFJ.Services"
+      xmlns:m="clr-namespace:RSFJ.Model"
       xmlns:system="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       d:DesignHeight="768" d:DesignWidth="1024"
@@ -27,8 +24,8 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border BorderBrush="SlateGray" BorderThickness="0 0 2 0">
-            <TreeView ItemsSource="{Binding Path=GroupedAccounts}" SelectedItemChanged="TreeView_SelectedItemChanged">
+        <Border>
+            <TreeView ItemsSource="{Binding Path=GroupedAccounts}" SelectedItemChanged="TreeView_SelectedItemChanged" Background="DimGray">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Accounts}">
                         <TextBlock Text="{Binding}" />
@@ -37,50 +34,149 @@
                 <TreeView.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="IsExpanded" Value="True"/>
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="FontSize" Value="12pt" />
+                        <Setter Property="Margin" Value="5 0" />
+                        <Setter Property="Padding" Value="5 2" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Yellow" />
+                                <Setter Property="Cursor" Value="Hand" />
+                            </Trigger>
+                        </Style.Triggers>
                     </Style>
                 </TreeView.ItemContainerStyle>
             </TreeView>
         </Border>
 
-        <StackPanel Grid.Column="1">
-            <DataGrid x:Name="MainGrid"
-                      ItemsSource="{Binding Path=HistoryEntries}" SelectedItem="{Binding Path=SelectedEntry, UpdateSourceTrigger=PropertyChanged}"
-                      IsReadOnly="True" GridLinesVisibility="All" AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=Id}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=Date}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=StockItem}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=PaymentAfter}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=PaymentLate}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=LParam1}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=LParam2}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=LResult}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=RParam1}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=RParam2}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=RResult}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=AccountMoneyBalance}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=AccountFineBalance}" />
-                </DataGrid.Columns>
-            </DataGrid>
-            <DataGrid ItemsSource="{Binding Path=SelectedEntry.PaybackEntries, UpdateSourceTrigger=PropertyChanged}"
-                      IsReadOnly="True" GridLinesVisibility="All" AutoGenerateColumns="False"
-                      Margin="0 20">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=Id}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=Date}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=StockItem}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=PaymentAfter}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=PaymentLate}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=LParam1}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=LParam2}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=LResult}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=RParam1}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=RParam2}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=RResult}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=AccountMoneyBalance}" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Path=AccountFineBalance}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
+        <Border Grid.Column="1" BorderBrush="SlateGray" BorderThickness="1 0">
+            <Grid Background="Red">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                    <Style x:Key="CenteredTextBlock" TargetType="TextBlock">
+                        <Setter Property="TextAlignment" Value="Center" />
+                    </Style>
+                    <DataTemplate x:Key="ColumnSeperator">
+                        <Rectangle IsHitTestVisible="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="DarkSlateGray" />
+                    </DataTemplate>
+                    <Style x:Key="SeperatorCellStyle" TargetType="{x:Type DataGridCell}">
+                        <Setter Property="BorderBrush" Value="DarkSlateGray" />
+                        <Setter Property="BorderThickness" Value="2" />
+                        <Setter Property="Focusable" Value="False" />
+                    </Style>
+                    <Style x:Key="DefaultCellStyle" TargetType="{x:Type DataGridCell}">
+                        <Setter Property="Foreground" Value="DarkSlateGray" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="Padding" Value="0" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{x:Null}" />
+                                <Setter Property="BorderBrush" Value="{x:Null}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style x:Key="LightCellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource DefaultCellStyle}">
+                        <Setter Property="FontWeight" Value="Light" />
+                    </Style>
+                    <Style x:Key="ResultCellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource DefaultCellStyle}">
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="Focusable" Value="False" />
+                    </Style>
+                    <Style x:Key="AggregateCellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource ResultCellStyle}">
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="Foreground" Value="Black" />
+                    </Style>
+                </Grid.Resources>
+
+                <DataGrid ItemsSource="{Binding Path=HistoryEntries}" SelectedItem="{Binding Path=SelectedEntry, UpdateSourceTrigger=PropertyChanged}"
+                          IsReadOnly="True" GridLinesVisibility="All" AutoGenerateColumns="False" Background="WhiteSmoke">
+                    <DataGrid.Resources>
+                        <DataTemplate x:Key="HeadingParam1">
+                            <TextBlock Text="{Binding Path=SelectedItem.Type, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource RojmelEntryTypeToHeadingConverter}, ConverterParameter=0}" />
+                        </DataTemplate>
+                        <DataTemplate x:Key="HeadingParam2">
+                            <TextBlock Text="{Binding Path=SelectedItem.Type, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource RojmelEntryTypeToHeadingConverter}, ConverterParameter=1}" />
+                        </DataTemplate>
+                        <DataTemplate x:Key="HeadingResult">
+                            <TextBlock Text="{Binding Path=SelectedItem.Type, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource RojmelEntryTypeToHeadingConverter}, ConverterParameter=2}" />
+                        </DataTemplate>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Binding="{Binding Path=Id}" Header="Id" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=Date}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="2*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
+
+                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+                        
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=PaymentAfter}" Header="Delay" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=PaymentLate}" Header="Late" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
+                        
+                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+                        
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
+
+                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
+
+                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=AccountFineBalance}" Header="Fine" CellStyle="{StaticResource AggregateCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=AccountMoneyBalance}" Header="Cash" CellStyle="{StaticResource AggregateCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid Grid.Row="2" ItemsSource="{Binding Path=SelectedEntry.PaybackEntries, UpdateSourceTrigger=PropertyChanged}" 
+                          IsReadOnly="True" GridLinesVisibility="All" AutoGenerateColumns="False"
+                          BorderThickness="0 3 0 0" BorderBrush="SlateGray" Background="WhiteSmoke">
+                    <DataGrid.Resources>
+                        <DataTemplate x:Key="HeadingParam1">
+                            <TextBlock Text="{Binding Path=SelectedItem.Type, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource RojmelEntryTypeToHeadingConverter}, ConverterParameter=0}" />
+                        </DataTemplate>
+                        <DataTemplate x:Key="HeadingParam2">
+                            <TextBlock Text="{Binding Path=SelectedItem.Type, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource RojmelEntryTypeToHeadingConverter}, ConverterParameter=1}" />
+                        </DataTemplate>
+                        <DataTemplate x:Key="HeadingResult">
+                            <TextBlock Text="{Binding Path=SelectedItem.Type, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource RojmelEntryTypeToHeadingConverter}, ConverterParameter=2}" />
+                        </DataTemplate>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Binding="{Binding Path=Id}" Header="Id" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=Date}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="2*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
+
+                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=PaymentAfter}" Header="Delay" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=PaymentLate}" Header="Late" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
+
+                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
+
+                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
+
+                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=AccountFineBalance}" Header="Fine" CellStyle="{StaticResource AggregateCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=AccountMoneyBalance}" Header="Cash" CellStyle="{StaticResource AggregateCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

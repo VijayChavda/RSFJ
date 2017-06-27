@@ -109,6 +109,8 @@ namespace RSFJ.ViewModels
 
     public class HistoryItemViewModel : ViewModelBase
     {
+        public RojmelEntryType Type { get; set; }
+
         public string Id { get; set; }
 
         public string Date { get; set; }
@@ -139,6 +141,7 @@ namespace RSFJ.ViewModels
 
         public HistoryItemViewModel(RojmelEntry Model)
         {
+            Type = Model.Type;
             Id = Model.Id.ToString();
             Date = Model.Date.ToShortDateString();
             StockItem = Model.StockItem.ToString();
