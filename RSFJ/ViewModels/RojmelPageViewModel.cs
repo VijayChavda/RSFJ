@@ -404,7 +404,6 @@ namespace RSFJ.ViewModels
 
                 #region Model update
                 Model.Id = Id;
-                Model.Date = Date;
                 Model.Account = Account;
                 Model.Type = Type;
                 Model.StockItem = StockItem;
@@ -419,6 +418,7 @@ namespace RSFJ.ViewModels
                 Model.IsLeftSide = IsLeftSide;
                 #endregion
             }
+            Model.Date = Date;
             #endregion
         }
     }
