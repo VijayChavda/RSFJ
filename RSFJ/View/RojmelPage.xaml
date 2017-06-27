@@ -153,15 +153,15 @@
                             <TextBlock Text="DEBUG: " />
                             <TextBlock Text="{Binding Path=Account.Type, UpdateSourceTrigger=PropertyChanged}" FontWeight="SemiBold" />
                         </StackPanel>
-                        <StackPanel Margin="10" Visibility="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryTypeToVisibilityConverter}, ConverterParameter=Exchange}">
+                        <StackPanel Margin="10">
                             <StackPanel Margin="0 10">
                                 <TextBlock Text="Partial payment due on: " />
-                                <DatePicker SelectedDate="{Binding Path=InstallmentPaymentDue}" />
+                                <DatePicker SelectedDate="{Binding Path=PartialPaymentDueDate}" />
                             </StackPanel>
 
                             <StackPanel Margin="0 10">
                                 <TextBlock Text="Total payment due on: " />
-                                <DatePicker SelectedDate="{Binding Path=PaymentDue}" />
+                                <DatePicker SelectedDate="{Binding Path=TotalPaymentDueDate}" />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Margin="10" Visibility="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryTypeToVisibilityConverter}, ConverterParameter=Customer}">
