@@ -49,57 +49,66 @@ namespace RSFJ.ViewModels
                 HistoryEntries.Clear();
 
                 var accountEntries = DataContextService.Instance.DataContext.RojmelEntries.Where(x => x.Account == SelectedAccount);
-                var rightEntries = accountEntries.Where(x => !x.IsLeftSide && x.Type == RojmelEntryType.ItemExchangeFine).ToArray();
-                var leftEntries = accountEntries.Where(x => x.IsLeftSide && x.Type == RojmelEntryType.ItemExchangeFine || x.Type == RojmelEntryType.UseCash).ToArray();
 
-                int jStart = 0;
-                double? leftStillRemaining = null;
-                for (int i = 0; i < rightEntries.Length; i++)
+                var lendingEntries = accountEntries.Where(x => !x.IsLeftSide && x.Type == RojmelEntryType.ItemExchangeFine).ToArray();
+                var paybackEntries = accountEntries.Where(x => x.IsLeftSide && x.Type == RojmelEntryType.ItemExchangeFine || x.Type == RojmelEntryType.UseCash).ToArray();
+                AnalyzeHistory(lendingEntries, paybackEntries);
+
+                lendingEntries = accountEntries.Where(x => x.IsLeftSide && x.Type == RojmelEntryType.ItemExchangeCash).ToArray();
+                paybackEntries = accountEntries.Where(x => !x.IsLeftSide && x.Type == RojmelEntryType.SimpleCashExchange).ToArray();
+                AnalyzeHistory(lendingEntries, paybackEntries);
+            }
+        }
+
+        private void AnalyzeHistory(RojmelEntry[] lendingEntries, RojmelEntry[] paybackEntries)
+        {
+            int jStart = 0;
+            double? paybackStillRemaining = null;
+            for (int i = 0; i < lendingEntries.Length; i++)
+            {
+                var lendingEntryModel = lendingEntries[i];
+                var lendingEntry = new HistoryItemViewModel(lendingEntryModel);
+                double lendingRemaining = lendingEntryModel.Result;
+
+                for (int j = jStart; j < paybackEntries.Length; j++)
                 {
-                    var rightEntryModel = rightEntries[i];
-                    var rightEntry = new HistoryItemViewModel(rightEntryModel);
-                    double rightRemaining = rightEntryModel.Result;
+                    var paybackEntryModel = paybackEntries[j];
+                    var paybackEntry = new HistoryItemViewModel(paybackEntryModel);
+                    double paybackRemaining = paybackStillRemaining ?? paybackEntryModel.Result;
 
-                    for (int j = jStart; j < leftEntries.Length; j++)
+                    #region Calculate delay in partial and full payments
+                    var daysPassedSinceBought = (paybackEntry.Date - lendingEntry.Date).Days;
+                    if (j == 0)
                     {
-                        var leftEntryModel = leftEntries[j];
-                        var leftEntry = new HistoryItemViewModel(leftEntryModel);
-                        double leftRemaining = leftStillRemaining ?? leftEntryModel.Result;
-
-                        #region Calculate delay in partial and full payments
-                        var daysPassedSinceBought = (leftEntry.Date - rightEntry.Date).Days;
-                        if (j == 0)
-                        {
-                            leftEntry.PartialPaymentLate = (daysPassedSinceBought > rightEntry.PartialPaymentInterval ? daysPassedSinceBought - rightEntry.PartialPaymentInterval : (int?)null);
-                        }
-                        else
-                        {
-                            var daysPassedSinceLastPayback = (leftEntry.Date - leftEntries[j - 1].Date).Days;
-                            leftEntry.PartialPaymentLate = (daysPassedSinceLastPayback > rightEntry.PartialPaymentInterval ? daysPassedSinceLastPayback - rightEntry.PartialPaymentInterval : (int?)null);
-                        }
-                        leftEntry.FullPaymentLate = daysPassedSinceBought > rightEntry.TotalPaymentDueDays ? daysPassedSinceBought - rightEntry.TotalPaymentDueDays : (int?)null;
-                        #endregion
-
-                        rightEntry.PaybackEntries.Add(leftEntry);
-
-                        if (rightRemaining > leftRemaining)
-                        {
-                            rightRemaining -= leftRemaining;
-                            leftStillRemaining = null;
-                            continue;
-                        }
-                        else if (rightRemaining < leftRemaining)
-                        {
-                            leftStillRemaining = leftStillRemaining ?? leftRemaining;    //If it is null, make it current left value.
-                            leftStillRemaining -= rightRemaining;
-                            jStart = j;
-                            break;
-                        }
-                        else break;
+                        paybackEntry.PartialPaymentLate = (daysPassedSinceBought > lendingEntry.PartialPaymentInterval ? daysPassedSinceBought - lendingEntry.PartialPaymentInterval : (int?)null);
                     }
+                    else
+                    {
+                        var daysPassedSinceLastPayback = (paybackEntry.Date - paybackEntries[j - 1].Date).Days;
+                        paybackEntry.PartialPaymentLate = (daysPassedSinceLastPayback > lendingEntry.PartialPaymentInterval ? daysPassedSinceLastPayback - lendingEntry.PartialPaymentInterval : (int?)null);
+                    }
+                    paybackEntry.FullPaymentLate = daysPassedSinceBought > lendingEntry.TotalPaymentDueDays ? daysPassedSinceBought - lendingEntry.TotalPaymentDueDays : (int?)null;
+                    #endregion
 
-                    HistoryEntries.Add(rightEntry);
+                    lendingEntry.PaybackEntries.Add(paybackEntry);
+
+                    if (lendingRemaining > paybackRemaining)
+                    {
+                        lendingRemaining -= paybackRemaining;
+                        paybackStillRemaining = null;
+                        continue;
+                    }
+                    else if (lendingRemaining < paybackRemaining)
+                    {
+                        paybackStillRemaining = paybackStillRemaining ?? paybackRemaining;    //If it is null, make it current payback value.
+                        paybackStillRemaining -= lendingRemaining;
+                        jStart = j;
+                        break;
+                    }
+                    else break;
                 }
+
+                HistoryEntries.Add(lendingEntry);
             }
         }
     }
