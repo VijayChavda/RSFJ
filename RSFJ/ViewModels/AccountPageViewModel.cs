@@ -67,6 +67,7 @@ namespace RSFJ.ViewModels
                         double leftRemaining = leftStillRemaining ?? leftEntryModel.Result;
 
                         leftEntry.PaymentAfter = j == 0 ? TimeSpan.FromDays(0) : leftEntry.Date - leftEntries[j - 1].Date;
+                        leftEntry.PaymentLate = leftEntry.Date > rightEntry.TotalPaymentDueDate ? leftEntry.Date - rightEntry.TotalPaymentDueDate : TimeSpan.FromDays(0);
                         rightEntry.PaybackEntries.Add(leftEntry);
 
                         if (rightRemaining > leftRemaining)
