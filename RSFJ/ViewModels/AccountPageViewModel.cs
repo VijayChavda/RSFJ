@@ -66,6 +66,7 @@ namespace RSFJ.ViewModels
                         var leftEntry = new HistoryItemViewModel(leftEntryModel);
                         double leftRemaining = leftStillRemaining ?? leftEntryModel.Result;
 
+                        leftEntry.PaymentAfter = j == 0 ? TimeSpan.FromDays(0) : leftEntry.Date - leftEntries[j - 1].Date;
                         rightEntry.PaybackEntries.Add(leftEntry);
 
                         if (rightRemaining > leftRemaining)
@@ -107,19 +108,23 @@ namespace RSFJ.ViewModels
         }
     }
 
-    public class HistoryItemViewModel : ViewModelBase
+    public class HistoryItemViewModel
     {
         public RojmelEntryType Type { get; set; }
 
         public string Id { get; set; }
 
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
 
         public string StockItem { get; set; }
 
-        public string PaymentAfter { get; set; }
+        public TimeSpan PaymentAfter { get; set; }
 
-        public string PaymentLate { get; set; }
+        public TimeSpan PaymentLate { get; set; }
+
+        public DateTime TotalPaymentDueDate { get; set; }
+
+        public DateTime PartialPaymentDueDate { get; set; }
 
         public string LParam1 { get; set; }
 
@@ -143,8 +148,10 @@ namespace RSFJ.ViewModels
         {
             Type = Model.Type;
             Id = Model.Id.ToString();
-            Date = Model.Date.ToShortDateString();
+            Date = Model.Date;
             StockItem = Model.StockItem.ToString();
+            TotalPaymentDueDate = Model.TotalPaymentDueDate;
+            PartialPaymentDueDate = Model.PartialPaymentDueDate;
             LParam1 = Model.IsLeftSide ? Model.Param1.ToString() : string.Empty;
             LParam2 = Model.IsLeftSide ? Model.Param2.ToString() : string.Empty;
             LResult = Model.IsLeftSide ? Model.Result.ToString() : string.Empty;

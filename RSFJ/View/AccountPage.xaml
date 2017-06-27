@@ -108,13 +108,13 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="Auto" Binding="{Binding Path=Id}" Header="Id" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
-                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=Date}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
-                        <DataGridTextColumn Width="2*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=Date, StringFormat=d}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=PartialPaymentDueDate, StringFormat=d}" Header="Partial Payment" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=TotalPaymentDueDate, StringFormat=d}" Header="Full Payment" CellStyle="{StaticResource DefaultCellStyle}" />
 
                         <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
                         
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=PaymentAfter}" Header="Delay" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=PaymentLate}" Header="Late" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
+                        <DataGridTextColumn Width="2*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
                         
                         <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
                         
@@ -150,7 +150,7 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="Auto" Binding="{Binding Path=Id}" Header="Id" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
-                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=Date}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=Date, StringFormat={}{0:dd/MM/yyyy}}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTextColumn Width="2*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
 
                         <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
