@@ -24,8 +24,8 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border>
-            <TreeView ItemsSource="{Binding Path=GroupedAccounts}" SelectedItemChanged="TreeView_SelectedItemChanged" Background="DimGray">
+        <Grid Background="DimGray">
+            <TreeView ItemsSource="{Binding Path=GroupedAccounts}" SelectedItemChanged="TreeView_SelectedItemChanged" Background="Gray" Margin="0 0 0 100">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Accounts}">
                         <TextBlock Text="{Binding}" />
@@ -47,7 +47,31 @@
                     </Style>
                 </TreeView.ItemContainerStyle>
             </TreeView>
-        </Border>
+            <StackPanel VerticalAlignment="Bottom" Margin="5 10" Visibility="{Binding Path=SelectedAccount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
+                <StackPanel.Resources>
+                    <Style x:Key="KeyStyle" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="FontSize" Value="14pt" />
+                    </Style>
+                    <Style x:Key="ValueStyle" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="FontSize" Value="12pt" />
+                        <Setter Property="HorizontalAlignment" Value="Right" />
+                    </Style>
+                </StackPanel.Resources>
+                <Border Padding="5" BorderBrush="LightSlateGray" BorderThickness="0 0 0 1">
+                    <TextBlock Text="{Binding Path=SelectedAccount.Name}" Style="{StaticResource KeyStyle}" />
+                </Border>
+                <Grid Margin="10 2">
+                    <TextBlock Text="Fine due:" FontSize="12pt" Style="{StaticResource KeyStyle}" />
+                    <TextBlock Text="{Binding Path=SelectedAccount.FineInGold}" Style="{StaticResource ValueStyle}" />
+                </Grid>
+                <Grid Margin="10 2">
+                    <TextBlock Text="Money due:" FontSize="12pt" Style="{StaticResource KeyStyle}" />
+                    <TextBlock Text="{Binding Path=SelectedAccount.FineInMoney}" Style="{StaticResource ValueStyle}" />
+                </Grid>
+            </StackPanel>
+        </Grid>
 
         <Border Grid.Column="1" BorderBrush="SlateGray" BorderThickness="1 0">
             <Grid Background="Red">
