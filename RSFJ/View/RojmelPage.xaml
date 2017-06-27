@@ -145,23 +145,19 @@
                             </Style>
                         </StackPanel.Resources>
 
-                        <StackPanel Margin="10" Visibility="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}" Orientation="Horizontal">
-                            <TextBlock Text="Transaction type: " />
-                            <TextBlock Text="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" FontWeight="SemiBold" />
-                        </StackPanel>
                         <StackPanel Margin="10">
-                            <TextBlock Text="DEBUG: " />
-                            <TextBlock Text="{Binding Path=Account.Type, UpdateSourceTrigger=PropertyChanged}" FontWeight="SemiBold" />
-                        </StackPanel>
-                        <StackPanel Margin="10">
-                            <StackPanel Margin="0 10">
-                                <TextBlock Text="Partial payment due on: " />
-                                <DatePicker SelectedDate="{Binding Path=PartialPaymentDueDate}" />
-                            </StackPanel>
+                            <Grid Margin="0 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Partial payment interval: " HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1" Text="{Binding Path=PartialPaymentInterval, UpdateSourceTrigger=PropertyChanged}" FontWeight="SemiBold" TextAlignment="Center" />
+                            </Grid>
 
                             <StackPanel Margin="0 10">
                                 <TextBlock Text="Total payment due on: " />
-                                <DatePicker SelectedDate="{Binding Path=TotalPaymentDueDate}" />
+                                <DatePicker SelectedDate="{Binding Path=TotalPaymentDueDate, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Margin="10" Visibility="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryTypeToVisibilityConverter}, ConverterParameter=Customer}">
