@@ -381,9 +381,9 @@ namespace RSFJ.ViewModels
                     return;
 
                 //Round off the parameters first.
-                Param1 = Math.Round(Param1 ?? 0, 2);
-                Param2 = Math.Round(Param2 ?? 0, 2);
-                Result = Math.Round(Result ?? 0, 2);
+                Param1 = Param1 == null ? (double?)null : Math.Round(Param1 ?? 0, 2);
+                Param2 = Param2 == null ? (double?)null : Math.Round(Param2 ?? 0, 2);
+                Result = Result == null ? (double?)null : Math.Round(Result ?? 0, 2);
 
                 switch (Type)
                 {
