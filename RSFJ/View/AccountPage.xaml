@@ -65,7 +65,7 @@
                         <Rectangle IsHitTestVisible="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="DarkSlateGray" />
                     </DataTemplate>
                     <Style x:Key="SeperatorCellStyle" TargetType="{x:Type DataGridCell}">
-                        <Setter Property="BorderBrush" Value="DarkSlateGray" />
+                        <Setter Property="BorderBrush" Value="LightGray" />
                         <Setter Property="BorderThickness" Value="2" />
                         <Setter Property="Focusable" Value="False" />
                     </Style>
@@ -108,32 +108,22 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="Auto" Binding="{Binding Path=Id}" Header="Id" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
-                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=Date, StringFormat={}{0:dd/MM/yyyy}}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="1.2*" Binding="{Binding Path=Date, StringFormat={}{0:dd/MM/yyyy}}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
                         
-                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=PartialPaymentInterval, StringFormat=\{0\}  days}" Header="Interval" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=TotalPaymentDueDays, StringFormat=\{0\}  days}" Header="Payback in" CellStyle="{StaticResource DefaultCellStyle}" />
-
-                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
-                        
-                        <DataGridTextColumn Width="2*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
-                        
-                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+                        <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
                         
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
-
-                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
-
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=LResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
+                        <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+                        
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
-
-                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
-
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=RResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
-                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=AccountFineBalance}" Header="Fine" CellStyle="{StaticResource AggregateCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
-                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=AccountMoneyBalance}" Header="Cash" CellStyle="{StaticResource AggregateCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
                     </DataGrid.Columns>
                 </DataGrid>
                 <DataGrid Grid.Row="2" ItemsSource="{Binding Path=SelectedEntry.PaybackEntries, UpdateSourceTrigger=PropertyChanged}" 
@@ -153,30 +143,22 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="Auto" Binding="{Binding Path=Id}" Header="Id" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
-                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=Date, StringFormat={}{0:dd/MM/yyyy}}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
-                        <DataGridTextColumn Width="2*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
-
-                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+                        <DataGridTextColumn Width="1.2*" Binding="{Binding Path=Date, StringFormat={}{0:dd/MM/yyyy}}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=PartialPaymentLate, StringFormat=\{0\}  days, TargetNullValue=In-Time}" Header="Delay" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=FullPaymentLate, StringFormat=\{0\}  days, TargetNullValue=In-Time}" Header="Late" CellStyle="{StaticResource DefaultCellStyle}" />
-
-                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+                        <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
-
-                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
-
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=LResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
+                        <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
+
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
-
-                        <DataGridTemplateColumn MinWidth="1" MaxWidth="1" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
-
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=RResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
-                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=AccountFineBalance}" Header="Fine" CellStyle="{StaticResource AggregateCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
-                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=AccountMoneyBalance}" Header="Cash" CellStyle="{StaticResource AggregateCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
