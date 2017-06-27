@@ -58,14 +58,14 @@ namespace RSFJ.Model
         public double? Waste { get; set; }
 
         /// <summary>
-        /// Due date for partial payment of this entry.
+        /// Interval in days for partial payment of this entry.
         /// </summary>
-        public DateTime PartialPaymentDueDate { get; set; }
+        public int PartialPaymentInterval { get; set; }
 
         /// <summary>
-        /// Due date for total payment of this entry.
+        /// Days until full payment of this entry.
         /// </summary>
-        public DateTime TotalPaymentDueDate { get; set; }
+        public int FullPaymentDueDays { get; set; }
 
         /// <summary>
         /// Determines if Labour is interpreted as an Amount or otherwise as Rate.

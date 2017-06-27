@@ -137,8 +137,8 @@ namespace RSFJ.ViewModels
         private DateTime _TotalPaymentDueDate;
         public DateTime TotalPaymentDueDate { get => _TotalPaymentDueDate; set => SetProperty(ref _TotalPaymentDueDate, value); }
 
-        private DateTime _PartialPaymentDueDate;
-        public DateTime PartialPaymentDueDate { get => _PartialPaymentDueDate; set => SetProperty(ref _PartialPaymentDueDate, value); }
+        private int _PartialPaymentInterval;
+        public int PartialPaymentInterval { get => _PartialPaymentInterval; set => SetProperty(ref _PartialPaymentInterval, value); }
         #endregion
 
         #region General parameters
@@ -267,7 +267,7 @@ namespace RSFJ.ViewModels
             Date = DateTime.Now.Date;
             Account = DataContextService.Instance.DataContext.Accounts.FirstOrDefault();
             TotalPaymentDueDate = DateTime.Now.Add(TimeSpan.FromDays(60));    //TODO: Take the last value
-            PartialPaymentDueDate = DateTime.Now.Add(TimeSpan.FromDays(10));    //TODO: Take the last value
+            PartialPaymentInterval = 10;    //TODO: Take the last value
 
             DataContextService.Instance.DataContext.RojmelEntries.Add(Model);
         }
@@ -291,8 +291,8 @@ namespace RSFJ.ViewModels
             _RResult = Model.IsLeftSide ? (double?)null : Model.Result;
             _Labour = Model.Labour;
             _Waste = Model.Waste;
-            _PartialPaymentDueDate = Model.PartialPaymentDueDate;
-            _TotalPaymentDueDate = Model.TotalPaymentDueDate;
+            _PartialPaymentInterval = Model.PartialPaymentInterval;
+            _TotalPaymentDueDate = Model.Date.AddDays(Model.FullPaymentDueDays);
             _IsLabourAsAmount = Model.IsLabourAsAmount;
 
             DataContextService.Instance.DataContext.RojmelEntries.Add(Model);
@@ -416,8 +416,8 @@ namespace RSFJ.ViewModels
             Model.Result = Result ?? 0;
             Model.Labour = Labour;
             Model.Waste = Waste;
-            Model.PartialPaymentDueDate = PartialPaymentDueDate;
-            Model.TotalPaymentDueDate = TotalPaymentDueDate;
+            Model.PartialPaymentInterval = PartialPaymentInterval;
+            Model.FullPaymentDueDays = (TotalPaymentDueDate - Date).Days;
             Model.IsLabourAsAmount = IsLabourAsAmount;
             Model.IsLeftSide = IsLeftSide;
             #endregion

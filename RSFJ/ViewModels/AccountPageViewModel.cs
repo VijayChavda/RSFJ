@@ -119,13 +119,13 @@ namespace RSFJ.ViewModels
 
         public string StockItem { get; set; }
 
-        public TimeSpan PaymentAfter { get; set; }
+        public int? PartialPaymentLate { get; set; }
 
-        public TimeSpan PaymentLate { get; set; }
+        public int? FullPaymentLate { get; set; }
 
-        public DateTime TotalPaymentDueDate { get; set; }
+        public int TotalPaymentDueDays { get; set; }
 
-        public DateTime PartialPaymentDueDate { get; set; }
+        public int PartialPaymentInterval { get; set; }
 
         public string LParam1 { get; set; }
 
@@ -151,8 +151,8 @@ namespace RSFJ.ViewModels
             Id = Model.Id.ToString();
             Date = Model.Date;
             StockItem = Model.StockItem.ToString();
-            TotalPaymentDueDate = Model.TotalPaymentDueDate;
-            PartialPaymentDueDate = Model.PartialPaymentDueDate;
+            PartialPaymentInterval = Model.PartialPaymentInterval;
+            TotalPaymentDueDays = Model.FullPaymentDueDays;
             LParam1 = Model.IsLeftSide ? Model.Param1.ToString() : string.Empty;
             LParam2 = Model.IsLeftSide ? Model.Param2.ToString() : string.Empty;
             LResult = Model.IsLeftSide ? Model.Result.ToString() : string.Empty;
