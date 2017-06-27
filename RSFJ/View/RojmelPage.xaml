@@ -25,6 +25,7 @@
         <utilities:RojmelEntryViewModelTypeToVisibilityConverter x:Key="RojmelEntryViewModelTypeToVisibilityConverter" />
         <utilities:RojmelEntryTypeToHeadingConverter x:Key="RojmelEntryTypeToHeadingConverter" />
         <utilities:LendingEntryVisibilityConverter x:Key="LendingEntryVisibilityConverter" />
+        <utilities:CustomerEntryVisibilityConverter x:Key="CustomerEntryVisibilityConverter" />
     </Page.Resources>
 
     <Grid Background="WhiteSmoke">
@@ -194,7 +195,7 @@
                                 <DatePicker Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Path=TotalPaymentDueDate, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </StackPanel>
-                        <StackPanel Margin="10" Visibility="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryTypeToVisibilityConverter}, ConverterParameter=Customer}">
+                        <StackPanel Margin="10" Visibility="{Binding Path=Account.Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CustomerEntryVisibilityConverter}}">
                             <StackPanel Margin="0 10">
                                 <TextBlock Text="Labour rate: " />
                                 <TextBox Text="{Binding Path=Labour, TargetNullValue={x:Static system:String.Empty}}" />
