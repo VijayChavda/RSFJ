@@ -24,8 +24,8 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Background="Gray">
-            <TreeView ItemsSource="{Binding Path=GroupedAccounts}" SelectedItemChanged="TreeView_SelectedItemChanged" Background="LightGray" Margin="0 0 0 100">
+        <Grid Background="SteelBlue">
+            <TreeView ItemsSource="{Binding Path=GroupedAccounts}" SelectedItemChanged="TreeView_SelectedItemChanged" Background="LightSteelBlue" Margin="0 0 0 100">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Accounts}">
                         <TextBlock Text="{Binding}" />
@@ -73,7 +73,7 @@
         </Grid>
 
         <Border Grid.Column="1" BorderBrush="SlateGray" BorderThickness="1 0" Visibility="{Binding Path=SelectedAccount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
-            <Grid Background="Red">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -117,7 +117,7 @@
                 </Grid.Resources>
 
                 <DataGrid ItemsSource="{Binding Path=HistoryEntries}" SelectedItem="{Binding Path=SelectedEntry, UpdateSourceTrigger=PropertyChanged}"
-                          IsReadOnly="True" GridLinesVisibility="All" AutoGenerateColumns="False" Background="WhiteSmoke">
+                          IsReadOnly="True" GridLinesVisibility="All" AutoGenerateColumns="False" VerticalAlignment="Top">
                     <DataGrid.Resources>
                         <DataTemplate x:Key="HeadingParam1">
                             <TextBlock Text="{Binding Path=SelectedItem.Type, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource RojmelEntryTypeToHeadingConverter}, ConverterParameter=0}" />
@@ -152,7 +152,7 @@
                 <DataGrid Grid.Row="2" ItemsSource="{Binding Path=SelectedEntry.PaybackEntries, UpdateSourceTrigger=PropertyChanged}" 
                           IsReadOnly="True" GridLinesVisibility="All" AutoGenerateColumns="False"
                           CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False"
-                          BorderThickness="0 3 0 0" BorderBrush="SlateGray" Background="WhiteSmoke">
+                          BorderThickness="0 3 0 0" BorderBrush="SlateGray" VerticalAlignment="Top">
                     <DataGrid.Resources>
                         <DataTemplate x:Key="HeadingParam1">
                             <TextBlock Text="{Binding Path=SelectedItem.Type, FallbackValue=-, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource RojmelEntryTypeToHeadingConverter}, ConverterParameter=0}" />

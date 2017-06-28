@@ -9,7 +9,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         RightWindowCommandsOverlayBehavior="Never" Icon="/Images/logo.png" ShowIconOnTitleBar="False"
-        GlowBrush="SlateGray" TitleCharacterCasing="Normal" WindowStartupLocation="CenterScreen"
+        GlowBrush="SlateGray" TitleCharacterCasing="Normal" WindowStartupLocation="CenterScreen" WindowTitleBrush="SteelBlue"
         MinHeight="768" MinWidth="1024" Height="768" Width="1024" TitlebarHeight="75" KeyDown="MetroWindow_KeyDown">
 
     <Controls:MetroWindow.DataContext>
@@ -18,7 +18,7 @@
 
     <Controls:MetroWindow.TitleTemplate>
         <ItemContainerTemplate>
-            <Grid>
+            <Grid Background="SteelBlue">
                 <TextBlock Text="Rojmel Software for Jewellers" Padding="20 20 20 0" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="16pt" />
             </Grid>
         </ItemContainerTemplate>
@@ -29,8 +29,8 @@
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="RojmelPage" Content="Rojmel" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="AccountPage" Content="Accounts" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
 
-            <ToggleButton Content="About" IsChecked="{Binding ElementName=aboutFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="DarkSlateBlue" VerticalAlignment="Center" />
-            <ToggleButton Content="Settings" IsChecked="{Binding ElementName=settingsFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="DarkSlateBlue" VerticalAlignment="Center" />
+            <ToggleButton Content="About" IsChecked="{Binding ElementName=aboutFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="Navy" VerticalAlignment="Center" />
+            <ToggleButton Content="Settings" IsChecked="{Binding ElementName=settingsFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="Navy" VerticalAlignment="Center" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 

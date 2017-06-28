@@ -33,16 +33,25 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="300" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
         <FrameworkElement x:Name="dummyElement" Visibility="Collapsed"/>
 
-        <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Top" x:Name="EntriesDataGrid"
-                  ItemsSource="{Binding Path=Entries}"
-                  SelectedItem="{Binding Path=SelectedEntry, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryViewModelTypeToVisibilityConverter}}"
-                  AutoGenerateColumns="False" CanUserAddRows="True" GridLinesVisibility="All"
-                  BorderBrush="Gray" BorderThickness="0 0 0 2" CanUserDeleteRows="True" CanUserResizeColumns="False"
-                  RowEditEnding="DataGrid_RowEditEnding"
-                  d:DataContext="{Binding Source={d:DesignInstance Type=vm:RojmelEntryViewModel, CreateList=False}}">
+        <Grid Grid.ColumnSpan="2" Background="LightSteelBlue">
+            
+        </Grid>
+        
+        <DataGrid x:Name="EntriesDataGrid" Grid.Row="1"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                      ItemsSource="{Binding Path=Entries}"
+                      SelectedItem="{Binding Path=SelectedEntry, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryViewModelTypeToVisibilityConverter}}"
+                      AutoGenerateColumns="False" CanUserAddRows="True" GridLinesVisibility="All"
+                      BorderBrush="Gray" BorderThickness="0 0 0 2" CanUserDeleteRows="True" CanUserResizeColumns="False"
+                      RowEditEnding="DataGrid_RowEditEnding"
+                      d:DataContext="{Binding Source={d:DesignInstance Type=vm:RojmelEntryViewModel, CreateList=False}}">
             <DataGrid.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
                 <Style x:Key="CenteredTextBlock" TargetType="TextBlock">
@@ -122,7 +131,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Grid.Column="1" DataContext="{Binding Path=SelectedEntry}" Width="300">
+        <Grid Grid.Column="1" Grid.Row="1" DataContext="{Binding Path=SelectedEntry}" Width="300">
             <Border Background="WhiteSmoke" BorderBrush="DarkSlateBlue" BorderThickness="1 0 0 0" Padding="0 10">
                 <Grid Visibility="{Binding ElementName=ViewModel, Path=SelectedEntry, Converter={StaticResource NullToVisibilityConverter}}">
                     <StackPanel>
@@ -174,9 +183,9 @@
                                 <TextBlock Text="{Binding Path=StockItem.EquivalentGold}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
                         </StackPanel>
-                        
+
                         <Separator Margin="0 20 0 0" Background="DimGray" />
-                        
+
                         <StackPanel Margin="10" Visibility="{Binding UpdateSourceTrigger=PropertyChanged, Converter={StaticResource LendingEntryVisibilityConverter}}">
                             <Grid Margin="0 10">
                                 <Grid.ColumnDefinitions>
@@ -187,10 +196,10 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                
+
                                 <TextBlock Text="Payment Interval: " />
                                 <TextBox Grid.Column="1" Text="{Binding Path=PartialPaymentInterval, UpdateSourceTrigger=PropertyChanged}" FontWeight="SemiBold" TextAlignment="Center" />
-                                
+
                                 <TextBlock Grid.Row="1" Text="Payment before: " />
                                 <DatePicker Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Path=TotalPaymentDueDate, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
