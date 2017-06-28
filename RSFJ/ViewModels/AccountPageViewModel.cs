@@ -104,6 +104,7 @@ namespace RSFJ.ViewModels
                     {
                         paybackStillRemaining = paybackStillRemaining ?? paybackRemaining;    //If it is null, make it current payback value.
                         paybackStillRemaining -= lendingRemaining;
+                        j--;
                         break;
                     }
                     else break;
