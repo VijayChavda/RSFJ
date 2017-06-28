@@ -133,6 +133,7 @@
                         <DataGridTextColumn Width="Auto" Binding="{Binding Path=Id}" Header="Id" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
                         <DataGridTextColumn Width="1.2*" Binding="{Binding Path=Date, StringFormat={}{0:dd MMMM\, yyyy}}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTextColumn Width="1.5*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=Remaining}" Header="Remaining" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=PartialPaymentInterval, StringFormat=\{0\}  days}" Header="Interval" CellStyle="{StaticResource DefaultCellStyle}" />

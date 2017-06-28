@@ -104,12 +104,18 @@ namespace RSFJ.ViewModels
                     {
                         paybackStillRemaining = paybackStillRemaining ?? paybackRemaining;    //If it is null, make it current payback value.
                         paybackStillRemaining -= lendingRemaining;
+                        lendingRemaining = 0;
                         j--;
                         break;
                     }
-                    else break;
+                    else
+                    {
+                        lendingRemaining = 0;
+                        break;
+                    }
                 }
 
+                lendingEntry.Remaining = lendingRemaining.ToString();
                 HistoryEntries.Add(lendingEntry);
             }
         }
@@ -149,6 +155,8 @@ namespace RSFJ.ViewModels
         public int TotalPaymentDueDays { get; set; }
 
         public int PartialPaymentInterval { get; set; }
+
+        public string Remaining { get; set; }
 
         public string LParam1 { get; set; }
 
