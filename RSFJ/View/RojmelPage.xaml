@@ -83,7 +83,7 @@
 
         <DataGrid x:Name="EntriesDataGrid" Grid.Row="1"
                       HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                      ItemsSource="{Binding Path=Entries}"
+                      ItemsSource="{Binding Path=EntriesViewSource.View}"
                       SelectedItem="{Binding Path=SelectedEntry, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryViewModelTypeToVisibilityConverter}}"
                       AutoGenerateColumns="False" CanUserAddRows="True" GridLinesVisibility="All"
                       BorderBrush="Gray" BorderThickness="0 0 0 2" CanUserDeleteRows="True" CanUserResizeColumns="False"

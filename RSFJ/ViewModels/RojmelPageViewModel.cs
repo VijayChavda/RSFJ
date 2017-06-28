@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Windows.Data;
 
 namespace RSFJ.ViewModels
 {
@@ -20,6 +21,8 @@ namespace RSFJ.ViewModels
         public bool ShowAggregateColumns { get => _ShowAggregateColumns; set => SetProperty(ref _ShowAggregateColumns, value); }
 
         #region Filters
+        public CollectionViewSource EntriesViewSource { get; set; }
+
         private Account _FilterAccount;
         public Account FilterAccount { get => _FilterAccount; set => SetProperty(ref _FilterAccount, value); }
 
@@ -39,6 +42,16 @@ namespace RSFJ.ViewModels
 
             LoadData();
 
+            EntriesViewSource = new CollectionViewSource() { Source = Entries };
+            EntriesViewSource.Filter += EntriesViewSource_Filter;
+
+            SelectedEntry = Entries.FirstOrDefault();
+            ShowAggregateColumns = RegistoryService.Instance.ShowAggregateColumns;
+            FilterAccount = null;
+            FilterStockItem = null;
+            FilterStartDate = DateTime.Now.Subtract(TimeSpan.FromDays(15));
+            FilterEndDate = DateTime.Now;
+
             RegistoryService.Instance.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(RegistoryService.ShowAggregateColumns))
@@ -54,13 +67,31 @@ namespace RSFJ.ViewModels
             {
                 Entries.Add(new RojmelEntryViewModel(model));
             }
+        }
 
-            SelectedEntry = Entries.FirstOrDefault();
-            ShowAggregateColumns = RegistoryService.Instance.ShowAggregateColumns;
-            FilterAccount = null;
-            FilterStockItem = null;
-            FilterStartDate = DateTime.Now.Subtract(TimeSpan.FromDays(15));
-            FilterEndDate = DateTime.Now;
+        private void EntriesViewSource_Filter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is RojmelEntryViewModel entry)
+            {
+                if (entry.Account == null && entry.StockItem == null)
+                {
+                    e.Accepted = true;
+                    return;
+                }
+
+                e.Accepted = entry.Account == FilterAccount || FilterAccount == null;
+                e.Accepted = entry.StockItem == FilterStockItem || FilterStockItem == null;
+                e.Accepted = entry.Date >= FilterStartDate && entry.Date <= FilterEndDate;
+            }
+        }
+
+        protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
+        {
+            if (PropertyName == nameof(FilterAccount) || PropertyName == nameof(FilterStockItem) ||
+                PropertyName == nameof(FilterStartDate) || PropertyName == nameof(FilterEndDate))
+            {
+                EntriesViewSource.View.Refresh();
+            }
         }
 
         public async Task CalculateAggregateAsync()
