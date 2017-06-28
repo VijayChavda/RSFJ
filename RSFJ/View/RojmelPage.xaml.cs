@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RSFJ.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,11 +31,26 @@ namespace RSFJ.View
         private async void RojmelPage_Loaded(object sender, RoutedEventArgs e)
         {
             await ViewModel.CalculateAggregateAsync();
+
+            Filtering();
         }
 
         private async void DataGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
             await ViewModel.CalculateAggregateAsync();
+        }
+
+        private void Filtering()
+        {
+            var itemSourceList = new CollectionViewSource() { Source = ViewModel.Entries };
+            itemSourceList.Filter += (s, e) =>
+            {
+                if (e.Item is RojmelEntryViewModel entry)
+                {
+                    //TODO: Add filters
+                }
+            };
+            EntriesDataGrid.ItemsSource = itemSourceList.View;
         }
     }
 }
