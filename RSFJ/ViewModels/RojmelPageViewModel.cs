@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Data;
+using RSFJ.ViewModels.Utilities;
+using System.Windows.Input;
 
 namespace RSFJ.ViewModels
 {
@@ -22,6 +24,12 @@ namespace RSFJ.ViewModels
 
         #region Filters
         public CollectionViewSource EntriesViewSource { get; set; }
+
+        RelayCommand _resetFiltersCommand;
+        public ICommand ResetFiltersCommand
+        {
+            get => _resetFiltersCommand ?? (_resetFiltersCommand = new RelayCommand(param => ResetFilters(), param => true));
+        }
 
         private Account _FilterAccount;
         public Account FilterAccount { get => _FilterAccount; set => SetProperty(ref _FilterAccount, value); }
@@ -80,8 +88,8 @@ namespace RSFJ.ViewModels
                 }
 
                 e.Accepted = entry.Account == FilterAccount || FilterAccount == null;
-                e.Accepted = entry.StockItem == FilterStockItem || FilterStockItem == null;
-                e.Accepted = entry.Date >= FilterStartDate && entry.Date <= FilterEndDate;
+                e.Accepted &= entry.StockItem == FilterStockItem || FilterStockItem == null;
+                e.Accepted &= entry.Date >= FilterStartDate && entry.Date <= FilterEndDate;
             }
         }
 
@@ -157,6 +165,14 @@ namespace RSFJ.ViewModels
                     account.FineInMoney = fineInMoney;
                 }
             });
+        }
+
+        public void ResetFilters()
+        {
+            FilterAccount = null;
+            FilterStockItem = null;
+            FilterStartDate = DateTime.Now.Subtract(TimeSpan.FromDays(15));
+            FilterEndDate = DateTime.Now;
         }
     }
 
