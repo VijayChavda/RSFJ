@@ -2,6 +2,7 @@
 using System.IO;
 using System.Management;
 using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,17 +63,14 @@ namespace RSFJ.Services
                     string.Format("{0}?uid={1}&app=rsfj", Properties.Settings.Default.VerificationURL, MID) :
                     string.Format("{0}?key={1}&uid={2}&app=rsfj", Properties.Settings.Default.VerificationURL, key, MID);
 
-                var request = WebRequest.CreateHttp(url);
-                var response = await request.GetResponseAsync();
+                var httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
 
-                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
-                {
-                    return await stream.ReadToEndAsync();
-                }
+                var response = await httpClient.GetAsync(url);
+                return await response.Content.ReadAsStringAsync();
             }
-            catch
+            catch (Exception ex)
             {
-                return "ERR_REQUEST";
+                return ex.GetType() == typeof(TaskCanceledException) ? "ERR_TIMEOUT" : "ERR_REQUEST";
             }
         }
 

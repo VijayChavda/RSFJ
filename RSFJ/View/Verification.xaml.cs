@@ -162,6 +162,12 @@ namespace RSFJ.View
                 MessageBrush = ErrorMessageBrush;
                 B_Retry.Visibility = Visibility.Visible;
             }
+            else if (response == "ERR_TIMEOUT")
+            {
+                Message = "The server is not responding. Please try again later.";
+                MessageBrush = InfoMessageBrush;
+                B_Retry.Visibility = Visibility.Visible;
+            }
             else
             {
                 Message = "There was some problem while verifying the software. Here's the error code: " + response;
