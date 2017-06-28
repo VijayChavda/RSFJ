@@ -19,6 +19,20 @@ namespace RSFJ.ViewModels
         private bool _ShowAggregateColumns;
         public bool ShowAggregateColumns { get => _ShowAggregateColumns; set => SetProperty(ref _ShowAggregateColumns, value); }
 
+        #region Filters
+        private Account _FilterAccount;
+        public Account FilterAccount { get => _FilterAccount; set => SetProperty(ref _FilterAccount, value); }
+
+        private StockItem _FilterStockItem;
+        public StockItem FilterStockItem { get => _FilterStockItem; set => SetProperty(ref _FilterStockItem, value); }
+
+        private DateTime _FilterStartDate;
+        public DateTime FilterStartDate { get => _FilterStartDate; set => SetProperty(ref _FilterStartDate, value); }
+
+        private DateTime _FilterEndDate;
+        public DateTime FilterEndDate { get => _FilterEndDate; set => SetProperty(ref _FilterEndDate, value); }
+        #endregion
+
         public RojmelPageViewModel()
         {
             Entries = new ObservableCollection<RojmelEntryViewModel>();
@@ -42,8 +56,11 @@ namespace RSFJ.ViewModels
             }
 
             SelectedEntry = Entries.FirstOrDefault();
-
             ShowAggregateColumns = RegistoryService.Instance.ShowAggregateColumns;
+            FilterAccount = null;
+            FilterStockItem = null;
+            FilterStartDate = DateTime.Now.Subtract(TimeSpan.FromDays(15));
+            FilterEndDate = DateTime.Now;
         }
 
         public async Task CalculateAggregateAsync()

@@ -34,16 +34,53 @@
             <ColumnDefinition Width="300" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="50" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
         <FrameworkElement x:Name="dummyElement" Visibility="Collapsed"/>
 
-        <Grid Grid.ColumnSpan="2" Background="LightSteelBlue">
-            
-        </Grid>
-        
+        <Border Grid.ColumnSpan="2" Background="LightSteelBlue" BorderBrush="SteelBlue" BorderThickness="0 0 0 1">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="ComboBox">
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="Height" Value="30" />
+                        <Setter Property="Margin" Value="5 0 20 0" />
+                        <Setter Property="MinWidth" Value="140" />
+                        <Setter Property="FontSize" Value="11pt" />
+                        <Setter Property="Foreground" Value="DarkSlateGray" />
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="11pt" />
+                        <Setter Property="Foreground" Value="DimGray" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="Margin" Value="5 0 0 0" />
+                    </Style>
+                    <Style TargetType="DatePicker">
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="Height" Value="30" />
+                        <Setter Property="Margin" Value="5 0" />
+                        <Setter Property="MinWidth" Value="140" />
+                        <Setter Property="FontSize" Value="11pt" />
+                        <Setter Property="Foreground" Value="DarkSlateGray" />
+                        <Setter Property="Background" Value="White" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <TextBlock Text="Account: " />
+                <ComboBox SelectedItem="{Binding Path=FilterAccount, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=DataContext.Accounts, Source={x:Static services:DataContextService.Instance}}" />
+
+                <TextBlock Text="Item: " />
+                <ComboBox SelectedItem="{Binding Path=FilterStockItem, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=DataContext.StockItems, Source={x:Static services:DataContextService.Instance}}" />
+
+                <TextBlock Text="Between: " />
+                <DatePicker SelectedDate="{Binding Path=FilterStartDate, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Text="&amp;" Margin="0" />
+                <DatePicker SelectedDate="{Binding Path=FilterEndDate, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+        </Border>
+
         <DataGrid x:Name="EntriesDataGrid" Grid.Row="1"
                       HorizontalAlignment="Stretch" VerticalAlignment="Top"
                       ItemsSource="{Binding Path=Entries}"
