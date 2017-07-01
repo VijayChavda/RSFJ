@@ -93,25 +93,8 @@ namespace RSFJ.Services
         /// <returns>A hash value unique for the current machine.</returns>
         private string GetMachineID()
         {
-            return Hash(string.Concat(Hash(GetCPUId()), Hash(GetMotherboardId())));
-        }
-
-        /// <summary>
-        /// Computes a hash for the given string.
-        /// </summary>
-        /// <param name="secret">A string whose hash is to be computed.</param>
-        /// <returns></returns>
-        private string Hash(string secret)
-        {
-            if (String.IsNullOrEmpty(secret))
-                return String.Empty;
-
-            using (var sha = new SHA256Managed())
-            {
-                byte[] textData = Encoding.UTF8.GetBytes(secret);
-                byte[] hash = sha.ComputeHash(textData);
-                return BitConverter.ToString(hash).Replace("-", String.Empty);
-            }
+            var ss = SecurityService.Instance;
+            return ss.Hash(string.Concat(ss.Hash(GetCPUId()), ss.Hash(GetMotherboardId())));
         }
 
         /// <summary>
