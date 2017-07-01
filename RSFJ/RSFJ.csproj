@@ -108,6 +108,7 @@
     <Compile Include="Services\AppVerificationService.cs" />
     <Compile Include="Services\DataContextService.cs" />
     <Compile Include="Services\ReportingService.cs" />
+    <Compile Include="Services\SecurityService.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\RegistoryService.cs" />
     <Compile Include="ViewModels\AccountPageViewModel.cs" />
