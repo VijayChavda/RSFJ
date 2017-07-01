@@ -132,6 +132,9 @@
     <Compile Include="View\AccountPage.xaml.cs">
       <DependentUpon>AccountPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\EntriesPage.xaml.cs">
+      <DependentUpon>EntriesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\NewAccountFlyoutView.xaml.cs">
       <DependentUpon>NewAccountFlyoutView.xaml</DependentUpon>
     </Compile>
@@ -167,6 +170,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AccountPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EntriesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

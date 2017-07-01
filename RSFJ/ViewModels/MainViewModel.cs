@@ -9,6 +9,7 @@ namespace RSFJ.ViewModels
     {
         private readonly View.RojmelPage RojmelPageView = new View.RojmelPage();
         private readonly View.AccountPage AccountPageView = new View.AccountPage();
+        private readonly View.EntriesPage EntriesPageView = new View.EntriesPage();
 
         private Page _currentPage;
         public Page CurrentPage { get => _currentPage; set => SetProperty(ref _currentPage, value); }
@@ -52,12 +53,16 @@ namespace RSFJ.ViewModels
                 {
                     CurrentPage = AccountPageView;
                 }
+                if (page == nameof(View.EntriesPage))
+                {
+                    CurrentPage = EntriesPageView;
+                }
             }, param => true));
         }
 
         public MainViewModel()
         {
-            CurrentPage = RojmelPageView;
+            CurrentPage = EntriesPageView;
         }
     }
 }
