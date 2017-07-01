@@ -26,6 +26,7 @@
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
+            <Button Command="{Binding Path=NavigateCommand}" CommandParameter="EntriesPage" Content="Entries" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="RojmelPage" Content="Rojmel" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="AccountPage" Content="Accounts" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
 
