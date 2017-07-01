@@ -25,7 +25,13 @@
                 </StackPanel.Resources>
                 <StackPanel Margin="10 0">
                     <StackPanel Margin="0 10">
-                        <Controls:ToggleSwitch IsChecked="{Binding Path=ShowAggregateColumns, UpdateSourceTrigger=PropertyChanged}" Content="Show aggregate columns" Foreground="DarkSlateGray" />
+                        <Controls:ToggleSwitch IsChecked="{Binding Path=ShowAggregateFineBalance, UpdateSourceTrigger=PropertyChanged}" Content="Show account fine" Foreground="DarkSlateGray" />
+                    </StackPanel>
+                    <StackPanel Margin="0 10">
+                        <Controls:ToggleSwitch IsChecked="{Binding Path=ShowAggregateMoneyBalance, UpdateSourceTrigger=PropertyChanged}" Content="Show account money balance" Foreground="DarkSlateGray" />
+                    </StackPanel>
+                    <StackPanel Margin="0 10">
+                        <Controls:ToggleSwitch IsChecked="{Binding Path=ShowAggregateStockBalance, UpdateSourceTrigger=PropertyChanged}" Content="Show stock balance" Foreground="DarkSlateGray" />
                     </StackPanel>
                     <StackPanel Margin="0 10">
                         <TextBlock Text="Actions: " />

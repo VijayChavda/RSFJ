@@ -51,23 +51,63 @@ namespace RSFJ.Services
             }
         }
 
-        public bool ShowAggregateColumns
+        public bool ShowAggregateFineBalance
         {
             get
             {
                 RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
                 key = key.OpenSubKey("Augment Software", true);
                 key = key.OpenSubKey("RSFJ", true);
-                return bool.Parse(key.GetValue(nameof(ShowAggregateColumns), false).ToString());
+                return bool.Parse(key.GetValue(nameof(ShowAggregateFineBalance), false).ToString());
             }
             set
             {
                 RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
                 key = key.OpenSubKey("Augment Software", true);
                 key = key.OpenSubKey("RSFJ", true);
-                key.SetValue(nameof(ShowAggregateColumns), value);
+                key.SetValue(nameof(ShowAggregateFineBalance), value);
 
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowAggregateColumns)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowAggregateFineBalance)));
+            }
+        }
+
+        public bool ShowAggregateMoneyBalance
+        {
+            get
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                key = key.OpenSubKey("Augment Software", true);
+                key = key.OpenSubKey("RSFJ", true);
+                return bool.Parse(key.GetValue(nameof(ShowAggregateMoneyBalance), false).ToString());
+            }
+            set
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                key = key.OpenSubKey("Augment Software", true);
+                key = key.OpenSubKey("RSFJ", true);
+                key.SetValue(nameof(ShowAggregateMoneyBalance), value);
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowAggregateMoneyBalance)));
+            }
+        }
+
+        public bool ShowAggregateStockBalance
+        {
+            get
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                key = key.OpenSubKey("Augment Software", true);
+                key = key.OpenSubKey("RSFJ", true);
+                return bool.Parse(key.GetValue(nameof(ShowAggregateStockBalance), false).ToString());
+            }
+            set
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                key = key.OpenSubKey("Augment Software", true);
+                key = key.OpenSubKey("RSFJ", true);
+                key.SetValue(nameof(ShowAggregateStockBalance), value);
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowAggregateStockBalance)));
             }
         }
     }

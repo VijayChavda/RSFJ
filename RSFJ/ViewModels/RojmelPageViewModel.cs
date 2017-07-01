@@ -19,8 +19,16 @@ namespace RSFJ.ViewModels
         private RojmelEntryViewModel _SelectedEntry;
         public RojmelEntryViewModel SelectedEntry { get => _SelectedEntry; set => SetProperty(ref _SelectedEntry, value); }
 
-        private bool _ShowAggregateColumns;
-        public bool ShowAggregateColumns { get => _ShowAggregateColumns; set => SetProperty(ref _ShowAggregateColumns, value); }
+        #region Aggregate columns
+        private bool _ShowAggregateFineBalance;
+        public bool ShowAggregateFineBalance { get => _ShowAggregateFineBalance; set => SetProperty(ref _ShowAggregateFineBalance, value); }
+
+        private bool _ShowAggregateMoneyBalance;
+        public bool ShowAggregateMoneyBalance { get => _ShowAggregateMoneyBalance; set => SetProperty(ref _ShowAggregateMoneyBalance, value); }
+
+        private bool _ShowAggregateStockBalance;
+        public bool ShowAggregateStockBalance { get => _ShowAggregateStockBalance; set => SetProperty(ref _ShowAggregateStockBalance, value); }
+        #endregion
 
         #region Filters
         public CollectionViewSource EntriesViewSource { get; set; }
@@ -54,7 +62,9 @@ namespace RSFJ.ViewModels
             EntriesViewSource.Filter += EntriesViewSource_Filter;
 
             SelectedEntry = Entries.FirstOrDefault();
-            ShowAggregateColumns = RegistoryService.Instance.ShowAggregateColumns;
+            ShowAggregateFineBalance = RegistoryService.Instance.ShowAggregateFineBalance;
+            ShowAggregateMoneyBalance = RegistoryService.Instance.ShowAggregateMoneyBalance;
+            ShowAggregateStockBalance = RegistoryService.Instance.ShowAggregateStockBalance;
             FilterAccount = null;
             FilterStockItem = null;
             FilterStartDate = DateTime.Now.Subtract(TimeSpan.FromDays(15));
@@ -62,9 +72,17 @@ namespace RSFJ.ViewModels
 
             RegistoryService.Instance.PropertyChanged += (sender, e) =>
             {
-                if (e.PropertyName == nameof(RegistoryService.ShowAggregateColumns))
+                if (e.PropertyName == nameof(RegistoryService.ShowAggregateFineBalance))
                 {
-                    ShowAggregateColumns = RegistoryService.Instance.ShowAggregateColumns;
+                    ShowAggregateFineBalance = RegistoryService.Instance.ShowAggregateFineBalance;
+                }
+                if (e.PropertyName == nameof(RegistoryService.ShowAggregateMoneyBalance))
+                {
+                    ShowAggregateMoneyBalance = RegistoryService.Instance.ShowAggregateMoneyBalance;
+                }
+                if (e.PropertyName == nameof(RegistoryService.ShowAggregateStockBalance))
+                {
+                    ShowAggregateStockBalance = RegistoryService.Instance.ShowAggregateStockBalance;
                 }
             };
         }

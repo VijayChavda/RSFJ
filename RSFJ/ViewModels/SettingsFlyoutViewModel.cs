@@ -18,8 +18,14 @@ namespace RSFJ.ViewModels
         private bool _IsShowingNewAccountFlyout;
         public bool IsShowingNewAccountFlyout { get => _IsShowingNewAccountFlyout; set => SetProperty(ref _IsShowingNewAccountFlyout, value); }
 
-        private bool _ShowAggregateColumns;
-        public bool ShowAggregateColumns { get => _ShowAggregateColumns; set => SetProperty(ref _ShowAggregateColumns, value); }
+        private bool _ShowAggregateFineBalance;
+        public bool ShowAggregateFineBalance { get => _ShowAggregateFineBalance; set => SetProperty(ref _ShowAggregateFineBalance, value); }
+
+        private bool _ShowAggregateMoneyBalance;
+        public bool ShowAggregateMoneyBalance { get => _ShowAggregateMoneyBalance; set => SetProperty(ref _ShowAggregateMoneyBalance, value); }
+
+        private bool _ShowAggregateStockBalance;
+        public bool ShowAggregateStockBalance { get => _ShowAggregateStockBalance; set => SetProperty(ref _ShowAggregateStockBalance, value); }
 
         RelayCommand _newStockItem;
         public ICommand NewStockItemCommand
@@ -35,14 +41,24 @@ namespace RSFJ.ViewModels
 
         public SettingsFlyoutViewModel()
         {
-            ShowAggregateColumns = Services.RegistoryService.Instance.ShowAggregateColumns;
+            ShowAggregateFineBalance = Services.RegistoryService.Instance.ShowAggregateFineBalance;
+            ShowAggregateMoneyBalance = Services.RegistoryService.Instance.ShowAggregateMoneyBalance;
+            ShowAggregateStockBalance = Services.RegistoryService.Instance.ShowAggregateStockBalance;
         }
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
         {
-            if (PropertyName == nameof(ShowAggregateColumns))
+            if (PropertyName == nameof(ShowAggregateFineBalance))
             {
-                Services.RegistoryService.Instance.ShowAggregateColumns = ShowAggregateColumns;
+                Services.RegistoryService.Instance.ShowAggregateFineBalance = ShowAggregateFineBalance;
+            }
+            if (PropertyName == nameof(ShowAggregateMoneyBalance))
+            {
+                Services.RegistoryService.Instance.ShowAggregateMoneyBalance = ShowAggregateMoneyBalance;
+            }
+            if (PropertyName == nameof(ShowAggregateStockBalance))
+            {
+                Services.RegistoryService.Instance.ShowAggregateStockBalance = ShowAggregateStockBalance;
             }
         }
     }
