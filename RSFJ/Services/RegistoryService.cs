@@ -31,6 +31,26 @@ namespace RSFJ.Services
             }
         }
 
+        public string MasterPassword
+        {
+            get
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                key = key.OpenSubKey("Augment Software", true);
+                key = key.OpenSubKey("RSFJ", true);
+                return key.GetValue(nameof(MasterPassword))?.ToString();
+            }
+            set
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                key = key.OpenSubKey("Augment Software", true);
+                key = key.OpenSubKey("RSFJ", true);
+                key.SetValue(nameof(MasterPassword), value);
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MasterPassword)));
+            }
+        }
+
         public int FailureCount
         {
             get

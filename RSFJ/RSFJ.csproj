@@ -138,6 +138,9 @@
     <Compile Include="View\NewStockItemFlyoutView.xaml.cs">
       <DependentUpon>NewStockItemFlyoutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\PasswordView.xaml.cs">
+      <DependentUpon>PasswordView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\RojmelPage.xaml.cs">
       <DependentUpon>RojmelPage.xaml</DependentUpon>
     </Compile>
@@ -172,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\NewStockItemFlyoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PasswordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,4 +1,5 @@
-﻿using RSFJ.Services;
+﻿using MahApps.Metro.Controls.Dialogs;
+using RSFJ.Services;
 using RSFJ.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace RSFJ
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : MahApps.Metro.Controls.MetroWindow
     {
         public MainWindow()
         {
@@ -38,8 +39,21 @@ namespace RSFJ
                 RegistoryService.Instance.FailureCount = 0;
             }
 
+            VerifyPasswordAsync();
+
             DataContextService.Instance.Load();
             InitializeComponent();
+        }
+
+        private async void VerifyPasswordAsync()
+        {
+            var result = new View.PasswordView().ShowDialog();
+            if (result != true)
+            {
+                MessageBox.Show("Sorry, the password you entered was incorrect. " +
+                    "The application will now exit.", "Incorrect password.", MessageBoxButton.OK, MessageBoxImage.Error);
+                Application.Current.Shutdown();
+            }
         }
 
         private void MetroWindow_KeyDown(object sender, KeyEventArgs e)
