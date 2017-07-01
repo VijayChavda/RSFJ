@@ -263,11 +263,11 @@ namespace RSFJ.ViewModels
         #endregion
 
         #region Special parameters
-        private double? _Labour;
-        public double? Labour { get => _Labour; set => SetProperty(ref _Labour, value); }
+        private double _Labour;
+        public double Labour { get => _Labour; set => SetProperty(ref _Labour, value); }
 
-        private double? _Waste;
-        public double? Waste { get => _Waste; set => SetProperty(ref _Waste, value); }
+        private double _Waste;
+        public double Waste { get => _Waste; set => SetProperty(ref _Waste, value); }
 
         private bool _IsLabourAsAmount;
         public bool IsLabourAsAmount { get => _IsLabourAsAmount; set => SetProperty(ref _IsLabourAsAmount, value); }
@@ -390,8 +390,8 @@ namespace RSFJ.ViewModels
             _RParam1 = Model.IsLeftSide ? (double?)null : Model.Param1;
             _RParam2 = Model.IsLeftSide ? (double?)null : Model.Param2;
             _RResult = Model.IsLeftSide ? (double?)null : Model.Result;
-            _Labour = Model.Labour;
-            _Waste = Model.Waste;
+            _Labour = Model.Labour ?? 0;
+            _Waste = Model.Waste ?? 0;
             _PartialPaymentInterval = Model.PartialPaymentInterval;
             _TotalPaymentDueDate = Model.Date.AddDays(Model.FullPaymentDueDays);
             _IsLabourAsAmount = Model.IsLabourAsAmount;
@@ -476,7 +476,8 @@ namespace RSFJ.ViewModels
 
             #region Calculations
             if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2) ||
-                PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2))
+                PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2) ||
+                PropertyName == nameof(Labour) || PropertyName == nameof(Waste) || PropertyName == nameof(IsLabourAsAmount))
             {
                 if (Param1 == null)
                     return;
@@ -492,7 +493,15 @@ namespace RSFJ.ViewModels
                         Result = Param1 * Param2 / 100;
                         break;
                     case RojmelEntryType.ItemExchangeCash:
-                        Result = Param1 * Param2;
+                        if (Account.Type == AccountType.Boolean)
+                            Result = Param1 * Param2;
+                        else
+                        {
+                            if (IsLabourAsAmount)
+                                Result = ((Param1 + Waste) * Param2) + Labour;
+                            else
+                                Result = ((Param1 + Waste) * (Param2 + Labour));
+                        }
                         break;
                     case RojmelEntryType.SimpleCashExchange:
                         Result = Param1;

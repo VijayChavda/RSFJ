@@ -9,6 +9,7 @@
       xmlns:utilities="clr-namespace:RSFJ.ViewModels.Utilities"
       xmlns:services="clr-namespace:RSFJ.Services"
       xmlns:system="clr-namespace:System;assembly=mscorlib"
+      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       mc:Ignorable="d" 
       d:DesignHeight="768" d:DesignWidth="1024"
       Background="White"
@@ -244,14 +245,25 @@
                             </Grid>
                         </StackPanel>
                         <StackPanel Margin="10" Visibility="{Binding Path=Account.Type, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CustomerEntryVisibilityConverter}}">
-                            <StackPanel Margin="0 10">
-                                <TextBlock Text="Labour rate: " />
-                                <TextBox Text="{Binding Path=Labour, TargetNullValue={x:Static system:String.Empty}}" />
-                            </StackPanel>
-                            <StackPanel Margin="0 10">
-                                <TextBlock Text="Waste: " />
-                                <TextBox Text="{Binding Path=Loss, TargetNullValue={x:Static system:String.Empty}}" />
-                            </StackPanel>
+                            <Grid Margin="0 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <Controls:ToggleSwitch Grid.ColumnSpan="2" Content="Labour in amount?" IsChecked="{Binding Path=IsLabourAsAmount, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Grid.Row="1" Text="Labour: " />
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Labour, TargetNullValue={x:Static system:String.Empty}}" FontWeight="SemiBold" TextAlignment="Center" />
+
+                                <TextBlock Grid.Row="2" Text="Waste: " />
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Waste, TargetNullValue={x:Static system:String.Empty}}" FontWeight="SemiBold" TextAlignment="Center" />
+                            </Grid>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
