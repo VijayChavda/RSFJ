@@ -116,6 +116,10 @@ namespace RSFJ.ViewModels
                     foreach (var entry in sameStockEntries)
                     {
                         var model = entry.Model;
+
+                        if (model.StockItem == StockItem.None)
+                            continue;
+
                         inStock += model.IsLeftSide ? model.Param1 : -model.Param1;
 
                         entry.StockItemBalance = inStock;
@@ -146,14 +150,17 @@ namespace RSFJ.ViewModels
                                 break;
                             case RojmelEntryType.ItemExchangeCash:
                                 fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
-                                fineInGold += model.IsLeftSide ? model.Param1 : -model.Param1;
                                 break;
                             case RojmelEntryType.SimpleCashExchange:
                                 fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
                                 break;
                             case RojmelEntryType.UseCash:
                                 fineInGold += model.IsLeftSide ? -model.Result : model.Result;
-                                fineInMoney += model.IsLeftSide ? model.Param1 : -model.Param1;
+                                //Use account money balance if Cash is not provided.
+                                if (entry.StockItem == StockItem.None)
+                                {
+                                    fineInMoney += model.IsLeftSide ? model.Param1 : -model.Param1;
+                                }
                                 break;
                         }
 
