@@ -118,36 +118,47 @@ namespace RSFJ.ViewModels
             {
                 EntriesViewSource.View.Refresh();
             }
+
+            if (PropertyName == nameof(ShowAggregateFineBalance) || PropertyName == nameof(ShowAggregateMoneyBalance) ||
+                PropertyName == nameof(ShowAggregateStockBalance))
+            {
+                CalculateAggregateAsync();
+            }
         }
 
         public async Task CalculateAggregateAsync()
         {
-            await Task.Run(() =>
+            if (ShowAggregateStockBalance)
             {
-                var groupedEntries = Entries.Where(x => x.StockItem != null).GroupBy(x => x.StockItem);
-
-                foreach (var sameStockEntries in groupedEntries)
+                await Task.Run(() =>
                 {
-                    var stockItem = sameStockEntries.Key;
-                    double inStock = 0;
+                    var groupedEntries = Entries.Where(x => x.StockItem != null).GroupBy(x => x.StockItem);
 
-                    foreach (var entry in sameStockEntries)
+                    foreach (var sameStockEntries in groupedEntries)
                     {
-                        var model = entry.Model;
+                        var stockItem = sameStockEntries.Key;
+                        double inStock = 0;
 
-                        if (model.StockItem == StockItem.None)
-                            continue;
+                        foreach (var entry in sameStockEntries)
+                        {
+                            var model = entry.Model;
 
-                        inStock += model.IsLeftSide ? model.Param1 : -model.Param1;
+                            if (model.StockItem == StockItem.None)
+                                continue;
 
-                        entry.StockItemBalance = inStock;
+                            inStock += model.IsLeftSide ? model.Param1 : -model.Param1;
+
+                            entry.StockItemBalance = inStock;
+                        }
+
+                        stockItem.InStock = inStock;
                     }
+                });
+            }
 
-                    stockItem.InStock = inStock;
-                }
-            });
-
-            await Task.Run(() =>
+            if (ShowAggregateFineBalance || ShowAggregateMoneyBalance)
+            {
+                await Task.Run(() =>
             {
                 var groupedEntries = Entries.Where(x => x.Account != null).GroupBy(x => x.Account);
 
@@ -190,6 +201,7 @@ namespace RSFJ.ViewModels
                     account.FineInMoney = fineInMoney;
                 }
             });
+            }
         }
 
         public void ResetFilters()
