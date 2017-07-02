@@ -23,10 +23,13 @@
     <Grid Background="LightSteelBlue">
         <Grid.Resources>
             <Style x:Key="Section" TargetType="Border">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="MinWidth" Value="300" />
                 <Setter Property="Padding" Value="20 0" />
-                <Setter Property="Margin" Value="40 20" />
+                <Setter Property="Margin" Value="20" />
                 <Setter Property="BorderBrush" Value="DarkGray" />
                 <Setter Property="BorderThickness" Value="1 1 2 2" />
+                <Setter Property="Background" Value="WhiteSmoke" />
             </Style>
             <Style x:Key="SubSection" TargetType="StackPanel">
                 <Setter Property="Margin" Value="0 0 0 40" />
@@ -41,6 +44,7 @@
                 <Setter Property="FontSize" Value="12pt" />
                 <Setter Property="Padding" Value="0 5" />
                 <Setter Property="Foreground" Value="{DynamicResource LightForegroundBrush}" />
+                <Setter Property="FontWeight" Value="Light" />
             </Style>
             <Style TargetType="TextBox">
                 <Setter Property="FontSize" Value="12pt" />
@@ -62,6 +66,10 @@
                 <Setter Property="VerticalContentAlignment" Value="Center" />
                 <Setter Property="Foreground" Value="{DynamicResource LightForegroundBrush}" />
             </Style>
+
+            <SolidColorBrush x:Key="LightForegroundBrush" Color="SlateGray" />
+            <SolidColorBrush x:Key="MediumForegroundBrush" Color="DarkSlateGray" />
+            <SolidColorBrush x:Key="DarkForegroundBrush" Color="DarkSlateGray" />
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
@@ -70,12 +78,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" DataContext="{Binding Path=ExchangeEntryViewModel}" Background="LightGreen" Style="{StaticResource Section}">
-            <Border.Resources>
-                <SolidColorBrush x:Key="LightForegroundBrush" Color="ForestGreen" />
-                <SolidColorBrush x:Key="MediumForegroundBrush" Color="DarkGreen" />
-                <SolidColorBrush x:Key="DarkForegroundBrush" Color="DarkOliveGreen" />
-            </Border.Resources>
+        <Border Grid.Column="0" DataContext="{Binding Path=ExchangeEntryViewModel}" Style="{StaticResource Section}">
             <StackPanel>
                 <TextBlock Text="Exchange" Style="{StaticResource SectionHeading}" />
 
@@ -188,12 +191,7 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        <Border Grid.Column="1" DataContext="{Binding Path=BullionEntryViewModel}" Background="Khaki" Style="{StaticResource Section}">
-            <Border.Resources>
-                <SolidColorBrush x:Key="LightForegroundBrush" Color="Brown" />
-                <SolidColorBrush x:Key="MediumForegroundBrush" Color="IndianRed" />
-                <SolidColorBrush x:Key="DarkForegroundBrush" Color="SaddleBrown" />
-            </Border.Resources>
+        <Border Grid.Column="1" DataContext="{Binding Path=BullionEntryViewModel}" Style="{StaticResource Section}">
             <StackPanel>
                 <TextBlock Text="Boolean" Style="{StaticResource SectionHeading}" />
 
@@ -239,12 +237,7 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        <Border Grid.Column="2" DataContext="{Binding Path=CustomerEntryViewModel}" Background="PowderBlue" Style="{StaticResource Section}">
-            <Border.Resources>
-                <SolidColorBrush x:Key="LightForegroundBrush" Color="SteelBlue" />
-                <SolidColorBrush x:Key="MediumForegroundBrush" Color="DarkSlateBlue" />
-                <SolidColorBrush x:Key="DarkForegroundBrush" Color="DarkBlue" />
-            </Border.Resources>
+        <Border Grid.Column="2" DataContext="{Binding Path=CustomerEntryViewModel}" Style="{StaticResource Section}">
             <StackPanel>
                 <TextBlock Text="Customer" Style="{StaticResource SectionHeading}" />
 
