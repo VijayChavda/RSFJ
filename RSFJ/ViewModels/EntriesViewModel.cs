@@ -17,12 +17,12 @@ namespace RSFJ.ViewModels
 
         public EntriesViewModel()
         {
+            StockItems = new List<StockItem>();
+            LoadData();
+
             ExchangeEntryViewModel = new ExchangeEntryViewModel();
             BullionEntryViewModel = new BullionEntryViewModel();
             CustomerEntryViewModel = new CustomerEntryViewModel();
-
-            StockItems = new List<StockItem>();
-            LoadData();
         }
 
         private void LoadData()
@@ -52,11 +52,19 @@ namespace RSFJ.ViewModels
         private bool _IsFineClear;
         public bool IsFineClear { get => _IsFineClear; set => SetProperty(ref _IsFineClear, value); }
 
-        public object Context { get; set; }
+        public ExchangeWithFineViewModel ExchangeWithFineViewModel { get; set; }
+        public CashPaymentViewModel CashPaymentViewModel { get; set; }
+        public FineClearWithAccountBalanceViewModel FineClearWithAccountBalanceViewModel { get; set; }
+        public FineClearViewModel FineClearViewModel { get; set; }
 
         public ExchangeEntryViewModel()
         {
             Accounts = new List<Account>();
+
+            ExchangeWithFineViewModel = new ExchangeWithFineViewModel();
+            CashPaymentViewModel = new CashPaymentViewModel();
+            FineClearWithAccountBalanceViewModel = new FineClearWithAccountBalanceViewModel();
+            FineClearViewModel = new FineClearViewModel();
 
             LoadData();
         }
@@ -65,29 +73,7 @@ namespace RSFJ.ViewModels
         {
             Accounts.Clear();
             Accounts.AddRange(Services.DataContextService.Instance.DataContext.Accounts.Where(x => x.Type == AccountType.Regular));
-        }
-
-        protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
-        {
-            if (PropertyName == nameof(IsExchangeWithFine))
-            {
-                Context = new ExchangeWithFineViewModel();
-            }
-
-            if (PropertyName == nameof(IsCashPayment))
-            {
-                Context = new CashPaymentViewModel();
-            }
-
-            if (PropertyName == nameof(IsFineClearWithAccountBalance))
-            {
-                Context = new FineClearWithAccountBalanceViewModel();
-            }
-
-            if (PropertyName == nameof(IsFineClear))
-            {
-                Context = new FineClearViewModel();
-            }
+            Account = Accounts.FirstOrDefault();
         }
     }
 
@@ -96,11 +82,11 @@ namespace RSFJ.ViewModels
         private StockItem _StockItem;
         public StockItem StockItem { get => _StockItem; set => SetProperty(ref _StockItem, value); }
 
-        private double? _Weight;
-        public double? Weight { get => _Weight; set => SetProperty(ref _Weight, value); }
+        private double _Weight;
+        public double Weight { get => _Weight; set => SetProperty(ref _Weight, value); }
 
-        private double? _Purity;
-        public double? Purity { get => _Purity; set => SetProperty(ref _Purity, value); }
+        private double _Purity;
+        public double Purity { get => _Purity; set => SetProperty(ref _Purity, value); }
 
         private DateTime _PaymentBefore;
         public DateTime PaymentBefore { get => _PaymentBefore; set => SetProperty(ref _PaymentBefore, value); }
@@ -118,26 +104,26 @@ namespace RSFJ.ViewModels
 
     public class CashPaymentViewModel : ViewModelBase
     {
-        private double? _Cash;
-        public double? Cash { get => _Cash; set => SetProperty(ref _Cash, value); }
+        private double _Cash;
+        public double Cash { get => _Cash; set => SetProperty(ref _Cash, value); }
     }
 
     public class FineClearWithAccountBalanceViewModel : ViewModelBase
     {
-        private double? _AccountBalance;
-        public double? AccountBalance { get => _AccountBalance; set => SetProperty(ref _AccountBalance, value); }
+        private double _AccountBalance;
+        public double AccountBalance { get => _AccountBalance; set => SetProperty(ref _AccountBalance, value); }
 
-        private double? _Rate;
-        public double? Rate { get => _Rate; set => SetProperty(ref _Rate, value); }
+        private double _Rate;
+        public double Rate { get => _Rate; set => SetProperty(ref _Rate, value); }
     }
 
     public class FineClearViewModel : ViewModelBase
     {
-        private double? _Cash;
-        public double? Cash { get => _Cash; set => SetProperty(ref _Cash, value); }
+        private double _Cash;
+        public double Cash { get => _Cash; set => SetProperty(ref _Cash, value); }
 
-        private double? _Rate;
-        public double? Rate { get => _Rate; set => SetProperty(ref _Rate, value); }
+        private double _Rate;
+        public double Rate { get => _Rate; set => SetProperty(ref _Rate, value); }
     }
 
     public class BullionEntryViewModel : ViewModelBase
@@ -153,11 +139,15 @@ namespace RSFJ.ViewModels
         private bool _IsCashPayment;
         public bool IsCashPayment { get => _IsCashPayment; set => SetProperty(ref _IsCashPayment, value); }
 
-        public object Context { get; set; }
+        public Fine999PaymentViewModel Fine999PaymentViewModel { get; set; }
+        public CashPaymentViewModel CashPaymentViewModel { get; set; }
 
         public BullionEntryViewModel()
         {
             Accounts = new List<Account>();
+
+            Fine999PaymentViewModel = new Fine999PaymentViewModel();
+            CashPaymentViewModel = new CashPaymentViewModel();
 
             LoadData();
         }
@@ -168,28 +158,15 @@ namespace RSFJ.ViewModels
             Accounts.AddRange(Services.DataContextService.Instance.DataContext.Accounts.Where(x => x.Type == AccountType.Boolean));
             Account = Accounts.FirstOrDefault();
         }
-
-        protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
-        {
-            if (PropertyName == nameof(IsFine999Payment))
-            {
-                Context = new Fine999PaymentViewModel();
-            }
-
-            if (PropertyName == nameof(IsCashPayment))
-            {
-                Context = new CashPaymentViewModel();
-            }
-        }
     }
 
     public class Fine999PaymentViewModel : ViewModelBase
     {
-        private double? _Weight;
-        public double? Weight { get => _Weight; set => SetProperty(ref _Weight, value); }
+        private double _Weight;
+        public double Weight { get => _Weight; set => SetProperty(ref _Weight, value); }
 
-        private double? _Rate;
-        public double? Rate { get => _Rate; set => SetProperty(ref _Rate, value); }
+        private double _Rate;
+        public double Rate { get => _Rate; set => SetProperty(ref _Rate, value); }
     }
 
     public class CustomerEntryViewModel : ViewModelBase
@@ -202,17 +179,17 @@ namespace RSFJ.ViewModels
         private StockItem _StockItem;
         public StockItem StockItem { get => _StockItem; set => SetProperty(ref _StockItem, value); }
 
-        private double? _Weight;
-        public double? Weight { get => _Weight; set => SetProperty(ref _Weight, value); }
+        private double _Weight;
+        public double Weight { get => _Weight; set => SetProperty(ref _Weight, value); }
 
-        private double? _Rate;
-        public double? Rate { get => _Rate; set => SetProperty(ref _Rate, value); }
+        private double _Rate;
+        public double Rate { get => _Rate; set => SetProperty(ref _Rate, value); }
 
-        private double? _Labour;
-        public double? Labour { get => _Labour; set => SetProperty(ref _Labour, value); }
+        private double _Labour;
+        public double Labour { get => _Labour; set => SetProperty(ref _Labour, value); }
 
-        private double? _Waste;
-        public double? Waste { get => _Waste; set => SetProperty(ref _Waste, value); }
+        private double _Waste;
+        public double Waste { get => _Waste; set => SetProperty(ref _Waste, value); }
 
         private bool _IsLabourAsAmount;
         public bool IsLabourAsAmount { get => _IsLabourAsAmount; set => SetProperty(ref _IsLabourAsAmount, value); }
@@ -229,6 +206,8 @@ namespace RSFJ.ViewModels
             Accounts.Clear();
             Accounts.AddRange(Services.DataContextService.Instance.DataContext.Accounts.Where(x => x.Type == AccountType.Customer));
             Account = Accounts.FirstOrDefault();
+
+            StockItem = EntriesViewModel.StockItems.FirstOrDefault();
         }
     }
 }
