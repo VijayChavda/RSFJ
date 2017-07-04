@@ -26,6 +26,23 @@ namespace RSFJ
     {
         public MainWindow()
         {
+            bool bypass = true;
+#if DEBUG
+            bypass = false;
+#endif
+            if (bypass)
+            {
+                VerifySoftware();
+
+                VerifyPasswordAsync();
+            }
+
+            DataContextService.Instance.Load();
+            InitializeComponent();
+        }
+
+        private void VerifySoftware()
+        {
             var allowSkip = RegistoryService.Instance.FailureCount <= 50;
 
             var result = new View.Verification(allowSkip).ShowDialog();
@@ -38,11 +55,6 @@ namespace RSFJ
             {
                 RegistoryService.Instance.FailureCount = 0;
             }
-
-            VerifyPasswordAsync();
-
-            DataContextService.Instance.Load();
-            InitializeComponent();
         }
 
         private async void VerifyPasswordAsync()
