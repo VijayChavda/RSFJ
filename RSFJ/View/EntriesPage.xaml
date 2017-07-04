@@ -89,6 +89,7 @@
                 <Setter Property="FontWeight" Value="SemiBold" />
                 <Setter Property="Foreground" Value="DarkSlateGray" />
                 <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Command" Value="{Binding Path=CreditCommand}" />
             </Style>
             <Style x:Key="DebitButton" TargetType="Button">
                 <Setter Property="Width" Value="100" />
@@ -98,6 +99,7 @@
                 <Setter Property="FontWeight" Value="SemiBold" />
                 <Setter Property="Foreground" Value="DarkSlateGray" />
                 <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Command" Value="{Binding Path=DebitCommand}" />
             </Style>
 
             <SolidColorBrush x:Key="LightForegroundBrush" Color="SlateGray" />
@@ -136,12 +138,72 @@
 
                         <Grid Visibility="{Binding Path=IsExchangeWithFine, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <StackPanel DataContext="{Binding Path=ExchangeWithFineViewModel}">
-                            <StackPanel Style="{StaticResource SubSection}">
-                                <TextBlock Text="Item: " Style="{StaticResource Label}" />
-                                <ComboBox SelectedItem="{Binding Path=StockItem}" ItemsSource="{Binding Source={x:Static vm:EntriesViewModel.StockItems}}" />
-                            </StackPanel>
+                                <StackPanel Style="{StaticResource SubSection}">
+                                    <TextBlock Text="Item: " Style="{StaticResource Label}" />
+                                    <ComboBox SelectedItem="{Binding Path=StockItem}" ItemsSource="{Binding Source={x:Static vm:EntriesViewModel.StockItems}}" />
+                                </StackPanel>
 
-                            <StackPanel Style="{StaticResource SubSection}">
+                                <StackPanel Style="{StaticResource SubSection}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="4*" />
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="4*" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Weight: " Style="{StaticResource Label}" />
+                                            <TextBox Text="{Binding Path=Weight}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="Purity: " Style="{StaticResource Label}" />
+                                            <TextBox Text="{Binding Path=Purity}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel Style="{StaticResource SubSection}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Payment before: " Style="{StaticResource Label}" />
+                                        <DatePicker Grid.Column="2" SelectedDate="{Binding Path=PaymentBefore}" />
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel Style="{StaticResource SubSection}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Payment interval: " Style="{StaticResource Label}" />
+                                        <DatePicker Grid.Column="2" SelectedDate="{Binding Path=PaymentInterval}" />
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Visibility="{Binding Path=IsCashPayment, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel DataContext="{Binding Path=CashPaymentViewModel}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Cash: " Style="{StaticResource Label}" />
+                                        <TextBox Text="{Binding Path=Cash}" />
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Visibility="{Binding Path=IsFineClearWithAccountBalance, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel DataContext="{Binding Path=FineClearWithAccountBalanceViewModel}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="4*" />
@@ -149,95 +211,35 @@
                                         <ColumnDefinition Width="4*" />
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="0">
-                                        <TextBlock Text="Weight: " Style="{StaticResource Label}" />
-                                        <TextBox Text="{Binding Path=Weight}" />
+                                        <TextBlock Text="Use cash balance: " Style="{StaticResource Label}" />
+                                        <TextBox Text="{Binding Path=AccountBalance}" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="2">
-                                        <TextBlock Text="Purity: " Style="{StaticResource Label}" />
-                                        <TextBox Text="{Binding Path=Purity}" />
+                                        <TextBlock Text="Rate: " Style="{StaticResource Label}" />
+                                        <TextBox Text="{Binding Path=Rate}" />
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
-
-                            <StackPanel Style="{StaticResource SubSection}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="10" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Payment before: " Style="{StaticResource Label}" />
-                                    <DatePicker Grid.Column="2" SelectedDate="{Binding Path=PaymentBefore}" />
-                                </Grid>
-                            </StackPanel>
-
-                            <StackPanel Style="{StaticResource SubSection}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="10" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Payment interval: " Style="{StaticResource Label}" />
-                                    <DatePicker Grid.Column="2" SelectedDate="{Binding Path=PaymentInterval}" />
-                                </Grid>
-                            </StackPanel>
-                        </StackPanel>
-                        </Grid>
-
-                        <Grid Visibility="{Binding Path=IsCashPayment, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <StackPanel DataContext="{Binding Path=CashPaymentViewModel}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0">
-                                    <TextBlock Text="Cash: " Style="{StaticResource Label}" />
-                                    <TextBox Text="{Binding Path=Cash}" />
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
-                        </Grid>
-
-                        <Grid Visibility="{Binding Path=IsFineClearWithAccountBalance, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <StackPanel DataContext="{Binding Path=FineClearWithAccountBalanceViewModel}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="4*" />
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="4*" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0">
-                                    <TextBlock Text="Use cash balance: " Style="{StaticResource Label}" />
-                                    <TextBox Text="{Binding Path=AccountBalance}" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="Rate: " Style="{StaticResource Label}" />
-                                    <TextBox Text="{Binding Path=Rate}" />
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
                         </Grid>
 
                         <Grid Visibility="{Binding Path=IsFineClear, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <StackPanel DataContext="{Binding Path=FineClearViewModel}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="4*" />
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="4*" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0">
-                                    <TextBlock Text="Cash: " Style="{StaticResource Label}" />
-                                    <TextBox Text="{Binding Path=Cash}" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="Rate: " Style="{StaticResource Label}" />
-                                    <TextBox Text="{Binding Path=Rate}" />
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="4*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="4*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Cash: " Style="{StaticResource Label}" />
+                                        <TextBox Text="{Binding Path=Cash}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Rate: " Style="{StaticResource Label}" />
+                                        <TextBox Text="{Binding Path=Rate}" />
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
                         </Grid>
                     </StackPanel>
                     <Grid DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="0 10">
@@ -292,8 +294,8 @@
                         </Grid>
                     </StackPanel>
 
-                        <StackPanel Visibility="{Binding Path=IsCashPayment, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Grid DataContext="{Binding Path=CashPaymentViewModel}">
+                    <StackPanel Visibility="{Binding Path=IsCashPayment, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid DataContext="{Binding Path=CashPaymentViewModel}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition />
