@@ -8,6 +8,7 @@ namespace RSFJ.Model
     public class StockItem
     {
         public static readonly StockItem Cash;
+        public static readonly StockItem Fine999;
         public static readonly StockItem None;
 
         /// <summary>
@@ -33,6 +34,7 @@ namespace RSFJ.Model
         static StockItem()
         {
             Cash = new StockItem() { Name = "Cash" };
+            Fine999 = new StockItem() { Name = "Fine999" };
             None = new StockItem() { Name = "None" };
         }
 
