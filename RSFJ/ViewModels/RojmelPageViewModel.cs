@@ -107,7 +107,7 @@ namespace RSFJ.ViewModels
 
                 e.Accepted = entry.Account == FilterAccount || FilterAccount == null;
                 e.Accepted &= entry.StockItem == FilterStockItem || FilterStockItem == null;
-                e.Accepted &= entry.Date >= FilterStartDate && entry.Date <= FilterEndDate;
+                e.Accepted &= entry.Date.Date >= FilterStartDate && entry.Date.Date <= FilterEndDate;
             }
         }
 
