@@ -18,12 +18,12 @@ namespace RSFJ.ViewModels.Utilities
             if (entry == null)
                 return Visibility.Collapsed;
 
-            if (entry.Type == Model.RojmelEntryType.ItemExchangeFine && !entry.IsLeftSide)
+            if (entry.Type == Model.RojmelEntryType.ItemExchangeFine && !entry.IsLeftSide && entry.Account.Type == Model.AccountType.Regular)
             {
                 return Visibility.Visible;
             }
 
-            if (entry.Type == Model.RojmelEntryType.ItemExchangeCash && entry.IsLeftSide)
+            if (entry.Type == Model.RojmelEntryType.ItemExchangeCash && entry.IsLeftSide && entry.Account.Type == Model.AccountType.Boolean)
             {
                 return Visibility.Visible;
             }
