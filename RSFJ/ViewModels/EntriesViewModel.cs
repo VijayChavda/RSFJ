@@ -110,12 +110,14 @@ namespace RSFJ.ViewModels
                 entry.Param2 = ExchangeWithFineViewModel.Purity;
                 entry.FullPaymentDueDays = DateTime.Now.Subtract(ExchangeWithFineViewModel.PaymentBefore).Days;
                 entry.PartialPaymentInterval = DateTime.Now.Subtract(ExchangeWithFineViewModel.PaymentInterval).Days;
+                entry.Result = ExchangeWithFineViewModel.Weight * ExchangeWithFineViewModel.Purity / 100;
             }
             else if (IsCashPayment)
             {
                 entry.Type = RojmelEntryType.SimpleCashExchange;
                 entry.StockItem = StockItem.Cash;
                 entry.Param1 = CashPaymentViewModel.Cash;
+                entry.Result = CashPaymentViewModel.Cash;
             }
             else if (IsFineClearWithAccountBalance)
             {
@@ -123,6 +125,7 @@ namespace RSFJ.ViewModels
                 entry.StockItem = StockItem.None;
                 entry.Param1 = FineClearWithAccountBalanceViewModel.AccountBalance;
                 entry.Param2 = FineClearWithAccountBalanceViewModel.Rate;
+                entry.Result = FineClearWithAccountBalanceViewModel.AccountBalance / FineClearWithAccountBalanceViewModel.Rate;
             }
             else if (IsFineClear)
             {
@@ -130,6 +133,7 @@ namespace RSFJ.ViewModels
                 entry.StockItem = StockItem.Cash;
                 entry.Param1 = FineClearViewModel.Cash;
                 entry.Param2 = FineClearViewModel.Rate;
+                entry.Result = FineClearViewModel.Cash / FineClearViewModel.Rate;
             }
 
             Services.DataContextService.Instance.DataContext.RojmelEntries.Add(entry);
@@ -201,12 +205,14 @@ namespace RSFJ.ViewModels
                 entry.Param2 = Fine999PaymentViewModel.Rate;
                 entry.FullPaymentDueDays = DateTime.Now.Subtract(Fine999PaymentViewModel.PaymentBefore).Days;
                 entry.PartialPaymentInterval = DateTime.Now.Subtract(Fine999PaymentViewModel.PaymentInterval).Days;
+                entry.Result = Fine999PaymentViewModel.Weight * Fine999PaymentViewModel.Rate;
             }
             else if (IsCashPayment)
             {
                 entry.Type = RojmelEntryType.SimpleCashExchange;
                 entry.StockItem = StockItem.Cash;
                 entry.Param1 = CashPaymentViewModel.Cash;
+                entry.Result = CashPaymentViewModel.Cash;
             }
 
             Services.DataContextService.Instance.DataContext.RojmelEntries.Add(entry);
@@ -284,6 +290,11 @@ namespace RSFJ.ViewModels
                 Param2 = Rate,
                 Waste = Waste
             };
+
+            if (IsLabourAsAmount)
+                entry.Result = ((Weight + Waste) * Rate) + Labour;
+            else
+                entry.Result = ((Weight + Waste) * (Rate + Labour));
 
             Services.DataContextService.Instance.DataContext.RojmelEntries.Add(entry);
         }
