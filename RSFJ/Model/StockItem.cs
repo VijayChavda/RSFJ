@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using RSFJ.ViewModels;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace RSFJ.Model
 {
     /// <summary>
     /// Represents a stock item.
     /// </summary>
-    public class StockItem
+    public class StockItem : ViewModelBase
     {
         public static readonly StockItem Cash;
         public static readonly StockItem Fine999;
@@ -19,7 +21,8 @@ namespace RSFJ.Model
         /// <summary>
         /// How much amount of this stock is in possession.
         /// </summary>
-        public double InStock { get; set; }
+        public double InStock { get => _InStock; set => SetProperty(ref _InStock, value); }
+        private double _InStock;
 
         /// <summary>
         /// The rate/purity of this item.

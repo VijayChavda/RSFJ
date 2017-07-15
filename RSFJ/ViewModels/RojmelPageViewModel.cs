@@ -128,9 +128,9 @@ namespace RSFJ.ViewModels
 
         public async Task CalculateAggregateAsync()
         {
-            if (ShowAggregateStockBalance)
+            await Task.Run(() =>
             {
-                await Task.Run(() =>
+                if (ShowAggregateStockBalance)
                 {
                     var groupedEntries = Entries.Where(x => x.StockItem != null).GroupBy(x => x.StockItem);
 
@@ -153,55 +153,52 @@ namespace RSFJ.ViewModels
 
                         stockItem.InStock = inStock;
                     }
-                });
-            }
+                }
 
-            if (ShowAggregateFineBalance || ShowAggregateMoneyBalance)
-            {
-                await Task.Run(() =>
-            {
-                var groupedEntries = Entries.Where(x => x.Account != null).GroupBy(x => x.Account);
-
-                foreach (var sameAccountEntries in groupedEntries)
+                if (ShowAggregateFineBalance || ShowAggregateMoneyBalance)
                 {
-                    var account = sameAccountEntries.Key;
-                    double fineInMoney = 0;
-                    double fineInGold = 0;
+                    var groupedEntries = Entries.Where(x => x.Account != null).GroupBy(x => x.Account);
 
-                    foreach (var entry in sameAccountEntries)
+                    foreach (var sameAccountEntries in groupedEntries)
                     {
-                        var model = entry.Model;
+                        var account = sameAccountEntries.Key;
+                        double fineInMoney = 0;
+                        double fineInGold = 0;
 
-                        switch (entry.Type)
+                        foreach (var entry in sameAccountEntries)
                         {
-                            case RojmelEntryType.ItemExchangeFine:
-                                fineInGold += model.IsLeftSide ? -model.Result : model.Result;
-                                break;
-                            case RojmelEntryType.ItemExchangeCash:
-                                fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
-                                break;
-                            case RojmelEntryType.SimpleCashExchange:
-                                fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
-                                break;
-                            case RojmelEntryType.UseCash:
-                                fineInGold += model.IsLeftSide ? -model.Result : model.Result;
-                                //Use account money balance if Cash is not provided.
-                                if (entry.StockItem == StockItem.None)
-                                {
-                                    fineInMoney += model.IsLeftSide ? model.Param1 : -model.Param1;
-                                }
-                                break;
+                            var model = entry.Model;
+
+                            switch (entry.Type)
+                            {
+                                case RojmelEntryType.ItemExchangeFine:
+                                    fineInGold += model.IsLeftSide ? -model.Result : model.Result;
+                                    break;
+                                case RojmelEntryType.ItemExchangeCash:
+                                    fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
+                                    break;
+                                case RojmelEntryType.SimpleCashExchange:
+                                    fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
+                                    break;
+                                case RojmelEntryType.UseCash:
+                                    fineInGold += model.IsLeftSide ? -model.Result : model.Result;
+                                    //Use account money balance if Cash is not provided.
+                                    if (entry.StockItem == StockItem.None)
+                                    {
+                                        fineInMoney += model.IsLeftSide ? model.Param1 : -model.Param1;
+                                    }
+                                    break;
+                            }
+
+                            entry.AccountMoneyBalance = fineInMoney;
+                            entry.AccountFineBalance = fineInGold;
                         }
 
-                        entry.AccountMoneyBalance = fineInMoney;
-                        entry.AccountFineBalance = fineInGold;
+                        account.FineInGold = fineInGold;
+                        account.FineInMoney = fineInMoney;
                     }
-
-                    account.FineInGold = fineInGold;
-                    account.FineInMoney = fineInMoney;
                 }
             });
-            }
         }
 
         public void ResetFilters()

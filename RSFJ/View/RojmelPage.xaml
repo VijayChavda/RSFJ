@@ -203,11 +203,11 @@
                             </Border>
                             <Grid Margin="10 2">
                                 <TextBlock Text="Fine due:" FontSize="12pt" Foreground="SlateGray" />
-                                <TextBlock Text="{Binding Path=Account.FineInGold}" FontSize="12pt" HorizontalAlignment="Right" />
+                                <TextBlock Text="{Binding Path=Account.FineInGold, StringFormat=\{0\} %, UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
                             <Grid Margin="10 2">
                                 <TextBlock Text="Money due:" FontSize="12pt" Foreground="SlateGray" />
-                                <TextBlock Text="{Binding Path=Account.FineInMoney}" FontSize="12pt" HorizontalAlignment="Right" />
+                                <TextBlock Text="{Binding Path=Account.FineInMoney, UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
                         </StackPanel>
                         <StackPanel Margin="10" Visibility="{Binding Path=StockItem, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
@@ -216,7 +216,7 @@
                             </Border>
                             <Grid Margin="10 2">
                                 <TextBlock Text="In stock:" FontSize="12pt" Foreground="SlateGray" />
-                                <TextBlock Text="{Binding Path=StockItem.InStock}" FontSize="12pt" HorizontalAlignment="Right" />
+                                <TextBlock Text="{Binding Path=StockItem.InStock, UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
                             <Grid Margin="10 2">
                                 <TextBlock Text="Equivalent gold:" FontSize="12pt" Foreground="SlateGray" />

@@ -1,9 +1,11 @@
-﻿namespace RSFJ.Model
+﻿using RSFJ.ViewModels;
+
+namespace RSFJ.Model
 {
     /// <summary>
     /// Represents an account.
     /// </summary>
-    public class Account
+    public class Account : ViewModelBase
     {
         /// <summary>
         /// Name of the account head.
@@ -18,12 +20,14 @@
         /// <summary>
         /// Fine due in gold weight.
         /// </summary>
-        public double FineInGold { get; set; }
+        public double FineInGold { get => _FineInGold; set => SetProperty(ref _FineInGold, value); }
+        private double _FineInGold;
 
         /// <summary>
         /// Fine due in money cash.
         /// </summary>
-        public double FineInMoney { get; set; }
+        public double FineInMoney { get => _FineInMoney; set => SetProperty(ref _FineInMoney, value); }
+        private double _FineInMoney;
 
         /// <summary>
         /// A group to categorize and organize accounts.
