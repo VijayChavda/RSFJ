@@ -53,6 +53,10 @@ namespace RSFJ.ViewModels
                 {
                     CurrentPage = new View.EntriesPage();
                 }
+                if (page == nameof(View.StockPage))
+                {
+                    CurrentPage = new View.StockPage();
+                }
             }, param => true));
         }
 

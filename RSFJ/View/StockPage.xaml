@@ -1,0 +1,32 @@
+﻿<Page x:Class="RSFJ.View.StockPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:RSFJ.View"
+      xmlns:vm="clr-namespace:RSFJ.ViewModels"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Title="StockPage">
+
+    <Page.DataContext>
+        <vm:StockViewModel />
+    </Page.DataContext>
+
+    <Grid Background="LightBlue">
+        <DataGrid ItemsSource="{Binding Path=StockItems}"
+                  AutoGenerateColumns="False"
+                  HorizontalAlignment="Center" Margin="0 60 0 180"
+                  BorderBrush="SlateGray" BorderThickness="1 1 2 2"
+                  GridLinesVisibility="Vertical"
+                  IsReadOnly="True" IsHitTestVisible="False"
+                  FontSize="14pt" Foreground="SlateGray">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="120" Header="Name" Binding="{Binding Path=Name}" />
+                <DataGridTextColumn Width="120" Header="In Stock" Binding="{Binding Path=InStock}" />
+                <DataGridTextColumn Width="120" Header="Purity" Binding="{Binding Path=Rate_Purity}" />
+                <DataGridTextColumn Width="120" Header="Value" Binding="{Binding Path=EquivalentGold}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

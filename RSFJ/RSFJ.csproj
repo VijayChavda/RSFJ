@@ -118,6 +118,7 @@
     <Compile Include="ViewModels\NewAccountFlyoutViewModel.cs" />
     <Compile Include="ViewModels\NewStockItemFlyoutViewModel.cs" />
     <Compile Include="ViewModels\SettingsFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\StockViewModel.cs" />
     <Compile Include="ViewModels\Utilities\CustomerEntryVisibilityConverter.cs" />
     <Compile Include="ViewModels\Utilities\LendingEntryVisibilityConverter.cs" />
     <Compile Include="ViewModels\Utilities\RojmelEntryTypeToHeadingConverter.cs" />
@@ -150,6 +151,9 @@
     </Compile>
     <Compile Include="View\SettingsFlyoutView.xaml.cs">
       <DependentUpon>SettingsFlyoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StockPage.xaml.cs">
+      <DependentUpon>StockPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Verification.xaml.cs">
       <DependentUpon>Verification.xaml</DependentUpon>
@@ -195,6 +199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SettingsFlyoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StockPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
