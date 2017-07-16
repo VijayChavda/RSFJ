@@ -21,6 +21,12 @@ namespace RSFJ.ViewModels
         private string _Note;
         public string Note { get => _Note; set => SetProperty(ref _Note, value); }
 
+        private double _FineInGold;
+        public double FineInGold { get => _FineInGold; set => SetProperty(ref _FineInGold, value); }
+
+        private double _FineInMoney;
+        public double FineInMoney { get => _FineInMoney; set => SetProperty(ref _FineInMoney, value); }
+
         private AccountType _Type;
         public AccountType Type { get => _Type; set => SetProperty(ref _Type, value); }
 
@@ -65,8 +71,8 @@ namespace RSFJ.ViewModels
             {
                 Name = Name,
                 Phone = Phone,
-                FineInGold = 0,
-                FineInMoney = 0,
+                FineInGold = FineInGold,
+                FineInMoney = FineInMoney,
                 Group = Group,
                 Note = Note,
                 Type = Type
@@ -83,6 +89,8 @@ namespace RSFJ.ViewModels
                 {
                     Name = null;
                     Phone = null;
+                    FineInGold = 0;
+                    FineInMoney = 0;
                     Group = null;
                     Note = null;
                     Type = AccountType.Regular;

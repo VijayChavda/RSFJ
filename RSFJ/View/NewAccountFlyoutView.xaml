@@ -7,8 +7,7 @@
              xmlns:vm="clr-namespace:RSFJ.ViewModels"
              xmlns:m="clr-namespace:RSFJ.Model"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d">
 
     <UserControl.Resources>
         <ObjectDataProvider x:Key="AccountTypes" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
@@ -17,7 +16,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </UserControl.Resources>
-    
+
     <UserControl.DataContext>
         <vm:NewAccountFlyoutViewModel x:Name="NewAccountFlyoutViewModel" />
     </UserControl.DataContext>
@@ -38,35 +37,45 @@
                 </Style>
             </StackPanel.Resources>
             <StackPanel Margin="10">
-                    <StackPanel Margin="0 10">
-                        <TextBlock Text="Name: " />
-                        <TextBox Text="{Binding Path=Name}" />
-                    </StackPanel>
-                    
-                    <StackPanel Margin="0 10">
-                        <TextBlock Text="Phone: " />
-                        <TextBox Text="{Binding Path=Phone}" />
-                    </StackPanel>
-                    
-                    <StackPanel Margin="0 10">
-                        <TextBlock Text="Note: " VerticalAlignment="Center" />
-                        <TextBox Text="{Binding Path=Note}" AcceptsReturn="True" MinLines="1" MaxLines="3" />
-                    </StackPanel>
-                    
-                    <StackPanel Margin="0 10">
-                        <TextBlock Text="Group: " />
-                        <TextBox Text="{Binding Path=Group}" />
-                    </StackPanel>
-                    
-                    <StackPanel Margin="0 10">
-                        <TextBlock Text="Preferred transaction type: " />
-                        <ComboBox SelectedItem="{Binding Path=Type}" ItemsSource="{Binding Source={StaticResource AccountTypes}}" Foreground="Gray" FocusVisualStyle="{x:Null}" FontSize="13pt">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}" Foreground="Gray" />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                <StackPanel Margin="0 10">
+                    <TextBlock Text="Name: " />
+                    <TextBox Text="{Binding Path=Name}" />
+                </StackPanel>
+
+                <StackPanel Margin="0 10">
+                    <TextBlock Text="Phone: " />
+                    <TextBox Text="{Binding Path=Phone}" />
+                </StackPanel>
+
+                <StackPanel Margin="0 10">
+                    <TextBlock Text="Note: " VerticalAlignment="Center" />
+                    <TextBox Text="{Binding Path=Note}" AcceptsReturn="True" MinLines="1" MaxLines="3" />
+                </StackPanel>
+
+                <StackPanel Margin="0 10">
+                    <TextBlock Text="Group: " />
+                    <TextBox Text="{Binding Path=Group}" />
+                </StackPanel>
+
+                <StackPanel Margin="0 10">
+                    <TextBlock Text="Preferred transaction type: " />
+                    <ComboBox SelectedItem="{Binding Path=Type}" ItemsSource="{Binding Source={StaticResource AccountTypes}}" Foreground="Gray" FocusVisualStyle="{x:Null}" FontSize="13pt">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Foreground="Gray" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Margin="0 10">
+                    <TextBlock Text="Fine in gold: " />
+                    <TextBox Text="{Binding Path=FineInGold}" TextAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Margin="0 10">
+                    <TextBlock Text="Fine in money: " />
+                    <TextBox Text="{Binding Path=FineInMoney}" TextAlignment="Center" />
                 </StackPanel>
 
                 <StackPanel Margin="0 10">
