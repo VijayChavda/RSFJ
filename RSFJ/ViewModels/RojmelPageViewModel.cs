@@ -150,8 +150,6 @@ namespace RSFJ.ViewModels
 
                             entry.StockItemBalance = inStock;
                         }
-
-                        stockItem.InStock = inStock;
                     }
                 }
 
@@ -193,9 +191,6 @@ namespace RSFJ.ViewModels
                             entry.AccountMoneyBalance = fineInMoney;
                             entry.AccountFineBalance = fineInGold;
                         }
-
-                        account.FineInGold = fineInGold;
-                        account.FineInMoney = fineInMoney;
                     }
                 }
             });

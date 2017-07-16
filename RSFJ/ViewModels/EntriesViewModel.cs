@@ -136,7 +136,7 @@ namespace RSFJ.ViewModels
                 entry.Result = FineClearViewModel.Cash / FineClearViewModel.Rate;
             }
 
-            Services.DataContextService.Instance.DataContext.RojmelEntries.Add(entry);
+            Services.DataContextService.Instance.DataContext.AddRojmelEntry(entry);
         }
     }
 
@@ -215,7 +215,7 @@ namespace RSFJ.ViewModels
                 entry.Result = CashPaymentViewModel.Cash;
             }
 
-            Services.DataContextService.Instance.DataContext.RojmelEntries.Add(entry);
+            Services.DataContextService.Instance.DataContext.AddRojmelEntry(entry);
         }
     }
 
@@ -296,7 +296,7 @@ namespace RSFJ.ViewModels
             else
                 entry.Result = ((Weight + Waste) * (Rate + Labour));
 
-            Services.DataContextService.Instance.DataContext.RojmelEntries.Add(entry);
+            Services.DataContextService.Instance.DataContext.AddRojmelEntry(entry);
         }
     }
 

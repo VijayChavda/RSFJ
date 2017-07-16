@@ -22,6 +22,39 @@ namespace RSFJ.Model
         public event EventHandler<Account> AccountAdded;
         public event EventHandler<Account> AccountRemoved;
 
+        public void AddRojmelEntry(RojmelEntry Entry)
+        {
+            if (Entry.Type == RojmelEntryType.Invalid || Entry.StockItem == null || Entry.Account == null)
+            {
+                return;
+            }
+
+            Entry.StockItem.InStock += Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
+
+            switch (Entry.Type)
+            {
+                case RojmelEntryType.ItemExchangeFine:
+                    Entry.Account.FineInGold += Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    break;
+                case RojmelEntryType.ItemExchangeCash:
+                    Entry.Account.FineInMoney += Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    break;
+                case RojmelEntryType.SimpleCashExchange:
+                    Entry.Account.FineInMoney += Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    break;
+                case RojmelEntryType.UseCash:
+                    Entry.Account.FineInGold += Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    //Use account money balance if Cash is not provided.
+                    if (Entry.StockItem == StockItem.None)
+                    {
+                        Entry.Account.FineInMoney += Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
+                    }
+                    break;
+            }
+
+            RojmelEntries.Add(Entry);
+        }
+
         internal void FireStockItemAdded(StockItem Item)
         {
             StockItemAdded?.Invoke(this, Item);
