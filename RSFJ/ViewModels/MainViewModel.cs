@@ -34,6 +34,12 @@ namespace RSFJ.ViewModels
             get => _restoreCommand ?? (_restoreCommand = new RelayCommand(param => DataContextService.Instance.Restore(param as string), param => true));
         }
 
+        RelayCommand _newAccountCommand;
+        public ICommand NewAccountCommand
+        {
+            get => _newAccountCommand ?? (_newAccountCommand = new RelayCommand(param => DataContextService.Instance.Backup(), param => true));
+        }
+
         RelayCommand _navigateCommand;
         public ICommand NavigateCommand
         {

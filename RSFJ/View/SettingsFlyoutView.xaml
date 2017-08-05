@@ -7,8 +7,7 @@
              xmlns:vm="clr-namespace:RSFJ.ViewModels"
              xmlns:v="clr-namespace:RSFJ.View"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d">
 
     <UserControl.DataContext>
         <vm:SettingsFlyoutViewModel x:Name="ViewModel" />
@@ -33,23 +32,8 @@
                     <StackPanel Margin="0 10">
                         <Controls:ToggleSwitch IsChecked="{Binding Path=ShowAggregateStockBalance, UpdateSourceTrigger=PropertyChanged}" Content="Show stock balance" Foreground="DarkSlateGray" />
                     </StackPanel>
-                    <StackPanel Margin="0 10">
-                        <TextBlock Text="Actions: " />
-                        <TextBlock Margin="10 5">
-                        <Hyperlink Command="{Binding Path=NewStockItemCommand}">Add new Stock item</Hyperlink>
-                        </TextBlock>
-                        <TextBlock Margin="10 5">
-                        <Hyperlink Command="{Binding Path=NewAccountCommand}">Add new Account</Hyperlink>
-                        </TextBlock>
-                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Border>
-        <Controls:Flyout Theme="Light" Background="CornflowerBlue" Foreground="White" Header="New Stock item" Position="Right" IsOpen="{Binding Path=IsShowingNewStockItemFlyout, UpdateSourceTrigger=PropertyChanged}" Width="300">
-            <v:NewStockItemFlyoutView />
-        </Controls:Flyout>
-        <Controls:Flyout Theme="Light" Background="CornflowerBlue" Foreground="White" Header="New Account" Position="Right" IsOpen="{Binding Path=IsShowingNewAccountFlyout, UpdateSourceTrigger=PropertyChanged}" Width="300">
-            <v:NewAccountFlyoutView />
-        </Controls:Flyout>
     </Grid>
 </UserControl>

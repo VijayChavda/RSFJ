@@ -57,7 +57,7 @@ namespace RSFJ
             }
         }
 
-        private async void VerifyPasswordAsync()
+        private void VerifyPasswordAsync()
         {
             var result = new View.PasswordView().ShowDialog();
             if (result != true)
@@ -83,6 +83,20 @@ namespace RSFJ
             if (e.Key == Key.R && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 ViewModel.RestoreCommand.Execute(null);
+            }
+        }
+
+        private void AFlyout_IsOpenChanged(object sender, RoutedEventArgs e)
+        {
+            if (addstockItem.IsOpen || addAccount.IsOpen || aboutFlyout.IsOpen || settingsFlyout.IsOpen)
+            {
+                MainFrame.IsHitTestVisible = false;
+                MainFrame.Opacity = 0.3;
+            }
+            else
+            {
+                MainFrame.IsHitTestVisible = true;
+                MainFrame.Opacity = 1;
             }
         }
     }

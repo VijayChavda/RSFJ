@@ -12,12 +12,6 @@ namespace RSFJ.ViewModels
 {
     public class SettingsFlyoutViewModel : ViewModelBase
     {
-        private bool _IsShowingNewStockItemFlyout;
-        public bool IsShowingNewStockItemFlyout { get => _IsShowingNewStockItemFlyout; set => SetProperty(ref _IsShowingNewStockItemFlyout, value); }
-
-        private bool _IsShowingNewAccountFlyout;
-        public bool IsShowingNewAccountFlyout { get => _IsShowingNewAccountFlyout; set => SetProperty(ref _IsShowingNewAccountFlyout, value); }
-
         private bool _ShowAggregateFineBalance;
         public bool ShowAggregateFineBalance { get => _ShowAggregateFineBalance; set => SetProperty(ref _ShowAggregateFineBalance, value); }
 
@@ -26,18 +20,6 @@ namespace RSFJ.ViewModels
 
         private bool _ShowAggregateStockBalance;
         public bool ShowAggregateStockBalance { get => _ShowAggregateStockBalance; set => SetProperty(ref _ShowAggregateStockBalance, value); }
-
-        RelayCommand _newStockItem;
-        public ICommand NewStockItemCommand
-        {
-            get => _newStockItem ?? (_newStockItem = new RelayCommand(param => IsShowingNewStockItemFlyout = true, param => true));
-        }
-
-        RelayCommand _newAccount;
-        public ICommand NewAccountCommand
-        {
-            get => _newAccount ?? (_newAccount = new RelayCommand(param => IsShowingNewAccountFlyout = true, param => true));
-        }
 
         public SettingsFlyoutViewModel()
         {

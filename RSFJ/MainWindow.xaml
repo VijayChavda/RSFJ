@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         RightWindowCommandsOverlayBehavior="Never" Icon="/Images/logo.png" ShowIconOnTitleBar="False"
         GlowBrush="SlateGray" TitleCharacterCasing="Normal" WindowStartupLocation="CenterScreen" WindowTitleBrush="SteelBlue"
-        MinHeight="768" MinWidth="1024" Height="768" Width="1024" TitlebarHeight="75" KeyDown="MetroWindow_KeyDown">
+        MinHeight="768" MinWidth="1024" Height="768" Width="1024" TitlebarHeight="60" KeyDown="MetroWindow_KeyDown">
 
     <Controls:MetroWindow.DataContext>
         <vm:MainViewModel x:Name="ViewModel" />
@@ -18,35 +18,52 @@
 
     <Controls:MetroWindow.TitleTemplate>
         <ItemContainerTemplate>
-            <Grid Background="SteelBlue">
-                <TextBlock Text="Rojmel Software for Jewellers" Padding="20 20 20 0" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="16pt" />
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Center">
+                <TextBlock Text="Rojmel Software for Jewellers" Padding="20 20 20 0" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="20pt" />
             </Grid>
         </ItemContainerTemplate>
     </Controls:MetroWindow.TitleTemplate>
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
+            <Button Foreground="White" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Command="{Binding Path=SaveCommand}" Content="Save" />
+            <Button Foreground="White" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Command="{Binding Path=BackupCommand}" Content="Backup" />
+            <Button Foreground="White" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Command="{Binding Path=RestoreCommand}" Content="Restore" />
+
+            <ToggleButton Cursor="Hand" Foreground="Navy" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Content="About" IsChecked="{Binding ElementName=aboutFlyout, Path=IsOpen}" />
+            <ToggleButton Cursor="Hand" Foreground="Navy" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Content="Settings" IsChecked="{Binding ElementName=settingsFlyout, Path=IsOpen}" />
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+    <Controls:MetroWindow.LeftWindowCommands>
+        <Controls:WindowCommands>
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="EntriesPage" Content="Entries" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="RojmelPage" Content="Rojmel" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="AccountPage" Content="Accounts" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="StockPage" Content="Stock" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
-
-            <ToggleButton Content="About" IsChecked="{Binding ElementName=aboutFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="Navy" VerticalAlignment="Center" />
-            <ToggleButton Content="Settings" IsChecked="{Binding ElementName=settingsFlyout, Path=IsOpen}" Cursor="Hand" FontWeight="SemiBold" Foreground="Navy" VerticalAlignment="Center" />
+            
+            <ToggleButton Cursor="Hand" Foreground="Navy" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Content="Add Stock Item" IsChecked="{Binding ElementName=addstockItem, Path=IsOpen}" />
+            <ToggleButton Cursor="Hand" Foreground="Navy" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Content="Add Account" IsChecked="{Binding ElementName=addAccount, Path=IsOpen}" />
         </Controls:WindowCommands>
-    </Controls:MetroWindow.RightWindowCommands>
+    </Controls:MetroWindow.LeftWindowCommands>
 
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout x:Name="settingsFlyout" Theme="Light" Background="SteelBlue" Foreground="White" Header="Settings" Position="Right" Width="300">
+            <Controls:Flyout x:Name="settingsFlyout" IsPinned="False" Theme="Accent" Header="Settings" Width="300" Position="Right" IsOpenChanged="AFlyout_IsOpenChanged">
                 <v:SettingsFlyoutView />
             </Controls:Flyout>
-            <Controls:Flyout x:Name="aboutFlyout" Theme="Accent" Header="About" Position="Right" Width="300">
+            <Controls:Flyout x:Name="aboutFlyout" IsPinned="False" Theme="Accent" Header="About" Width="300" Position="Right" IsOpenChanged="AFlyout_IsOpenChanged">
                 <v:AboutFlyoutView />
+            </Controls:Flyout>
+            <Controls:Flyout x:Name="addstockItem" IsPinned="False" Theme="Accent" Header="New Stock item" Width="300" Position="Right" Foreground="White" Background="#FF366294" IsOpenChanged="AFlyout_IsOpenChanged">
+                <v:NewStockItemFlyoutView />
+            </Controls:Flyout>
+            <Controls:Flyout x:Name="addAccount" IsPinned="False" Theme="Light" Header="New Account" Width="300" Position="Right" Foreground="White" Background="#FF366294" IsOpenChanged="AFlyout_IsOpenChanged">
+                <v:NewAccountFlyoutView />
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
 
-    <Frame NavigationUIVisibility="Hidden" Content="{Binding Path=CurrentPage, UpdateSourceTrigger=PropertyChanged}" />
+    <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Content="{Binding Path=CurrentPage, UpdateSourceTrigger=PropertyChanged}" />
 
 </Controls:MetroWindow>
