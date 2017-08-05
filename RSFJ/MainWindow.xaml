@@ -12,6 +12,10 @@
         GlowBrush="SlateGray" TitleCharacterCasing="Normal" WindowStartupLocation="CenterScreen" WindowTitleBrush="SteelBlue"
         MinHeight="768" MinWidth="1024" Height="768" Width="1024" TitlebarHeight="60" KeyDown="MetroWindow_KeyDown">
 
+    <Controls:MetroWindow.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Controls:MetroWindow.Resources>
+
     <Controls:MetroWindow.DataContext>
         <vm:MainViewModel x:Name="ViewModel" />
     </Controls:MetroWindow.DataContext>
@@ -25,7 +29,7 @@
     </Controls:MetroWindow.TitleTemplate>
 
     <Controls:MetroWindow.RightWindowCommands>
-        <Controls:WindowCommands>
+        <Controls:WindowCommands Visibility="{Binding Path=AccountsPresent, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Button Foreground="White" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Command="{Binding Path=SaveCommand}" Content="Save" />
             <Button Foreground="White" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Command="{Binding Path=BackupCommand}" Content="Backup" />
             <Button Foreground="White" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Command="{Binding Path=RestoreCommand}" Content="Restore" />
@@ -41,7 +45,7 @@
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="RojmelPage" Content="Rojmel" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="AccountPage" Content="Accounts" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
             <Button Command="{Binding Path=NavigateCommand}" CommandParameter="StockPage" Content="Stock" Cursor="Hand" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" />
-            
+
             <ToggleButton Cursor="Hand" Foreground="Navy" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Content="Add Stock Item" IsChecked="{Binding ElementName=addstockItem, Path=IsOpen}" />
             <ToggleButton Cursor="Hand" Foreground="Navy" FontWeight="SemiBold" FontSize="11pt" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Content="Add Account" IsChecked="{Binding ElementName=addAccount, Path=IsOpen}" />
         </Controls:WindowCommands>
@@ -58,12 +62,13 @@
             <Controls:Flyout x:Name="addstockItem" IsPinned="False" Theme="Accent" Header="New Stock item" Width="300" Position="Right" Foreground="White" Background="#FF366294" IsOpenChanged="AFlyout_IsOpenChanged">
                 <v:NewStockItemFlyoutView />
             </Controls:Flyout>
-            <Controls:Flyout x:Name="addAccount" IsPinned="False" Theme="Light" Header="New Account" Width="300" Position="Right" Foreground="White" Background="#FF366294" IsOpenChanged="AFlyout_IsOpenChanged">
+            <Controls:Flyout x:Name="addAccount" IsOpen="True" IsPinned="False" Theme="Light" Header="New Account" Width="300" Position="Right" Foreground="White" Background="#FF366294" IsOpenChanged="AFlyout_IsOpenChanged">
                 <v:NewAccountFlyoutView />
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
 
-    <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Content="{Binding Path=CurrentPage, UpdateSourceTrigger=PropertyChanged}" />
+    <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Content="{Binding Path=CurrentPage, UpdateSourceTrigger=PropertyChanged}" 
+           Visibility="{Binding Path=AccountsPresent, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
 </Controls:MetroWindow>

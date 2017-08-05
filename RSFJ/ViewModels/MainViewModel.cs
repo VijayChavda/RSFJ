@@ -1,5 +1,6 @@
 ﻿using RSFJ.Services;
 using RSFJ.ViewModels.Utilities;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -7,8 +8,16 @@ namespace RSFJ.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        private bool _noAccounts;
+        public bool AccountsPresent { get => _noAccounts; set => SetProperty(ref _noAccounts, value); }
+
         private Page _currentPage;
         public Page CurrentPage { get => _currentPage; set => SetProperty(ref _currentPage, value); }
+
+        private readonly View.EntriesPage EntriesPage = new View.EntriesPage();
+        private readonly View.RojmelPage RojmelPage = new View.RojmelPage();
+        private readonly View.AccountPage AccountPage = new View.AccountPage();
+        private readonly View.StockPage StockPage = new View.StockPage();
 
         RelayCommand _saveCommand;
         public ICommand SaveCommand
@@ -34,17 +43,19 @@ namespace RSFJ.ViewModels
             get => _restoreCommand ?? (_restoreCommand = new RelayCommand(param => DataContextService.Instance.Restore(param as string), param => true));
         }
 
-        RelayCommand _newAccountCommand;
-        public ICommand NewAccountCommand
-        {
-            get => _newAccountCommand ?? (_newAccountCommand = new RelayCommand(param => DataContextService.Instance.Backup(), param => true));
-        }
-
         RelayCommand _navigateCommand;
         public ICommand NavigateCommand
         {
             get => _navigateCommand ?? (_navigateCommand = new RelayCommand(param =>
             {
+                AccountsPresent = DataContextService.Instance.DataContext.Accounts.Count != 0;
+
+                if (AccountsPresent == false)
+                {
+                    MessageBox.Show("No accounts found. You need to add Accounts first..", "RSFJ", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
                 var page = param as string;
 
                 if (page == nameof(View.RojmelPage))
@@ -68,7 +79,8 @@ namespace RSFJ.ViewModels
 
         public MainViewModel()
         {
-            CurrentPage = new View.EntriesPage();
+            AccountsPresent = DataContextService.Instance.DataContext.Accounts.Count != 0;
+            CurrentPage = AccountsPresent ? EntriesPage : null;
         }
     }
 }
