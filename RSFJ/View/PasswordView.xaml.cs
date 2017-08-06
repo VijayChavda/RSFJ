@@ -26,9 +26,24 @@ namespace RSFJ.View
             V_TextBlock.Text = Services.RegistoryService.Instance.MasterPassword == null ?
                 "Set a master password to protect your data." :
                 "You need to enter the password before you continue...";
+
+            V_PasswordBox.Focus();
         }
 
         private void SignIn_Click(object sender, RoutedEventArgs e)
+        {
+            SignIn();
+        }
+
+        private void V_PasswordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                SignIn();
+            }
+        }
+
+        private void SignIn()
         {
             var hash = Services.SecurityService.Instance.Hash(V_PasswordBox.Password);
 
