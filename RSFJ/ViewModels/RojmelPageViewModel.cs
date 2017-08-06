@@ -363,6 +363,17 @@ namespace RSFJ.ViewModels
             PartialPaymentInterval = 10;    //TODO: Take the last value
 
             DataContextService.Instance.DataContext.RojmelEntries.Add(Model);
+
+            DataContextService.Instance.DataContext.AccountAdded += (s, account) =>
+            {
+                if (Accounts.Count(x => x.Name == account.Name) == 0)
+                    Accounts.Add(account);
+            };
+            DataContextService.Instance.DataContext.StockItemAdded += (s, item) =>
+            {
+                if (StockItems.Count(x => x.Name == item.Name) == 0)
+                    StockItems.Add(item);
+            };
         }
 
         public RojmelEntryViewModel(RojmelEntry Model)

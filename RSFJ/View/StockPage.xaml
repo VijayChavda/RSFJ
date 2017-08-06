@@ -6,7 +6,6 @@
       xmlns:local="clr-namespace:RSFJ.View"
       xmlns:vm="clr-namespace:RSFJ.ViewModels"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
       Title="StockPage">
 
     <Page.DataContext>

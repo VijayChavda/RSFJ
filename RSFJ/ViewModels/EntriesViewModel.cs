@@ -1,17 +1,16 @@
 ﻿using RSFJ.Model;
+using RSFJ.Services;
 using RSFJ.ViewModels.Utilities;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace RSFJ.ViewModels
 {
     public class EntriesViewModel : ViewModelBase
     {
-        public static List<StockItem> StockItems { get; set; }
+        public static ObservableCollection<StockItem> StockItems { get; set; }
 
         public ExchangeEntryViewModel ExchangeEntryViewModel { get; set; }
         public BullionEntryViewModel BullionEntryViewModel { get; set; }
@@ -19,25 +18,33 @@ namespace RSFJ.ViewModels
 
         public EntriesViewModel()
         {
-            StockItems = new List<StockItem>();
+            StockItems = new ObservableCollection<StockItem>();
             LoadData();
 
             ExchangeEntryViewModel = new ExchangeEntryViewModel();
             BullionEntryViewModel = new BullionEntryViewModel();
             CustomerEntryViewModel = new CustomerEntryViewModel();
+
+            DataContextService.Instance.DataContext.StockItemAdded += (s, item) =>
+            {
+                if (StockItems.Count(x => x.Name == item.Name) == 0)
+                    StockItems.Add(item);
+            };
         }
 
         private void LoadData()
         {
             StockItems.Clear();
-            StockItems.AddRange(Services.DataContextService.Instance.DataContext.
-                StockItems.Except(new StockItem[] { StockItem.Cash, StockItem.None }));
+            foreach (var item in DataContextService.Instance.DataContext.StockItems.Except(new StockItem[] { StockItem.Cash, StockItem.None }))
+            {
+                StockItems.Add(item);
+            }
         }
     }
 
     public class ExchangeEntryViewModel : ViewModelBase
     {
-        public static List<Account> Accounts { get; set; }
+        public static ObservableCollection<Account> Accounts { get; set; }
 
         private Account _Account;
         public Account Account { get => _Account; set => SetProperty(ref _Account, value); }
@@ -75,7 +82,7 @@ namespace RSFJ.ViewModels
 
         public ExchangeEntryViewModel()
         {
-            Accounts = new List<Account>();
+            Accounts = new ObservableCollection<Account>();
 
             ExchangeWithFineViewModel = new ExchangeWithFineViewModel();
             CashPaymentViewModel = new CashPaymentViewModel();
@@ -83,12 +90,21 @@ namespace RSFJ.ViewModels
             FineClearViewModel = new FineClearViewModel();
 
             LoadData();
+
+            DataContextService.Instance.DataContext.AccountAdded += (s, account) =>
+            {
+                if (Accounts.Count(x => x.Name == account.Name) == 0)
+                    Accounts.Add(account);
+            };
         }
 
         private void LoadData()
         {
             Accounts.Clear();
-            Accounts.AddRange(Services.DataContextService.Instance.DataContext.Accounts.Where(x => x.Type == AccountType.Regular));
+            foreach (var item in DataContextService.Instance.DataContext.Accounts.Where(x => x.Type == AccountType.Regular))
+            {
+                Accounts.Add(item);
+            }
             Account = Accounts.FirstOrDefault();
         }
 
@@ -96,7 +112,7 @@ namespace RSFJ.ViewModels
         {
             var entry = new RojmelEntry()
             {
-                Id = Services.DataContextService.Instance.DataContext.RojmelEntries.Count + 1,
+                Id = DataContextService.Instance.DataContext.RojmelEntries.Count + 1,
                 Account = Account,
                 Date = DateTime.Now,
                 IsLeftSide = OnLeftSide
@@ -136,13 +152,13 @@ namespace RSFJ.ViewModels
                 entry.Result = FineClearViewModel.Cash / FineClearViewModel.Rate;
             }
 
-            Services.DataContextService.Instance.DataContext.AddRojmelEntry(entry);
+            DataContextService.Instance.DataContext.AddRojmelEntry(entry);
         }
     }
 
     public class BullionEntryViewModel : ViewModelBase
     {
-        public static List<Account> Accounts { get; set; }
+        public static ObservableCollection<Account> Accounts { get; set; }
 
         private Account _Account;
         public Account Account { get => _Account; set => SetProperty(ref _Account, value); }
@@ -172,18 +188,27 @@ namespace RSFJ.ViewModels
 
         public BullionEntryViewModel()
         {
-            Accounts = new List<Account>();
+            Accounts = new ObservableCollection<Account>();
 
             Fine999PaymentViewModel = new Fine999PaymentViewModel();
             CashPaymentViewModel = new CashPaymentViewModel();
 
             LoadData();
+
+            DataContextService.Instance.DataContext.AccountAdded += (s, account) =>
+            {
+                if (Accounts.Count(x => x.Name == account.Name) == 0)
+                    Accounts.Add(account);
+            };
         }
 
         private void LoadData()
         {
             Accounts.Clear();
-            Accounts.AddRange(Services.DataContextService.Instance.DataContext.Accounts.Where(x => x.Type == AccountType.Boolean));
+            foreach (var item in DataContextService.Instance.DataContext.Accounts.Where(x => x.Type == AccountType.Boolean))
+            {
+                Accounts.Add(item);
+            }
             Account = Accounts.FirstOrDefault();
         }
 
@@ -191,7 +216,7 @@ namespace RSFJ.ViewModels
         {
             var entry = new RojmelEntry()
             {
-                Id = Services.DataContextService.Instance.DataContext.RojmelEntries.Count + 1,
+                Id = DataContextService.Instance.DataContext.RojmelEntries.Count + 1,
                 Account = Account,
                 Date = DateTime.Now,
                 IsLeftSide = OnLeftSide
@@ -215,13 +240,13 @@ namespace RSFJ.ViewModels
                 entry.Result = CashPaymentViewModel.Cash;
             }
 
-            Services.DataContextService.Instance.DataContext.AddRojmelEntry(entry);
+            DataContextService.Instance.DataContext.AddRojmelEntry(entry);
         }
     }
 
     public class CustomerEntryViewModel : ViewModelBase
     {
-        public static List<Account> Accounts { get; set; }
+        public static ObservableCollection<Account> Accounts { get; set; }
 
         private Account _Account;
         public Account Account { get => _Account; set => SetProperty(ref _Account, value); }
@@ -260,15 +285,24 @@ namespace RSFJ.ViewModels
 
         public CustomerEntryViewModel()
         {
-            Accounts = new List<Account>();
+            Accounts = new ObservableCollection<Account>();
 
             LoadData();
+
+            DataContextService.Instance.DataContext.AccountAdded += (s, account) =>
+            {
+                if (Accounts.Count(x => x.Name == account.Name) == 0)
+                    Accounts.Add(account);
+            };
         }
 
         private void LoadData()
         {
             Accounts.Clear();
-            Accounts.AddRange(Services.DataContextService.Instance.DataContext.Accounts.Where(x => x.Type == AccountType.Customer));
+            foreach (var item in DataContextService.Instance.DataContext.Accounts.Where(x => x.Type == AccountType.Customer))
+            {
+                Accounts.Add(item);
+            }
             Account = Accounts.FirstOrDefault();
 
             StockItem = EntriesViewModel.StockItems.FirstOrDefault();
@@ -278,7 +312,7 @@ namespace RSFJ.ViewModels
         {
             var entry = new RojmelEntry()
             {
-                Id = Services.DataContextService.Instance.DataContext.RojmelEntries.Count + 1,
+                Id = DataContextService.Instance.DataContext.RojmelEntries.Count + 1,
                 Type = RojmelEntryType.ItemExchangeCash,
                 Account = Account,
                 StockItem = StockItem,
@@ -296,7 +330,7 @@ namespace RSFJ.ViewModels
             else
                 entry.Result = ((Weight + Waste) * (Rate + Labour));
 
-            Services.DataContextService.Instance.DataContext.AddRojmelEntry(entry);
+            DataContextService.Instance.DataContext.AddRojmelEntry(entry);
         }
     }
 
