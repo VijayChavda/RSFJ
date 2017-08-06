@@ -93,7 +93,7 @@ namespace RSFJ.ViewModels
 
             DataContextService.Instance.DataContext.AccountAdded += (s, account) =>
             {
-                if (Accounts.Count(x => x.Name == account.Name) == 0)
+                if (Accounts.Count(x => x.Name == account.Name) == 0 && account.Type == AccountType.Regular)
                     Accounts.Add(account);
             };
         }
@@ -197,7 +197,7 @@ namespace RSFJ.ViewModels
 
             DataContextService.Instance.DataContext.AccountAdded += (s, account) =>
             {
-                if (Accounts.Count(x => x.Name == account.Name) == 0)
+                if (Accounts.Count(x => x.Name == account.Name) == 0 && account.Type == AccountType.Boolean)
                     Accounts.Add(account);
             };
         }
@@ -291,7 +291,7 @@ namespace RSFJ.ViewModels
 
             DataContextService.Instance.DataContext.AccountAdded += (s, account) =>
             {
-                if (Accounts.Count(x => x.Name == account.Name) == 0)
+                if (Accounts.Count(x => x.Name == account.Name) == 0 && account.Type == AccountType.Customer)
                     Accounts.Add(account);
             };
         }
