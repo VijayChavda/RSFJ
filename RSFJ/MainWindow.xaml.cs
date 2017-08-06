@@ -39,6 +39,11 @@ namespace RSFJ
 
             DataContextService.Instance.Load();
             InitializeComponent();
+
+            if (DataContextService.Instance.DataContext.Accounts.Count == 0)
+            {
+                addAccount.IsOpen = true;
+            }
         }
 
         private void VerifySoftware()

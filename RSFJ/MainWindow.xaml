@@ -62,7 +62,7 @@
             <Controls:Flyout x:Name="addstockItem" IsPinned="False" Theme="Accent" Header="New Stock item" Width="300" Position="Right" Foreground="White" Background="#FF366294" IsOpenChanged="AFlyout_IsOpenChanged">
                 <v:NewStockItemFlyoutView />
             </Controls:Flyout>
-            <Controls:Flyout x:Name="addAccount" IsOpen="True" IsPinned="False" Theme="Light" Header="New Account" Width="300" Position="Right" Foreground="White" Background="#FF366294" IsOpenChanged="AFlyout_IsOpenChanged">
+            <Controls:Flyout x:Name="addAccount" IsPinned="False" Theme="Light" Header="New Account" Width="300" Position="Right" Foreground="White" Background="#FF366294" IsOpenChanged="AFlyout_IsOpenChanged">
                 <v:NewAccountFlyoutView />
             </Controls:Flyout>
         </Controls:FlyoutsControl>
