@@ -9,8 +9,9 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         RightWindowCommandsOverlayBehavior="Never" Icon="/Images/logo.png" ShowIconOnTitleBar="False"
-        GlowBrush="SlateGray" TitleCharacterCasing="Normal" WindowStartupLocation="CenterScreen" WindowTitleBrush="SteelBlue"
-        MinHeight="768" MinWidth="1024" Height="768" Width="1024" TitlebarHeight="60" KeyDown="MetroWindow_KeyDown">
+        GlowBrush="SlateGray" TitleCharacterCasing="Normal" WindowTitleBrush="SteelBlue"
+        MinWidth="1366" MinHeight="700" WindowStartupLocation="CenterScreen"
+        TitlebarHeight="60" KeyDown="MetroWindow_KeyDown">
 
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
