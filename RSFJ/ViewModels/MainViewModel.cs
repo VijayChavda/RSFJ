@@ -1,4 +1,5 @@
-﻿using RSFJ.Services;
+﻿using Microsoft.Win32;
+using RSFJ.Services;
 using RSFJ.ViewModels.Utilities;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,7 +23,7 @@ namespace RSFJ.ViewModels
         RelayCommand _saveCommand;
         public ICommand SaveCommand
         {
-            get => _saveCommand ?? (_saveCommand = new RelayCommand(param => DataContextService.Instance.Save(), param => true));
+            get => _saveCommand ?? (_saveCommand = new RelayCommand(param => Save(), param => true));
         }
 
         RelayCommand _loadCommand;
@@ -34,13 +35,13 @@ namespace RSFJ.ViewModels
         RelayCommand _backupCommand;
         public ICommand BackupCommand
         {
-            get => _backupCommand ?? (_backupCommand = new RelayCommand(param => DataContextService.Instance.Backup(), param => true));
+            get => _backupCommand ?? (_backupCommand = new RelayCommand(param => Backup(), param => true));
         }
 
         RelayCommand _restoreCommand;
         public ICommand RestoreCommand
         {
-            get => _restoreCommand ?? (_restoreCommand = new RelayCommand(param => DataContextService.Instance.Restore(param as string), param => true));
+            get => _restoreCommand ?? (_restoreCommand = new RelayCommand(param => Restore(), param => true));
         }
 
         RelayCommand _navigateCommand;
@@ -81,6 +82,41 @@ namespace RSFJ.ViewModels
         {
             AccountsPresent = DataContextService.Instance.DataContext.Accounts.Count != 0;
             CurrentPage = AccountsPresent ? EntriesPage : null;
+        }
+
+        private void Save()
+        {
+            DataContextService.Instance.Save();
+            MessageBox.Show("Saved.", "RSFJ", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Backup()
+        {
+            DataContextService.Instance.Backup();
+            MessageBox.Show("Backup was completed.", "RSFJ", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Restore()
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            // Set filter for file extension and default file extension 
+            dlg.DefaultExt = ".png";
+            dlg.Filter = "RSFJ Backup File (*.rsfj)|*.rsfj";
+
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            bool? result = dlg.ShowDialog();
+
+
+            // Get the selected file name and display in a TextBox 
+            if (result.HasValue && result.Value)
+            {
+                // Open document 
+                DataContextService.Instance.Restore(dlg.FileName);
+            }
+
+            MessageBox.Show("The application was restored to the selected backup.", "RSFJ", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }
