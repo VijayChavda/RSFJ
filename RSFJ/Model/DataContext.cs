@@ -25,47 +25,42 @@ namespace RSFJ.Model
         public void AddRojmelEntry(RojmelEntry Entry)
         {
             #region Calculations
-            double param1 = Math.Round(Entry.Param1, 2);
-            double param2 = Math.Round(Entry.Param2 ?? 0, 2);
-            double result = Math.Round(Entry.Result, 2);
-
-            double waste = Entry.Waste ?? 0;
-            double labour = Entry.Labour ?? 0;
-
             if (Entry.Type == RojmelEntryType.ItemExchangeFine)
             {
-                Entry.Result = param1 * param2 / 100;
+                Entry.Result = Entry.Param1 * (double)Entry.Param2 / 100;
             }
             else if (Entry.Type == RojmelEntryType.ItemExchangeCash)
             {
                 if (Entry.Account.Type == AccountType.Boolean)
                 {
-                    Entry.Result = param1 * param2;
+                    Entry.Result = Entry.Param1 * (double)Entry.Param2;
                 }
-                else if(Entry.Account.Type == AccountType.Customer)
+                else if (Entry.Account.Type == AccountType.Customer)
                 {
                     if (Entry.IsLabourAsAmount)
-                        Entry.Result = ((param1 + waste) * param2) + labour;
+                        Entry.Result = ((Entry.Param1 + (double)Entry.Waste) * (double)Entry.Param2) + (double)Entry.Labour;
                     else
-                        Entry.Result = ((param1 + waste) * (param2 + labour));
+                        Entry.Result = ((Entry.Param1 + (double)Entry.Waste) * ((double)Entry.Param2 + (double)Entry.Labour));
                 }
                 else
                 {
-                    Entry.Result = param1 / param2;
+                    Entry.Result = Entry.Param1 / (double)Entry.Param2;
                 }
             }
             else if (Entry.Type == RojmelEntryType.SimpleCashExchange)
             {
-                Entry.Result = param1;
+                Entry.Result = Entry.Param1;
             }
             else if (Entry.Type == RojmelEntryType.UseCash)
             {
-                Entry.Result = param1 / param2;
+                Entry.Result = Entry.Param1 / (double)Entry.Param2;
             }
             else
             {
                 Entry.Result = 0;
             }
+
+            double result = Entry.Result = Math.Round(Entry.Result, 2);
             #endregion
 
             #region Update balances
@@ -73,20 +68,20 @@ namespace RSFJ.Model
             switch (Entry.Type)
             {
                 case RojmelEntryType.ItemExchangeFine:
-                    Entry.Account.FineInGold += Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    Entry.Account.FineInGold += Entry.IsLeftSide ? -result : result;
                     break;
                 case RojmelEntryType.ItemExchangeCash:
-                    Entry.Account.FineInMoney += Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    Entry.Account.FineInMoney += Entry.IsLeftSide ? -result : result;
                     break;
                 case RojmelEntryType.SimpleCashExchange:
-                    Entry.Account.FineInMoney += Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    Entry.Account.FineInMoney += Entry.IsLeftSide ? -result : result;
                     break;
                 case RojmelEntryType.UseCash:
-                    Entry.Account.FineInGold += Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    Entry.Account.FineInGold += Entry.IsLeftSide ? -result : result;
                     //Use account money balance if Cash is not provided.
                     if (Entry.StockItem == StockItem.None)
                     {
-                        Entry.Account.FineInMoney += Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
+                        Entry.Account.FineInMoney += Entry.IsLeftSide ? result : -result;
                     }
                     break;
             }

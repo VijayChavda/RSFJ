@@ -148,7 +148,7 @@
                 <DataGridTemplateColumn CellStyle="{StaticResource DefaultCellStyle}" Header="Date" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <DatePicker SelectedDate="{Binding Path=Date, UpdateSourceTrigger=LostFocus}" SelectedDateFormat="Short" />
+                            <DatePicker SelectedDate="{Binding Path=Date, StringFormat={}{0:dd/mm/yy}, UpdateSourceTrigger=LostFocus}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -209,11 +209,11 @@
                             </Border>
                             <Grid Margin="10 2">
                                 <TextBlock Text="Fine due:" FontSize="12pt" Foreground="SlateGray" />
-                                <TextBlock Text="{Binding Path=Account.FineInGold, StringFormat=\{0\} g., UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
+                                <TextBlock Text="{Binding Path=Account.FineInGold, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
                             <Grid Margin="10 2">
                                 <TextBlock Text="Money due:" FontSize="12pt" Foreground="SlateGray" />
-                                <TextBlock Text="{Binding Path=Account.FineInMoney, UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
+                                <TextBlock Text="{Binding Path=Account.FineInMoney, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
                         </StackPanel>
                         <StackPanel Margin="10" Visibility="{Binding Path=StockItem, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
@@ -222,11 +222,11 @@
                             </Border>
                             <Grid Margin="10 2">
                                 <TextBlock Text="In stock:" FontSize="12pt" Foreground="SlateGray" />
-                                <TextBlock Text="{Binding Path=StockItem.InStock, UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
+                                <TextBlock Text="{Binding Path=StockItem.InStock,StringFormat=N2, UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
                             <Grid Margin="10 2">
                                 <TextBlock Text="Equivalent gold:" FontSize="12pt" Foreground="SlateGray" />
-                                <TextBlock Text="{Binding Path=StockItem.EquivalentGold}" FontSize="12pt" HorizontalAlignment="Right" />
+                                <TextBlock Text="{Binding Path=StockItem.EquivalentGold, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
                         </StackPanel>
 

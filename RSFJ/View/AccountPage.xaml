@@ -63,11 +63,11 @@
                 </Border>
                 <Grid Margin="10 2">
                     <TextBlock Text="Fine due:" FontSize="12pt" Style="{StaticResource KeyStyle}" />
-                    <TextBlock Text="{Binding Path=SelectedAccount.FineInGold}" Style="{StaticResource ValueStyle}" />
+                    <TextBlock Text="{Binding Path=SelectedAccount.FineInGold, StringFormat={}{0:#.##}}" Style="{StaticResource ValueStyle}" />
                 </Grid>
                 <Grid Margin="10 2">
                     <TextBlock Text="Money due:" FontSize="12pt" Style="{StaticResource KeyStyle}" />
-                    <TextBlock Text="{Binding Path=SelectedAccount.FineInMoney}" Style="{StaticResource ValueStyle}" />
+                    <TextBlock Text="{Binding Path=SelectedAccount.FineInMoney, StringFormat={}{0:#.##}}" Style="{StaticResource ValueStyle}" />
                 </Grid>
             </StackPanel>
         </Grid>
@@ -133,21 +133,21 @@
                         <DataGridTextColumn Width="Auto" Binding="{Binding Path=Id}" Header="Id" CellStyle="{StaticResource DefaultCellStyle}" ElementStyle="{StaticResource CenteredTextBlock}" />
                         <DataGridTextColumn Width="1.2*" Binding="{Binding Path=Date, StringFormat={}{0:dd MMMM\, yyyy}}" Header="Date" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTextColumn Width="1.5*" Binding="{Binding Path=StockItem}" Header="Item" CellStyle="{StaticResource DefaultCellStyle}" />
-                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=Remaining}" Header="Remaining" CellStyle="{StaticResource DefaultCellStyle}" />
+                        <DataGridTextColumn Width="1.5*" Binding="{Binding Path=Remaining, StringFormat={}{0:#.##}}" Header="Remaining" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=PartialPaymentInterval, StringFormat=\{0\}  days}" Header="Interval" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=TotalPaymentDueDays, StringFormat=\{0\}  days}" Header="Payback in" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam1, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam2, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LResult, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
                         <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam1, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam2, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RResult, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
                     </DataGrid.Columns>
                 </DataGrid>
                 <DataGrid Grid.Row="2" ItemsSource="{Binding Path=SelectedEntry.PaybackEntries, UpdateSourceTrigger=PropertyChanged}" 
@@ -175,14 +175,14 @@
                         <DataGridTextColumn Width="1*" Binding="{Binding Path=FullPaymentLate, StringFormat=\{0\}  days, TargetNullValue=In-Time}" Header="Late" CellStyle="{StaticResource DefaultCellStyle}" />
                         <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam1, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LParam2, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=LResult, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
                         <DataGridTemplateColumn MinWidth="2" MaxWidth="2" IsReadOnly="True" CellStyle="{StaticResource SeperatorCellStyle}" />
 
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam1}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam2}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
-                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RResult}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam1, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingParam1}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RParam2, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingParam2}" CellStyle="{StaticResource LightCellStyle}" />
+                        <DataGridTextColumn Width="1*" Binding="{Binding Path=RResult, StringFormat={}{0:#.##}}" HeaderTemplate="{StaticResource HeadingResult}" CellStyle="{StaticResource ResultCellStyle}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
