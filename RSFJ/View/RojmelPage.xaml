@@ -69,6 +69,9 @@
                     </Style>
                 </StackPanel.Resources>
 
+                <TextBlock Text="Unit: " />
+                <ComboBox SelectedItem="{Binding Path=FilterUnit, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding UnitFilters}" />
+
                 <TextBlock Text="Account: " />
                 <ComboBox SelectedItem="{Binding Path=FilterAccount, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=DataContext.Accounts, Source={x:Static services:DataContextService.Instance}}" />
 

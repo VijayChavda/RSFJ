@@ -39,6 +39,11 @@ namespace RSFJ.ViewModels
             get => _resetFiltersCommand ?? (_resetFiltersCommand = new RelayCommand(param => ResetFilters(), param => true));
         }
 
+        public List<string> UnitFilters { get; set; }
+
+        private string _FilterUnit;
+        public string FilterUnit { get => _FilterUnit; set => SetProperty(ref _FilterUnit, value); }
+
         private Account _FilterAccount;
         public Account FilterAccount { get => _FilterAccount; set => SetProperty(ref _FilterAccount, value); }
 
@@ -50,21 +55,63 @@ namespace RSFJ.ViewModels
 
         private DateTime _FilterEndDate;
         public DateTime FilterEndDate { get => _FilterEndDate; set => SetProperty(ref _FilterEndDate, value); }
+
+        private void EntriesViewSource_Filter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is RojmelEntryViewModel entry)
+            {
+                if (FilterUnit == UnitFilters[0] && entry.Account == null && entry.StockItem == null)
+                {
+                    e.Accepted = true;
+                    return;
+                }
+
+                if (FilterUnit == UnitFilters[0])
+                {
+                    e.Accepted = true;
+                }
+                else if (FilterUnit == UnitFilters[1])
+                {
+                    e.Accepted = entry.Type == RojmelEntryType.ItemExchangeFine || entry.Type == RojmelEntryType.UseCash;
+                }
+                else
+                {
+                    e.Accepted = entry.Type == RojmelEntryType.ItemExchangeCash || entry.Type == RojmelEntryType.SimpleCashExchange;
+                }
+
+                e.Accepted &= FilterAccount == null || entry.Account == FilterAccount;
+                e.Accepted &= FilterStockItem == null || entry.StockItem == FilterStockItem;
+                e.Accepted &= entry.Date.Date >= FilterStartDate && entry.Date.Date <= FilterEndDate;
+            }
+        }
+
+        public void ResetFilters()
+        {
+            FilterUnit = UnitFilters[0];
+            FilterAccount = null;
+            FilterStockItem = null;
+            FilterStartDate = DateTime.Now.Subtract(TimeSpan.FromDays(15));
+            FilterEndDate = DateTime.Now;
+        }
         #endregion
 
         public RojmelPageViewModel()
         {
             Entries = new ObservableCollection<RojmelEntryViewModel>();
+            UnitFilters = new List<string>() { "All", "Fine", "Cash" };
 
             LoadData();
+
+            SelectedEntry = Entries.FirstOrDefault();
 
             EntriesViewSource = new CollectionViewSource() { Source = Entries };
             EntriesViewSource.Filter += EntriesViewSource_Filter;
 
-            SelectedEntry = Entries.FirstOrDefault();
             ShowAggregateFineBalance = RegistoryService.Instance.ShowAggregateFineBalance;
             ShowAggregateMoneyBalance = RegistoryService.Instance.ShowAggregateMoneyBalance;
             ShowAggregateStockBalance = RegistoryService.Instance.ShowAggregateStockBalance;
+
+            FilterUnit = UnitFilters[0];
             FilterAccount = null;
             FilterStockItem = null;
             FilterStartDate = DateTime.Now.Subtract(TimeSpan.FromDays(15));
@@ -95,25 +142,10 @@ namespace RSFJ.ViewModels
             }
         }
 
-        private void EntriesViewSource_Filter(object sender, FilterEventArgs e)
-        {
-            if (e.Item is RojmelEntryViewModel entry)
-            {
-                if (entry.Account == null && entry.StockItem == null)
-                {
-                    e.Accepted = true;
-                    return;
-                }
-
-                e.Accepted = entry.Account == FilterAccount || FilterAccount == null;
-                e.Accepted &= entry.StockItem == FilterStockItem || FilterStockItem == null;
-                e.Accepted &= entry.Date.Date >= FilterStartDate && entry.Date.Date <= FilterEndDate;
-            }
-        }
-
         protected override async void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
         {
-            if (PropertyName == nameof(FilterAccount) || PropertyName == nameof(FilterStockItem) ||
+            if (PropertyName == nameof(FilterUnit) ||
+                PropertyName == nameof(FilterAccount) || PropertyName == nameof(FilterStockItem) ||
                 PropertyName == nameof(FilterStartDate) || PropertyName == nameof(FilterEndDate))
             {
                 EntriesViewSource.View.Refresh();
@@ -190,14 +222,6 @@ namespace RSFJ.ViewModels
                     }
                 }
             });
-        }
-
-        public void ResetFilters()
-        {
-            FilterAccount = null;
-            FilterStockItem = null;
-            FilterStartDate = DateTime.Now.Subtract(TimeSpan.FromDays(15));
-            FilterEndDate = DateTime.Now;
         }
     }
 
