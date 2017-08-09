@@ -111,7 +111,7 @@ namespace RSFJ.ViewModels
             }
         }
 
-        protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
+        protected override async void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
         {
             if (PropertyName == nameof(FilterAccount) || PropertyName == nameof(FilterStockItem) ||
                 PropertyName == nameof(FilterStartDate) || PropertyName == nameof(FilterEndDate))
@@ -122,7 +122,7 @@ namespace RSFJ.ViewModels
             if (PropertyName == nameof(ShowAggregateFineBalance) || PropertyName == nameof(ShowAggregateMoneyBalance) ||
                 PropertyName == nameof(ShowAggregateStockBalance))
             {
-                CalculateAggregateAsync();
+                await CalculateAggregateAsync();
             }
         }
 
@@ -137,16 +137,14 @@ namespace RSFJ.ViewModels
                     foreach (var sameStockEntries in groupedEntries)
                     {
                         var stockItem = sameStockEntries.Key;
-                        double inStock = 0;
+                        double? inStock = 0;
 
                         foreach (var entry in sameStockEntries)
                         {
-                            var model = entry.Model;
-
-                            if (model.StockItem == StockItem.None)
+                            if (entry.StockItem == StockItem.None)
                                 continue;
 
-                            inStock += model.IsLeftSide ? model.Param1 : -model.Param1;
+                            inStock += entry.IsLeftSide ? entry.Param1 : -entry.Param1;
 
                             entry.StockItemBalance = inStock;
                         }
@@ -160,30 +158,28 @@ namespace RSFJ.ViewModels
                     foreach (var sameAccountEntries in groupedEntries)
                     {
                         var account = sameAccountEntries.Key;
-                        double fineInMoney = 0;
-                        double fineInGold = 0;
+                        double? fineInMoney = 0;
+                        double? fineInGold = 0;
 
                         foreach (var entry in sameAccountEntries)
                         {
-                            var model = entry.Model;
-
                             switch (entry.Type)
                             {
                                 case RojmelEntryType.ItemExchangeFine:
-                                    fineInGold += model.IsLeftSide ? -model.Result : model.Result;
+                                    fineInGold += entry.IsLeftSide ? -entry.Result : entry.Result;
                                     break;
                                 case RojmelEntryType.ItemExchangeCash:
-                                    fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
+                                    fineInMoney += entry.IsLeftSide ? -entry.Result : entry.Result;
                                     break;
                                 case RojmelEntryType.SimpleCashExchange:
-                                    fineInMoney += model.IsLeftSide ? -model.Result : model.Result;
+                                    fineInMoney += entry.IsLeftSide ? -entry.Result : entry.Result;
                                     break;
                                 case RojmelEntryType.UseCash:
-                                    fineInGold += model.IsLeftSide ? -model.Result : model.Result;
+                                    fineInGold += entry.IsLeftSide ? -entry.Result : entry.Result;
                                     //Use account money balance if Cash is not provided.
                                     if (entry.StockItem == StockItem.None)
                                     {
-                                        fineInMoney += model.IsLeftSide ? model.Param1 : -model.Param1;
+                                        fineInMoney += entry.IsLeftSide ? entry.Param1 : -entry.Param1;
                                     }
                                     break;
                             }
@@ -207,13 +203,11 @@ namespace RSFJ.ViewModels
 
     public class RojmelEntryViewModel : ViewModelBase
     {
-        public static int InstanceCount;
-
-        public RojmelEntry Model { get; set; }
+        public RojmelEntry Model { get; private set; }
 
         #region Common parameters
-        private int _Id;
-        public int Id { get => _Id; set => SetProperty(ref _Id, value); }
+        private int? _Id;
+        public int? Id { get => _Id; set => SetProperty(ref _Id, value); }
 
         private DateTime _Date;
         public DateTime Date { get => _Date; set => SetProperty(ref _Date, value); }
@@ -316,11 +310,6 @@ namespace RSFJ.ViewModels
         }
         #endregion
 
-        #region UI parameters
-        private bool _IsParam2Disabled;
-        public bool IsParam2Disabled { get => _IsParam2Disabled; set => SetProperty(ref _IsParam2Disabled, value); }
-        #endregion
-
         public static ObservableCollection<StockItem> StockItems { get; set; }
         public static ObservableCollection<Account> Accounts { get; set; }
 
@@ -328,59 +317,44 @@ namespace RSFJ.ViewModels
         {
             #region Accounts
             Accounts = new ObservableCollection<Account>();
-
-            DataContextService.Instance.DataContext.AccountAdded += (s, account) => Accounts.Add(account);
-            DataContextService.Instance.DataContext.AccountRemoved += (s, account) => Accounts.Remove(account);
-
             foreach (var account in DataContextService.Instance.DataContext.Accounts)
             {
                 Accounts.Add(account);
             }
-            #endregion
-
-            #region StockItems
-            StockItems = new ObservableCollection<StockItem>();
-
-            DataContextService.Instance.DataContext.StockItemAdded += (s, stockItem) => StockItems.Add(stockItem);
-            DataContextService.Instance.DataContext.StockItemRemoved += (s, stockItem) => StockItems.Remove(stockItem);
-
-            foreach (var stockItem in DataContextService.Instance.DataContext.StockItems)
-            {
-                StockItems.Add(stockItem);
-            }
-            #endregion
-        }
-
-        public RojmelEntryViewModel()
-        {
-            InstanceCount++;
-            Model = new RojmelEntry() { Id = InstanceCount };
-
-            Id = InstanceCount;
-            Date = DateTime.Now.Date;
-            Account = DataContextService.Instance.DataContext.Accounts.FirstOrDefault();
-            TotalPaymentDueDate = DateTime.Now.Add(TimeSpan.FromDays(60));    //TODO: Take the last value
-            PartialPaymentInterval = 10;    //TODO: Take the last value
-
-            DataContextService.Instance.DataContext.RojmelEntries.Add(Model);
-
             DataContextService.Instance.DataContext.AccountAdded += (s, account) =>
             {
                 if (Accounts.Count(x => x.Name == account.Name) == 0)
                     Accounts.Add(account);
             };
+            #endregion
+
+            #region StockItems
+            StockItems = new ObservableCollection<StockItem>();
+            foreach (var stockItem in DataContextService.Instance.DataContext.StockItems)
+            {
+                StockItems.Add(stockItem);
+            }
             DataContextService.Instance.DataContext.StockItemAdded += (s, item) =>
             {
                 if (StockItems.Count(x => x.Name == item.Name) == 0)
                     StockItems.Add(item);
             };
+            #endregion
         }
 
-        public RojmelEntryViewModel(RojmelEntry Model)
+        public RojmelEntryViewModel()
         {
-            InstanceCount++;
-            this.Model = Model;
+            Model = new RojmelEntry();
 
+            Id = null;
+            Date = DateTime.Now.Date;
+            Account = DataContextService.Instance.DataContext.Accounts.FirstOrDefault();
+            TotalPaymentDueDate = DateTime.Now.Add(TimeSpan.FromDays(60));    //TODO: Take the last value
+            PartialPaymentInterval = 10;    //TODO: Take the last value
+        }
+
+        public RojmelEntryViewModel(RojmelEntry Model) : this()
+        {
             _Id = Model.Id;
             _Date = Model.Date;
             _Account = Model.Account;
@@ -398,8 +372,6 @@ namespace RSFJ.ViewModels
             _PartialPaymentInterval = Model.PartialPaymentInterval;
             _TotalPaymentDueDate = Model.Date.AddDays(Model.FullPaymentDueDays);
             _IsLabourAsAmount = Model.IsLabourAsAmount;
-
-            DataContextService.Instance.DataContext.RojmelEntries.Add(Model);
         }
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
@@ -439,106 +411,55 @@ namespace RSFJ.ViewModels
             }
             #endregion
 
+            #region Reset dependent properties
+            if (PropertyName == nameof(Account))
+            {
+                StockItem = null;
+            }
+
+            if (PropertyName == nameof(StockItem))
+            {
+                LParam1 = RParam1 = null;
+            }
+            #endregion
+
             #region Determine the Type of entry
-            if (PropertyName == nameof(LParam2) || PropertyName == nameof(RParam2))
+            if (StockItem == StockItem.Cash)
             {
-                if (StockItem == StockItem.Cash)
-                {
-                    Type = Param2 == null ? RojmelEntryType.SimpleCashExchange :
-                        (Account.Type == AccountType.Regular ? RojmelEntryType.UseCash : RojmelEntryType.Invalid);
-                }
+                Type = Param2 == null ? RojmelEntryType.SimpleCashExchange : RojmelEntryType.UseCash;
             }
-
-            if (PropertyName == nameof(Account) || PropertyName == nameof(StockItem))
+            else if (StockItem == StockItem.None)
             {
-                if (StockItem == StockItem.Cash)
-                {
-                    Type = RojmelEntryType.SimpleCashExchange;    //May change due to change in Param2.
-                }
-                else if (StockItem == StockItem.None)
-                {
-                    Type = Account.Type == AccountType.Regular ? RojmelEntryType.UseCash : RojmelEntryType.Invalid;
-                }
-                else
-                {
-                    Type = Account.Type == AccountType.Regular ? RojmelEntryType.ItemExchangeFine : RojmelEntryType.ItemExchangeCash;
-                }
-
-                //Reset dependent properties
-                if (PropertyName == nameof(Account))
-                {
-                    StockItem = null;
-                }
-
-                if (PropertyName == nameof(StockItem))
-                {
-                    LParam1 = RParam1 = null;
-                }
+                Type = RojmelEntryType.UseCash;
+            }
+            else
+            {
+                Type = Account.Type == AccountType.Regular ? RojmelEntryType.ItemExchangeFine : RojmelEntryType.ItemExchangeCash;
             }
             #endregion
+        }
 
-            #region Calculations
-            if (PropertyName == nameof(LParam1) || PropertyName == nameof(LParam2) ||
-                PropertyName == nameof(RParam1) || PropertyName == nameof(RParam2) ||
-                PropertyName == nameof(Labour) || PropertyName == nameof(Waste) || PropertyName == nameof(IsLabourAsAmount))
-            {
-                if (Param1 == null)
-                    return;
+        public void CommitEntry()
+        {
+            DataContextService.Instance.DataContext.RemoveRojmelEntry(Model);
 
-                //Round off the parameters first.
-                Param1 = Param1 == null ? (double?)null : Math.Round(Param1 ?? 0, 2);
-                Param2 = Param2 == null ? (double?)null : Math.Round(Param2 ?? 0, 2);
-                Result = Result == null ? (double?)null : Math.Round(Result ?? 0, 2);
-
-                switch (Type)
-                {
-                    case RojmelEntryType.ItemExchangeFine:
-                        Result = Param1 * Param2 / 100;
-                        break;
-                    case RojmelEntryType.ItemExchangeCash:
-                        if (Account.Type == AccountType.Boolean)
-                            Result = Param1 * Param2;
-                        else
-                        {
-                            if (IsLabourAsAmount)
-                                Result = ((Param1 + Waste) * Param2) + Labour;
-                            else
-                                Result = ((Param1 + Waste) * (Param2 + Labour));
-                        }
-                        break;
-                    case RojmelEntryType.SimpleCashExchange:
-                        Result = Param1;
-                        break;
-                    case RojmelEntryType.UseCash:
-                        Result = Param1 / Param2;
-                        break;
-                    case RojmelEntryType.Invalid:
-                        Result = null;
-                        break;
-                }
-
-                if (Result == null)
-                    return;
-
-            }
-            #endregion
-
-            #region Model update
-            Model.Id = Id;
             Model.Date = Date;
             Model.Account = Account;
             Model.Type = Type;
             Model.StockItem = StockItem;
-            Model.Param1 = Param1 ?? 0;
+            Model.Param1 = (double)Param1;
             Model.Param2 = Param2;
-            Model.Result = Result ?? 0;
             Model.Labour = Labour;
             Model.Waste = Waste;
             Model.PartialPaymentInterval = PartialPaymentInterval;
             Model.FullPaymentDueDays = (TotalPaymentDueDate - Date).Days;
             Model.IsLabourAsAmount = IsLabourAsAmount;
             Model.IsLeftSide = IsLeftSide;
-            #endregion
+
+            DataContextService.Instance.DataContext.AddRojmelEntry(Model);
+
+            Id = Model.Id;
+            Result = Model.Result;
         }
     }
 }

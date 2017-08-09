@@ -122,6 +122,7 @@
     <Compile Include="ViewModels\Utilities\CustomerEntryVisibilityConverter.cs" />
     <Compile Include="ViewModels\Utilities\LendingEntryVisibilityConverter.cs" />
     <Compile Include="ViewModels\Utilities\RojmelEntryTypeToHeadingConverter.cs" />
+    <Compile Include="ViewModels\Utilities\RojmelEntryValidationRules.cs" />
     <Compile Include="ViewModels\Utilities\RojmelEntryViewModelTypeToVisibilityConverter.cs" />
     <Compile Include="ViewModels\RojmelPageViewModel.cs" />
     <Compile Include="ViewModels\Utilities\NullToVisibilityConverter.cs" />

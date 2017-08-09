@@ -90,7 +90,7 @@
                       SelectedItem="{Binding Path=SelectedEntry, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelEntryViewModelTypeToVisibilityConverter}}"
                       AutoGenerateColumns="False" CanUserAddRows="True" GridLinesVisibility="All"
                       BorderBrush="Gray" BorderThickness="0 0 0 2" CanUserDeleteRows="True" CanUserResizeColumns="False"
-                      RowEditEnding="DataGrid_RowEditEnding"
+                      RowEditEnding="DataGrid_RowEditEnding" HeadersVisibility="All"
                       d:DataContext="{Binding Source={d:DesignInstance Type=vm:RojmelEntryViewModel, CreateList=False}}">
             <DataGrid.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
@@ -137,6 +137,9 @@
                     <Setter Property="Foreground" Value="Black" />
                 </Style>
             </DataGrid.Resources>
+            <DataGrid.RowValidationRules>
+                <utilities:RojmelEntryValidationRules ValidationStep="UpdatedValue" />
+            </DataGrid.RowValidationRules>
             <DataGrid.Columns>
                 <DataGridTextColumn ElementStyle="{StaticResource CenteredTextBlock}" CellStyle="{StaticResource DefaultCellStyle}" Header="T-ID" IsReadOnly="True" Binding="{Binding Path=Id}" Width="Auto" />
                 <DataGridTemplateColumn CellStyle="{StaticResource DefaultCellStyle}" Header="Date" Width="Auto">
@@ -203,7 +206,7 @@
                             </Border>
                             <Grid Margin="10 2">
                                 <TextBlock Text="Fine due:" FontSize="12pt" Foreground="SlateGray" />
-                                <TextBlock Text="{Binding Path=Account.FineInGold, StringFormat=\{0\} %, UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
+                                <TextBlock Text="{Binding Path=Account.FineInGold, StringFormat=\{0\} g., UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
                             <Grid Margin="10 2">
                                 <TextBlock Text="Money due:" FontSize="12pt" Foreground="SlateGray" />

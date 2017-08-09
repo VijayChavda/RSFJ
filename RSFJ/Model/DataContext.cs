@@ -24,13 +24,52 @@ namespace RSFJ.Model
 
         public void AddRojmelEntry(RojmelEntry Entry)
         {
-            if (Entry.Type == RojmelEntryType.Invalid || Entry.StockItem == null || Entry.Account == null)
+            #region Calculations
+            double param1 = Math.Round(Entry.Param1, 2);
+            double param2 = Math.Round(Entry.Param2 ?? 0, 2);
+            double result = Math.Round(Entry.Result, 2);
+
+            double waste = Entry.Waste ?? 0;
+            double labour = Entry.Labour ?? 0;
+
+            if (Entry.Type == RojmelEntryType.ItemExchangeFine)
             {
-                return;
+                Entry.Result = param1 * param2 / 100;
             }
+            else if (Entry.Type == RojmelEntryType.ItemExchangeCash)
+            {
+                if (Entry.Account.Type == AccountType.Boolean)
+                {
+                    Entry.Result = param1 * param2;
+                }
+                else if(Entry.Account.Type == AccountType.Customer)
+                {
+                    if (Entry.IsLabourAsAmount)
+                        Entry.Result = ((param1 + waste) * param2) + labour;
+                    else
+                        Entry.Result = ((param1 + waste) * (param2 + labour));
+                }
+                else
+                {
+                    Entry.Result = param1 / param2;
+                }
+            }
+            else if (Entry.Type == RojmelEntryType.SimpleCashExchange)
+            {
+                Entry.Result = param1;
+            }
+            else if (Entry.Type == RojmelEntryType.UseCash)
+            {
+                Entry.Result = param1 / param2;
+            }
+            else
+            {
+                Entry.Result = 0;
+            }
+            #endregion
 
+            #region Update balances
             Entry.StockItem.InStock += Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
-
             switch (Entry.Type)
             {
                 case RojmelEntryType.ItemExchangeFine:
@@ -51,8 +90,41 @@ namespace RSFJ.Model
                     }
                     break;
             }
+            #endregion
 
+            Entry.Id = RojmelEntries.Count + 1;
             RojmelEntries.Add(Entry);
+        }
+
+        public void RemoveRojmelEntry(RojmelEntry Entry)
+        {
+            if (RojmelEntries.Contains(Entry) == false)
+                return;
+
+            Entry.StockItem.InStock -= Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
+
+            switch (Entry.Type)
+            {
+                case RojmelEntryType.ItemExchangeFine:
+                    Entry.Account.FineInGold -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    break;
+                case RojmelEntryType.ItemExchangeCash:
+                    Entry.Account.FineInMoney -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    break;
+                case RojmelEntryType.SimpleCashExchange:
+                    Entry.Account.FineInMoney -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    break;
+                case RojmelEntryType.UseCash:
+                    Entry.Account.FineInGold -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    //Use account money balance if Cash is not provided.
+                    if (Entry.StockItem == StockItem.None)
+                    {
+                        Entry.Account.FineInMoney -= Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
+                    }
+                    break;
+            }
+
+            RojmelEntries.Remove(Entry);
         }
 
         internal void FireStockItemAdded(StockItem Item)
