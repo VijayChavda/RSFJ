@@ -22,9 +22,9 @@
                   FontSize="14pt" Foreground="SlateGray">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="120" Header="Name" Binding="{Binding Path=Name}" />
-                <DataGridTextColumn Width="120" Header="In Stock" Binding="{Binding Path=InStock}" />
+                <DataGridTextColumn Width="120" Header="In Stock" Binding="{Binding Path=InStock, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Width="120" Header="Purity" Binding="{Binding Path=Rate_Purity}" />
-                <DataGridTextColumn Width="120" Header="Value" Binding="{Binding Path=EquivalentGold}" />
+                <DataGridTextColumn Width="120" Header="Value" Binding="{Binding Path=EquivalentGold, UpdateSourceTrigger=PropertyChanged}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

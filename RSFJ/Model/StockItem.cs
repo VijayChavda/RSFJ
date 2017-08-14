@@ -1,4 +1,5 @@
-﻿using RSFJ.ViewModels;
+﻿using RSFJ.Services;
+using RSFJ.ViewModels;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -28,7 +29,29 @@ namespace RSFJ.Model
         /// <summary>
         /// Normalised value of this stock item as gold.
         /// </summary>
-        public double EquivalentGold { get; set; }
+        public double EquivalentGold { get => _EquivalentGold; set => SetProperty(ref _EquivalentGold, value); }
+        public double _EquivalentGold;
+
+        protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
+        {
+            if (PropertyName == nameof(InStock))
+            {
+                if (DataContextService.Instance.DataContext == null)
+                {
+                    EquivalentGold = 0;
+                    return;
+                }
+
+                if (this == DataContextService.Instance.DataContext.Cash)
+                {
+                    EquivalentGold = (double)(InStock / Rate_Purity);
+                }
+                else
+                {
+                    EquivalentGold = (double)(InStock * Rate_Purity / 100);
+                }
+            }
+        }
 
         public override string ToString()
         {

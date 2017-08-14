@@ -51,8 +51,7 @@ namespace RSFJ.ViewModels
             {
                 Name = Name,
                 InStock = (double)InStock,
-                Rate_Purity = (double)Rate_Purity,
-                EquivalentGold = (double)(InStock * Rate_Purity),
+                Rate_Purity = (double)Rate_Purity
             };
 
             var added = Services.DataContextService.Instance.DataContext.StockItems.Add(newItem);

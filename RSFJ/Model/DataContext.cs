@@ -16,7 +16,7 @@ namespace RSFJ.Model
 
         public DataContext()
         {
-            Cash = new StockItem() { Name = "Cash" };
+            Cash = new StockItem() { Name = "Cash", Rate_Purity = 2900 };   //TODO: Change 2900 to user defined.
             Fine999 = new StockItem() { Name = "Fine999" };
             None = new StockItem() { Name = "None" };
 
