@@ -21,14 +21,6 @@ namespace RSFJ.Services
         public Model.DataContext DataContext { get; set; }
 
         /// <summary>
-        /// Initializes DataContextService.
-        /// </summary>
-        private DataContextService()
-        {
-            DataContext = new Model.DataContext();
-        }
-
-        /// <summary>
         /// Saves the current data context object in database file.
         /// </summary>
         public void Save()
@@ -50,7 +42,11 @@ namespace RSFJ.Services
         public void Load()
         {
             if (File.Exists(StorageService.DatabaseFile) == false)
+            {
+                DataContext = new Model.DataContext();
+                DataContext.Load();
                 return;
+            }
 
             string data;
             using (var reader = new StreamReader(StorageService.DatabaseFile))
@@ -63,6 +59,8 @@ namespace RSFJ.Services
                 var serializer = new XmlSerializer(typeof(Model.DataContext));
                 DataContext = (Model.DataContext)serializer.Deserialize(stream);
             }
+
+            DataContext.Load();
         }
 
         /// <summary>

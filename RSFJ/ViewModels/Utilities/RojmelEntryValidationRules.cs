@@ -1,4 +1,5 @@
 ﻿using RSFJ.Model;
+using RSFJ.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,7 +29,7 @@ namespace RSFJ.ViewModels.Utilities
             {
                 return new ValidationResult(false, "Param 1 is required");
             }
-            if (entry.StockItem != StockItem.Cash && entry.Param2 == null)
+            if (entry.StockItem != DataContextService.Instance.DataContext.Cash && entry.Param2 == null)
             {
                 return new ValidationResult(false, "Param 2 is required");
             }

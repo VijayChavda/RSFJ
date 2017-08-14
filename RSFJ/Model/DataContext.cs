@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RSFJ.Services;
+using System;
 using System.Collections.Generic;
 
 namespace RSFJ.Model
@@ -9,10 +10,18 @@ namespace RSFJ.Model
         public HashSet<StockItem> StockItems { get; set; }
         public HashSet<Account> Accounts { get; set; }
 
+        public StockItem Cash { get; set; }
+        public StockItem Fine999 { get; set; }
+        public StockItem None { get; set; }
+
         public DataContext()
         {
+            Cash = new StockItem() { Name = "Cash" };
+            Fine999 = new StockItem() { Name = "Fine999" };
+            None = new StockItem() { Name = "None" };
+
             RojmelEntries = new HashSet<RojmelEntry>();
-            StockItems = new HashSet<StockItem>() { StockItem.Cash, StockItem.None };
+            StockItems = new HashSet<StockItem>();
             Accounts = new HashSet<Account>();
         }
 
@@ -79,7 +88,7 @@ namespace RSFJ.Model
                 case RojmelEntryType.UseCash:
                     Entry.Account.FineInGold += Entry.IsLeftSide ? -result : result;
                     //Use account money balance if Cash is not provided.
-                    if (Entry.StockItem == StockItem.None)
+                    if (Entry.StockItem == DataContextService.Instance.DataContext.None)
                     {
                         Entry.Account.FineInMoney += Entry.IsLeftSide ? result : -result;
                     }
@@ -112,7 +121,7 @@ namespace RSFJ.Model
                 case RojmelEntryType.UseCash:
                     Entry.Account.FineInGold -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
                     //Use account money balance if Cash is not provided.
-                    if (Entry.StockItem == StockItem.None)
+                    if (Entry.StockItem == DataContextService.Instance.DataContext.None)
                     {
                         Entry.Account.FineInMoney -= Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
                     }
@@ -120,6 +129,17 @@ namespace RSFJ.Model
             }
 
             RojmelEntries.Remove(Entry);
+        }
+
+        internal void Load()
+        {
+            if (StockItems.Contains(Cash)) StockItems.Remove(Cash);
+            if (StockItems.Contains(None)) StockItems.Remove(None);
+            if (StockItems.Contains(Fine999)) StockItems.Remove(Fine999);
+
+            StockItems.Add(Cash);
+            StockItems.Add(None);
+            StockItems.Add(Fine999);
         }
 
         internal void FireStockItemAdded(StockItem Item)

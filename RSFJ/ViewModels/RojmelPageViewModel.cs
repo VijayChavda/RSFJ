@@ -173,7 +173,7 @@ namespace RSFJ.ViewModels
 
                         foreach (var entry in sameStockEntries)
                         {
-                            if (entry.StockItem == StockItem.None)
+                            if (entry.StockItem == DataContextService.Instance.DataContext.None)
                                 continue;
 
                             inStock += entry.IsLeftSide ? entry.Param1 : -entry.Param1;
@@ -209,7 +209,7 @@ namespace RSFJ.ViewModels
                                 case RojmelEntryType.UseCash:
                                     fineInGold += entry.IsLeftSide ? -entry.Result : entry.Result;
                                     //Use account money balance if Cash is not provided.
-                                    if (entry.StockItem == StockItem.None)
+                                    if (entry.StockItem == DataContextService.Instance.DataContext.None)
                                     {
                                         fineInMoney += entry.IsLeftSide ? entry.Param1 : -entry.Param1;
                                     }
@@ -448,11 +448,11 @@ namespace RSFJ.ViewModels
             #endregion
 
             #region Determine the Type of entry
-            if (StockItem == StockItem.Cash)
+            if (StockItem == DataContextService.Instance.DataContext.Cash)
             {
                 Type = Param2 == null ? RojmelEntryType.SimpleCashExchange : RojmelEntryType.UseCash;
             }
-            else if (StockItem == StockItem.None)
+            else if (StockItem == DataContextService.Instance.DataContext.None)
             {
                 Type = RojmelEntryType.UseCash;
             }
