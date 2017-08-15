@@ -4,6 +4,7 @@ using RSFJ.ViewModels.Utilities;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Timers;
 using System.Windows.Input;
 
 namespace RSFJ.ViewModels
@@ -16,33 +17,74 @@ namespace RSFJ.ViewModels
         public BullionEntryViewModel BullionEntryViewModel { get; set; }
         public CustomerEntryViewModel CustomerEntryViewModel { get; set; }
 
+        private string _Message;
+        public string Message { get => _Message; set => SetProperty(ref _Message, value); }
+
         public EntriesViewModel()
         {
             StockItems = new ObservableCollection<StockItem>();
-            LoadData();
 
             ExchangeEntryViewModel = new ExchangeEntryViewModel();
             BullionEntryViewModel = new BullionEntryViewModel();
             CustomerEntryViewModel = new CustomerEntryViewModel();
+
+            LoadData();
 
             DataContextService.Instance.DataContext.StockItemAdded += (s, item) =>
             {
                 if (StockItems.Count(x => x.Name == item.Name) == 0)
                     StockItems.Add(item);
             };
+
+            ExchangeEntryViewModel.EntryAdded += OnEntryAdded;
+            BullionEntryViewModel.EntryAdded += OnEntryAdded;
+            CustomerEntryViewModel.EntryAdded += OnEntryAdded;
+
+            ExchangeEntryViewModel.EntryError += (s, message) => ShowMessage(message);
+            BullionEntryViewModel.EntryError += (s, message) => ShowMessage(message);
+            CustomerEntryViewModel.EntryError += (s, message) => ShowMessage(message);
+        }
+
+        private void OnEntryAdded(object sender, RojmelEntry entry)
+        {
+            ShowMessage(string.Format("Entry {0} was successfully added.", entry.ToString()));
+
+            ExchangeEntryViewModel.Reset();
+            BullionEntryViewModel.Reset();
+            CustomerEntryViewModel.Reset();
         }
 
         private void LoadData()
         {
             StockItems.Clear();
-            foreach (var item in DataContextService.Instance.DataContext.StockItems.Except(new StockItem[] { DataContextService.Instance.DataContext.Cash, DataContextService.Instance.DataContext.None }))
+            foreach (var item in DataContextService.Instance.DataContext.StockItems.Except(
+                new StockItem[] {
+                    DataContextService.Instance.DataContext.Cash,
+                    DataContextService.Instance.DataContext.None
+                }))
             {
                 StockItems.Add(item);
             }
         }
+
+        private void ShowMessage(string message)
+        {
+            Message = message;
+
+            var timer = new Timer(2000) { AutoReset = false };
+            timer.Elapsed += (s, e) => Message = string.Empty;
+            timer.Start();
+        }
     }
 
-    public class ExchangeEntryViewModel : ViewModelBase
+    public interface IEntryViewModel
+    {
+        event EventHandler<RojmelEntry> EntryAdded;
+
+        event EventHandler<string> EntryError;
+    }
+
+    public class ExchangeEntryViewModel : ViewModelBase, IEntryViewModel
     {
         public static ObservableCollection<Account> Accounts { get; set; }
 
@@ -80,6 +122,9 @@ namespace RSFJ.ViewModels
         }
         #endregion
 
+        public event EventHandler<RojmelEntry> EntryAdded;
+        public event EventHandler<string> EntryError;
+
         public ExchangeEntryViewModel()
         {
             Accounts = new ObservableCollection<Account>();
@@ -105,11 +150,22 @@ namespace RSFJ.ViewModels
             {
                 Accounts.Add(item);
             }
-            Account = Accounts.FirstOrDefault();
         }
 
         private void AddEntry(bool OnLeftSide)
         {
+            if (Account == null)
+            {
+                EntryError?.Invoke(this, "You need to select an Account for Rojmel entry.");
+                return;
+            }
+
+            if (IsExchangeWithFine && ExchangeWithFineViewModel.StockItem == null)
+            {
+                EntryError?.Invoke(this, "You need to select an item for Rojmel entry.");
+                return;
+            }
+
             var entry = new RojmelEntry()
             {
                 Account = Account,
@@ -146,12 +202,33 @@ namespace RSFJ.ViewModels
                 entry.Param1 = FineClearViewModel.Cash;
                 entry.Param2 = FineClearViewModel.Rate;
             }
+            else
+            {
+                EntryError?.Invoke(this, "Please select an option.");
+                return;
+            }
 
             DataContextService.Instance.DataContext.AddRojmelEntry(entry);
+
+            EntryAdded?.Invoke(this, entry);
+        }
+
+        internal void Reset()
+        {
+            Account = null;
+            IsExchangeWithFine = false;
+            IsCashPayment = false;
+            IsFineClearWithAccountBalance = false;
+            IsFineClear = false;
+
+            ExchangeWithFineViewModel.Reset();
+            CashPaymentViewModel.Reset();
+            FineClearWithAccountBalanceViewModel.Reset();
+            FineClearViewModel.Reset();
         }
     }
 
-    public class BullionEntryViewModel : ViewModelBase
+    public class BullionEntryViewModel : ViewModelBase, IEntryViewModel
     {
         public static ObservableCollection<Account> Accounts { get; set; }
 
@@ -181,6 +258,9 @@ namespace RSFJ.ViewModels
         }
         #endregion
 
+        public event EventHandler<RojmelEntry> EntryAdded;
+        public event EventHandler<string> EntryError;
+
         public BullionEntryViewModel()
         {
             Accounts = new ObservableCollection<Account>();
@@ -204,11 +284,16 @@ namespace RSFJ.ViewModels
             {
                 Accounts.Add(item);
             }
-            Account = Accounts.FirstOrDefault();
         }
 
         private void AddEntry(bool OnLeftSide)
         {
+            if (Account == null)
+            {
+                EntryError?.Invoke(this, "You need to select an Account for Rojmel entry.");
+                return;
+            }
+
             var entry = new RojmelEntry()
             {
                 Account = Account,
@@ -231,12 +316,29 @@ namespace RSFJ.ViewModels
                 entry.StockItem = DataContextService.Instance.DataContext.Cash;
                 entry.Param1 = CashPaymentViewModel.Cash;
             }
+            else
+            {
+                EntryError?.Invoke(this, "Please select an option.");
+                return;
+            }
 
             DataContextService.Instance.DataContext.AddRojmelEntry(entry);
+
+            EntryAdded?.Invoke(this, entry);
+        }
+
+        internal void Reset()
+        {
+            Account = null;
+            IsFine999Payment = false;
+            IsCashPayment = false;
+
+            Fine999PaymentViewModel.Reset();
+            CashPaymentViewModel.Reset();
         }
     }
 
-    public class CustomerEntryViewModel : ViewModelBase
+    public class CustomerEntryViewModel : ViewModelBase, IEntryViewModel
     {
         public static ObservableCollection<Account> Accounts { get; set; }
 
@@ -275,6 +377,9 @@ namespace RSFJ.ViewModels
         }
         #endregion
 
+        public event EventHandler<RojmelEntry> EntryAdded;
+        public event EventHandler<string> EntryError;
+
         public CustomerEntryViewModel()
         {
             Accounts = new ObservableCollection<Account>();
@@ -295,13 +400,22 @@ namespace RSFJ.ViewModels
             {
                 Accounts.Add(item);
             }
-            Account = Accounts.FirstOrDefault();
-
-            StockItem = EntriesViewModel.StockItems.FirstOrDefault();
         }
 
         private void AddEntry(bool OnLeftSide)
         {
+            if (Account == null)
+            {
+                EntryError?.Invoke(this, "You need to select an Account for Rojmel entry.");
+                return;
+            }
+
+            if (StockItem == null)
+            {
+                EntryError?.Invoke(this, "You need to select an item for Rojmel entry.");
+                return;
+            }
+
             var entry = new RojmelEntry()
             {
                 Type = RojmelEntryType.ItemExchangeCash,
@@ -317,6 +431,20 @@ namespace RSFJ.ViewModels
             };
 
             DataContextService.Instance.DataContext.AddRojmelEntry(entry);
+
+            EntryAdded?.Invoke(this, entry);
+        }
+
+        internal void Reset()
+        {
+            Account = null;
+            StockItem = null;
+
+            Weight = 0;
+            Rate = 0;
+            Labour = 0;
+            Waste = 0;
+            IsLabourAsAmount = false;
         }
     }
 
@@ -344,12 +472,26 @@ namespace RSFJ.ViewModels
             PaymentBefore = DateTime.Now.AddDays(30);
             PaymentInterval = DateTime.Now.AddDays(10);
         }
+
+        internal void Reset()
+        {
+            StockItem = null;
+            Weight = 0;
+            Purity = 0;
+            PaymentBefore = DateTime.Today.AddMonths(1);
+            PaymentInterval = DateTime.Today.AddDays(10);
+        }
     }
 
     public class CashPaymentViewModel : ViewModelBase
     {
         private double _Cash;
         public double Cash { get => _Cash; set => SetProperty(ref _Cash, value); }
+
+        internal void Reset()
+        {
+            Cash = 0;
+        }
     }
 
     public class FineClearWithAccountBalanceViewModel : ViewModelBase
@@ -359,6 +501,12 @@ namespace RSFJ.ViewModels
 
         private double _Rate;
         public double Rate { get => _Rate; set => SetProperty(ref _Rate, value); }
+
+        internal void Reset()
+        {
+            AccountBalance = 0;
+            Rate = 0;
+        }
     }
 
     public class FineClearViewModel : ViewModelBase
@@ -368,6 +516,12 @@ namespace RSFJ.ViewModels
 
         private double _Rate;
         public double Rate { get => _Rate; set => SetProperty(ref _Rate, value); }
+
+        internal void Reset()
+        {
+            Cash = 0;
+            Rate = 0;
+        }
     }
 
     public class Fine999PaymentViewModel : ViewModelBase
@@ -383,6 +537,14 @@ namespace RSFJ.ViewModels
 
         private DateTime _PaymentInterval;
         public DateTime PaymentInterval { get => _PaymentInterval; set => SetProperty(ref _PaymentInterval, value); }
+
+        internal void Reset()
+        {
+            Weight = 0;
+            Rate = 0;
+            PaymentBefore = DateTime.Today.AddMonths(1);
+            PaymentInterval = DateTime.Today.AddDays(10);
+        }
     }
     #endregion
 }
