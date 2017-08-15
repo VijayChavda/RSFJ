@@ -132,6 +132,17 @@ namespace RSFJ.ViewModels
                     ShowAggregateStockBalance = RegistoryService.Instance.ShowAggregateStockBalance;
                 }
             };
+
+            Entries.CollectionChanged += (s, e) =>
+            {
+                if (e.OldItems != null && e.OldItems.Count > 0)
+                {
+                    foreach (var item in e.OldItems.Cast<RojmelEntryViewModel>())
+                    {
+                        DataContextService.Instance.DataContext.RojmelEntries.RemoveAll(x => x.Id == item.Id);
+                    }
+                }
+            };
         }
 
         private void LoadData()

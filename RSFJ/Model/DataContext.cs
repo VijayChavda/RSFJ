@@ -1,12 +1,13 @@
 ﻿using RSFJ.Services;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace RSFJ.Model
 {
     public class DataContext
     {
-        public HashSet<RojmelEntry> RojmelEntries { get; set; }
+        public List<RojmelEntry> RojmelEntries { get; set; }
         public HashSet<StockItem> StockItems { get; set; }
         public HashSet<Account> Accounts { get; set; }
 
@@ -24,7 +25,7 @@ namespace RSFJ.Model
 
             Self = new Account() { Name = "Self", Group = "Others", Note = "Application generated.", Type = AccountType.Self };
 
-            RojmelEntries = new HashSet<RojmelEntry>();
+            RojmelEntries = new List<RojmelEntry>();
             StockItems = new HashSet<StockItem>();
             Accounts = new HashSet<Account>();
         }
@@ -104,7 +105,7 @@ namespace RSFJ.Model
             }
             #endregion
 
-            Entry.Id = RojmelEntries.Count + 1;
+            Entry.Id = RojmelEntries.Count == 0 ? 1 : RojmelEntries.Last().Id + 1;
             RojmelEntries.Add(Entry);
         }
 
