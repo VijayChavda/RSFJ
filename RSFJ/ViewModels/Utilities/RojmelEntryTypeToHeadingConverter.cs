@@ -15,6 +15,7 @@ namespace RSFJ.ViewModels.Utilities
             const string h___rate = "Rate";
             const string h_purity = "%";
             const string h___none = "-";
+            const string h___stock = "Stock";
 
             if (value.GetType() != typeof(RojmelEntryType))
                 return null;
@@ -40,7 +41,8 @@ namespace RSFJ.ViewModels.Utilities
 
                 case RojmelEntryType.Invalid:
                     return param == 0 ? h___none : param == 1 ? h___none : h___none;
-
+                case RojmelEntryType.Initial:
+                    return param == 0 ? h___stock : param == 1 ? h___none : h___stock;
                 default:
                     return param == 0 ? h___none : param == 1 ? h___none : h___none;
             }

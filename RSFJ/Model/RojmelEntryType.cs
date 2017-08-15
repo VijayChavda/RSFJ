@@ -5,6 +5,6 @@
     /// </summary>
     public enum RojmelEntryType
     {
-        ItemExchangeFine, ItemExchangeCash, SimpleCashExchange, UseCash, Invalid
+        ItemExchangeFine, ItemExchangeCash, SimpleCashExchange, UseCash, Invalid, Initial
     }
 }

@@ -448,7 +448,11 @@ namespace RSFJ.ViewModels
             #endregion
 
             #region Determine the Type of entry
-            if (StockItem == DataContextService.Instance.DataContext.Cash)
+            if (Account == DataContextService.Instance.DataContext.Self)
+            {
+                Type = RojmelEntryType.Initial;
+            }
+            else if (StockItem == DataContextService.Instance.DataContext.Cash)
             {
                 Type = Param2 == null ? RojmelEntryType.SimpleCashExchange : RojmelEntryType.UseCash;
             }

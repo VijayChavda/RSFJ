@@ -5,6 +5,6 @@
     /// </summary>
     public enum AccountType
     {
-        Regular, Customer, Boolean
+        Regular, Customer, Boolean, Self
     }
 }

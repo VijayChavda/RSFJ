@@ -14,11 +14,15 @@ namespace RSFJ.Model
         public StockItem Fine999 { get; set; }
         public StockItem None { get; set; }
 
+        public Account Self { get; set; }
+
         public DataContext()
         {
             Cash = new StockItem() { Name = "Cash", Rate_Purity = 2900 };   //TODO: Change 2900 to user defined.
             Fine999 = new StockItem() { Name = "Fine999" };
             None = new StockItem() { Name = "None" };
+
+            Self = new Account() { Name = "Self", Group = "Others", Note = "Application generated.", Type = AccountType.Self };
 
             RojmelEntries = new HashSet<RojmelEntry>();
             StockItems = new HashSet<StockItem>();
@@ -63,6 +67,10 @@ namespace RSFJ.Model
             else if (Entry.Type == RojmelEntryType.UseCash)
             {
                 Entry.Result = Entry.Param1 / (double)Entry.Param2;
+            }
+            else if (Entry.Type == RojmelEntryType.Initial)
+            {
+                Entry.Result = Entry.Param1;
             }
             else
             {
@@ -137,9 +145,13 @@ namespace RSFJ.Model
             if (StockItems.Contains(None)) StockItems.Remove(None);
             if (StockItems.Contains(Fine999)) StockItems.Remove(Fine999);
 
+            if (Accounts.Contains(Self)) Accounts.Remove(Self);
+
             StockItems.Add(Cash);
             StockItems.Add(None);
             StockItems.Add(Fine999);
+
+            Accounts.Add(Self);
         }
 
         internal void FireStockItemAdded(StockItem Item)
