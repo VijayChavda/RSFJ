@@ -27,6 +27,8 @@
         <utilities:RojmelEntryTypeToHeadingConverter x:Key="RojmelEntryTypeToHeadingConverter" />
         <utilities:LendingEntryVisibilityConverter x:Key="LendingEntryVisibilityConverter" />
         <utilities:CustomerEntryVisibilityConverter x:Key="CustomerEntryVisibilityConverter" />
+
+        <utilities:RojmelPageAccountDetailVisibilityConverter x:Key="RojmelPageAccountDetailVisibilityConverter" />
     </Page.Resources>
 
     <Grid Background="WhiteSmoke">
@@ -203,7 +205,7 @@
                             </Style>
                         </StackPanel.Resources>
 
-                        <StackPanel Margin="10" Visibility="{Binding Path=Account, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
+                        <StackPanel Margin="10" Visibility="{Binding UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelPageAccountDetailVisibilityConverter}}">
                             <Border Padding="5" BorderBrush="LightSlateGray" BorderThickness="0 0 0 1">
                                 <TextBlock Text="{Binding Path=Account.Name}" FontSize="14pt" />
                             </Border>
