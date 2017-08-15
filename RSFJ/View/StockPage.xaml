@@ -14,17 +14,27 @@
 
     <Grid Background="LightBlue">
         <DataGrid ItemsSource="{Binding Path=StockItems}"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
                   AutoGenerateColumns="False"
                   HorizontalAlignment="Center" Margin="0 60 0 180"
                   BorderBrush="SlateGray" BorderThickness="1 1 2 2"
                   GridLinesVisibility="Vertical"
-                  IsReadOnly="True" IsHitTestVisible="False"
-                  FontSize="14pt" Foreground="SlateGray">
+                  IsReadOnly="True"
+                  Foreground="#223333"
+                  AlternatingRowBackground="WhiteSmoke"
+                  RowBackground="LightGray"
+                  FontSize="14pt">
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="IsHitTestVisible" Value="False" />
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="120" Header="Name" Binding="{Binding Path=Name}" />
-                <DataGridTextColumn Width="120" Header="In Stock" Binding="{Binding Path=InStock, UpdateSourceTrigger=PropertyChanged}" />
-                <DataGridTextColumn Width="120" Header="Purity" Binding="{Binding Path=Rate_Purity}" />
-                <DataGridTextColumn Width="120" Header="Value" Binding="{Binding Path=EquivalentGold, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Width="120" Header="In Stock" Binding="{Binding Path=InStock, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Width="120" Header="Purity" Binding="{Binding Path=Rate_Purity, StringFormat=N2}" />
+                <DataGridTextColumn Width="120" Header="Value" Binding="{Binding Path=EquivalentGold, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
