@@ -21,17 +21,13 @@ namespace RSFJ.ViewModels
         private string _Note;
         public string Note { get => _Note; set => SetProperty(ref _Note, value); }
 
-        private double _FineInGold;
-        public double FineInGold { get => _FineInGold; set => SetProperty(ref _FineInGold, value); }
-
-        private double _FineInMoney;
-        public double FineInMoney { get => _FineInMoney; set => SetProperty(ref _FineInMoney, value); }
-
         private AccountType _Type;
         public AccountType Type { get => _Type; set => SetProperty(ref _Type, value); }
 
         private string _Message;
         public string Message { get => _Message; set => SetProperty(ref _Message, value); }
+
+        public List<AccountType> AccountTypes { get; set; }
 
         RelayCommand _addCommand;
         public ICommand AddCommand
@@ -43,6 +39,7 @@ namespace RSFJ.ViewModels
         {
             Group = "Others";
             Type = AccountType.Regular;
+            AccountTypes = new List<AccountType>() { AccountType.Boolean, AccountType.Customer, AccountType.Regular };
         }
 
         private void Add()
@@ -71,8 +68,6 @@ namespace RSFJ.ViewModels
             {
                 Name = Name,
                 Phone = Phone,
-                FineInGold = FineInGold,
-                FineInMoney = FineInMoney,
                 Group = Group,
                 Note = Note,
                 Type = Type
@@ -89,8 +84,6 @@ namespace RSFJ.ViewModels
                 {
                     Name = null;
                     Phone = null;
-                    FineInGold = 0;
-                    FineInMoney = 0;
                     Group = null;
                     Note = null;
                     Type = AccountType.Regular;

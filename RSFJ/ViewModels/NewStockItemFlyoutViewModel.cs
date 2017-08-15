@@ -1,8 +1,6 @@
 ﻿using RSFJ.ViewModels.Utilities;
 using System.Windows.Input;
 using System.Timers;
-using System.Collections.Generic;
-using System.Linq;
 using RSFJ.Model;
 
 namespace RSFJ.ViewModels
@@ -11,9 +9,6 @@ namespace RSFJ.ViewModels
     {
         private string _Name;
         public string Name { get => _Name; set => SetProperty(ref _Name, value); }
-
-        private double? _InStock;
-        public double? InStock { get => _InStock; set => SetProperty(ref _InStock, value); }
 
         private double? _Rate_Purity;
         public double? Rate_Purity { get => _Rate_Purity; set => SetProperty(ref _Rate_Purity, value); }
@@ -41,16 +36,9 @@ namespace RSFJ.ViewModels
                 return;
             }
 
-            if (InStock == null)
-            {
-                Message = "Please provide a valid initial amount of stock.";
-                return;
-            }
-
             var newItem = new StockItem()
             {
                 Name = Name,
-                InStock = (double)InStock,
                 Rate_Purity = (double)Rate_Purity
             };
 
@@ -64,7 +52,6 @@ namespace RSFJ.ViewModels
                 timer.Elapsed += (sender, e) =>
                 {
                     Name = null;
-                    InStock = null;
                     Rate_Purity = null;
                     Message = null;
                 };
@@ -78,7 +65,7 @@ namespace RSFJ.ViewModels
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
         {
-            if (PropertyName != nameof(Message) && string.IsNullOrWhiteSpace(Name) == false && Rate_Purity != null && InStock != null)
+            if (PropertyName != nameof(Message) && string.IsNullOrWhiteSpace(Name) == false && Rate_Purity != null)
             {
                 Message = null;
             }
