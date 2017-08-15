@@ -30,6 +30,8 @@ namespace RSFJ.ViewModels
         {
             foreach (var item in DataContextService.Instance.DataContext.StockItems)
             {
+                if (item == DataContextService.Instance.DataContext.None) continue;
+
                 StockItems.Add(item);
             }
         }
