@@ -57,13 +57,13 @@ namespace RSFJ.ViewModels
         private void LoadData()
         {
             StockItems.Clear();
-            foreach (var item in DataContextService.Instance.DataContext.StockItems.Except(
-                new StockItem[] {
-                    DataContextService.Instance.DataContext.Cash,
-                    DataContextService.Instance.DataContext.None
-                }))
+            foreach (var item in DataContextService.Instance.DataContext.StockItems)
             {
-                StockItems.Add(item);
+                if (item == DataContextService.Instance.DataContext.Cash ||
+                    item == DataContextService.Instance.DataContext.None)
+                {
+                    StockItems.Add(item);
+                }
             }
         }
 
