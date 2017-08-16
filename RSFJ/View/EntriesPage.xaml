@@ -72,12 +72,13 @@
                 <Setter Property="Foreground" Value="{DynamicResource LightForegroundBrush}" />
             </Style>
             <Style TargetType="DatePicker">
-                <Setter Property="Width" Value="150" />
                 <Setter Property="HorizontalAlignment" Value="Right" />
                 <Setter Property="Foreground" Value="DarkSlateGray" />
                 <Setter Property="BorderBrush" Value="Gray" />
                 <Setter Property="BorderThickness" Value="0 0 0 1" />
-                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="Padding" Value="0 5" />
+                <Setter Property="Margin" Value="20 0" />
+                <Setter Property="Width" Value="200" />
             </Style>
             <Style x:Key="CreditButton" TargetType="Button">
                 <Setter Property="Width" Value="100" />
@@ -110,6 +111,17 @@
                 <Border DataContext="{Binding Path=ExchangeEntryViewModel}" Style="{StaticResource Section}">
                     <DockPanel>
                         <StackPanel DockPanel.Dock="Top">
+                            <StackPanel Style="{StaticResource SubSection}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Date: " Style="{StaticResource Label}" />
+                                    <DatePicker Grid.Column="1" SelectedDate="{Binding Path=Date}" />
+                                </Grid>
+                            </StackPanel>
+
                             <StackPanel Style="{StaticResource SubSection}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -162,7 +174,7 @@
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Payment before: " Style="{StaticResource Label}" />
-                                            <DatePicker Grid.Column="2" SelectedDate="{Binding Path=PaymentBefore}" />
+                                            <DatePicker Grid.Column="2" SelectedDate="{Binding Path=PaymentBefore}" Margin="0" Width="200" />
                                         </Grid>
                                     </StackPanel>
 
@@ -174,7 +186,7 @@
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Payment interval: " Style="{StaticResource Label}" />
-                                            <DatePicker Grid.Column="2" SelectedDate="{Binding Path=PaymentInterval}" />
+                                            <TextBox Grid.Column="2" Text="{Binding Path=PaymentInterval}" Width="200" />
                                         </Grid>
                                     </StackPanel>
                                 </StackPanel>
@@ -257,6 +269,17 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Date: " Style="{StaticResource Label}" />
+                                    <DatePicker Grid.Column="1" SelectedDate="{Binding Path=Date}" />
+                                </Grid>
+                            </StackPanel>
+                            
+                            <StackPanel Style="{StaticResource SubSection}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
                                     <TextBlock Text="Account: " Style="{StaticResource Label}" />
                                     <ComboBox Grid.Column="1" SelectedItem="{Binding Path=Account}" ItemsSource="{Binding Path=Accounts}" />
                                 </Grid>
@@ -315,6 +338,17 @@
                 <Border DataContext="{Binding Path=CustomerEntryViewModel}" Style="{StaticResource Section}">
                     <DockPanel>
                         <StackPanel DockPanel.Dock="Top">
+                            <StackPanel Style="{StaticResource SubSection}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Date: " Style="{StaticResource Label}" />
+                                    <DatePicker Grid.Column="1" SelectedDate="{Binding Path=Date}" />
+                                </Grid>
+                            </StackPanel>
+                            
                             <StackPanel Style="{StaticResource SubSection}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>

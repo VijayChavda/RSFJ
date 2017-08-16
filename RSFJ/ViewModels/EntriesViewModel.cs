@@ -91,6 +91,9 @@ namespace RSFJ.ViewModels
         private Account _Account;
         public Account Account { get => _Account; set => SetProperty(ref _Account, value); }
 
+        private DateTime _Date;
+        public DateTime Date { get => _Date; set => SetProperty(ref _Date, value); }
+
         private bool _IsExchangeWithFine;
         public bool IsExchangeWithFine { get => _IsExchangeWithFine; set => SetProperty(ref _IsExchangeWithFine, value); }
 
@@ -128,6 +131,8 @@ namespace RSFJ.ViewModels
         public ExchangeEntryViewModel()
         {
             Accounts = new ObservableCollection<Account>();
+
+            Date = DateTime.Today;
 
             ExchangeWithFineViewModel = new ExchangeWithFineViewModel();
             CashPaymentViewModel = new CashPaymentViewModel();
@@ -169,7 +174,7 @@ namespace RSFJ.ViewModels
             var entry = new RojmelEntry()
             {
                 AccountName = Account.Name,
-                Date = DateTime.Now,
+                Date = Date,
                 IsLeftSide = OnLeftSide
             };
 
@@ -179,8 +184,8 @@ namespace RSFJ.ViewModels
                 entry.StockItemName = ExchangeWithFineViewModel.StockItem.Name;
                 entry.Param1 = ExchangeWithFineViewModel.Weight;
                 entry.Param2 = ExchangeWithFineViewModel.Purity;
-                entry.FullPaymentDueDays = DateTime.Now.Subtract(ExchangeWithFineViewModel.PaymentBefore).Days;
-                entry.PartialPaymentInterval = DateTime.Now.Subtract(ExchangeWithFineViewModel.PaymentInterval).Days;
+                entry.FullPaymentDueDays = Date.Subtract(ExchangeWithFineViewModel.PaymentBefore).Days;
+                entry.PartialPaymentInterval = ExchangeWithFineViewModel.PaymentInterval;
             }
             else if (IsCashPayment)
             {
@@ -235,6 +240,9 @@ namespace RSFJ.ViewModels
         private Account _Account;
         public Account Account { get => _Account; set => SetProperty(ref _Account, value); }
 
+        private DateTime _Date;
+        public DateTime Date { get => _Date; set => SetProperty(ref _Date, value); }
+
         private bool _IsFine999Payment;
         public bool IsFine999Payment { get => _IsFine999Payment; set => SetProperty(ref _IsFine999Payment, value); }
 
@@ -264,6 +272,8 @@ namespace RSFJ.ViewModels
         public BullionEntryViewModel()
         {
             Accounts = new ObservableCollection<Account>();
+
+            Date = DateTime.Today;
 
             Fine999PaymentViewModel = new Fine999PaymentViewModel();
             CashPaymentViewModel = new CashPaymentViewModel();
@@ -297,7 +307,7 @@ namespace RSFJ.ViewModels
             var entry = new RojmelEntry()
             {
                 AccountName = Account.Name,
-                Date = DateTime.Now,
+                Date = Date,
                 IsLeftSide = OnLeftSide
             };
 
@@ -307,8 +317,8 @@ namespace RSFJ.ViewModels
                 entry.StockItemName = DataContextService.Instance.DataContext.Fine999.Name;
                 entry.Param1 = Fine999PaymentViewModel.Weight;
                 entry.Param2 = Fine999PaymentViewModel.Rate;
-                entry.FullPaymentDueDays = DateTime.Now.Subtract(Fine999PaymentViewModel.PaymentBefore).Days;
-                entry.PartialPaymentInterval = DateTime.Now.Subtract(Fine999PaymentViewModel.PaymentInterval).Days;
+                entry.FullPaymentDueDays = (Date - Fine999PaymentViewModel.PaymentBefore).Days;
+                entry.PartialPaymentInterval = Fine999PaymentViewModel.PaymentInterval;
             }
             else if (IsCashPayment)
             {
@@ -348,6 +358,9 @@ namespace RSFJ.ViewModels
         private StockItem _StockItem;
         public StockItem StockItem { get => _StockItem; set => SetProperty(ref _StockItem, value); }
 
+        private DateTime _Date;
+        public DateTime Date { get => _Date; set => SetProperty(ref _Date, value); }
+
         private double _Weight;
         public double Weight { get => _Weight; set => SetProperty(ref _Weight, value); }
 
@@ -383,6 +396,8 @@ namespace RSFJ.ViewModels
         public CustomerEntryViewModel()
         {
             Accounts = new ObservableCollection<Account>();
+
+            Date = DateTime.Today;
 
             LoadData();
 
@@ -421,7 +436,7 @@ namespace RSFJ.ViewModels
                 Type = RojmelEntryType.ItemExchangeCash,
                 AccountName = Account.Name,
                 StockItemName = StockItem.Name,
-                Date = DateTime.Now,
+                Date = Date,
                 IsLeftSide = OnLeftSide,
                 IsLabourAsAmount = IsLabourAsAmount,
                 Labour = Labour,
@@ -439,6 +454,7 @@ namespace RSFJ.ViewModels
         {
             Account = null;
             StockItem = null;
+            Date = DateTime.Today;
 
             Weight = 0;
             Rate = 0;
@@ -463,14 +479,14 @@ namespace RSFJ.ViewModels
         private DateTime _PaymentBefore;
         public DateTime PaymentBefore { get => _PaymentBefore; set => SetProperty(ref _PaymentBefore, value); }
 
-        private DateTime _PaymentInterval;
-        public DateTime PaymentInterval { get => _PaymentInterval; set => SetProperty(ref _PaymentInterval, value); }
+        private int _PaymentInterval;
+        public int PaymentInterval { get => _PaymentInterval; set => SetProperty(ref _PaymentInterval, value); }
 
         public ExchangeWithFineViewModel()
         {
             StockItem = EntriesViewModel.StockItems.FirstOrDefault();
-            PaymentBefore = DateTime.Now.AddDays(30);
-            PaymentInterval = DateTime.Now.AddDays(10);
+            PaymentBefore = DateTime.Now.AddMonths(1);
+            PaymentInterval = 10;
         }
 
         internal void Reset()
@@ -479,7 +495,7 @@ namespace RSFJ.ViewModels
             Weight = 0;
             Purity = 0;
             PaymentBefore = DateTime.Today.AddMonths(1);
-            PaymentInterval = DateTime.Today.AddDays(10);
+            PaymentInterval = 10;
         }
     }
 
@@ -535,15 +551,15 @@ namespace RSFJ.ViewModels
         private DateTime _PaymentBefore;
         public DateTime PaymentBefore { get => _PaymentBefore; set => SetProperty(ref _PaymentBefore, value); }
 
-        private DateTime _PaymentInterval;
-        public DateTime PaymentInterval { get => _PaymentInterval; set => SetProperty(ref _PaymentInterval, value); }
+        private int _PaymentInterval;
+        public int PaymentInterval { get => _PaymentInterval; set => SetProperty(ref _PaymentInterval, value); }
 
         internal void Reset()
         {
             Weight = 0;
             Rate = 0;
             PaymentBefore = DateTime.Today.AddMonths(1);
-            PaymentInterval = DateTime.Today.AddDays(10);
+            PaymentInterval = 10;
         }
     }
     #endregion
