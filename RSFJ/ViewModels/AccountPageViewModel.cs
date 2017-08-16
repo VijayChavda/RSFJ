@@ -32,6 +32,9 @@ namespace RSFJ.ViewModels
         {
             foreach (var entry in DataContextService.Instance.DataContext.Accounts.GroupBy(x => x.Group))
             {
+                if (string.IsNullOrEmpty(entry.Key))
+                    continue;
+
                 GroupedAccounts.Add(new GroupedAccounts()
                 {
                     Group = entry.Key,
