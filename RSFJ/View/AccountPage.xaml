@@ -21,58 +21,87 @@
     <Grid Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Background="SteelBlue">
-            <TreeView ItemsSource="{Binding Path=GroupedAccounts}" SelectedItemChanged="TreeView_SelectedItemChanged" Background="LightSteelBlue" Margin="0 0 0 100">
+        <Grid Background="SlateGray">
+            <TreeView ItemsSource="{Binding Path=GroupedAccounts}" SelectedItemChanged="TreeView_SelectedItemChanged" 
+                      Background="SlateGray" Margin="0 0 0 100">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Accounts}">
-                        <TextBlock Text="{Binding}" />
+                        <Border CornerRadius="5" Padding="5 2">
+                            <TextBlock Text="{Binding}" Foreground="Black" />
+                        </Border>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
                 <TreeView.ItemContainerStyle>
+
                     <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="Foreground" Value="White" />
                         <Setter Property="IsExpanded" Value="True"/>
                         <Setter Property="FontSize" Value="12pt" />
                         <Setter Property="Margin" Value="5 0" />
                         <Setter Property="Padding" Value="5 2" />
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="Foreground" Value="Black" />
                                 <Setter Property="Cursor" Value="Hand" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>
                 </TreeView.ItemContainerStyle>
             </TreeView>
-            <StackPanel VerticalAlignment="Bottom" Margin="5 10" Visibility="{Binding Path=SelectedAccount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
+        </Grid>
+
+        <Grid Grid.Column="1" Background="LightSteelBlue">
+            <StackPanel Margin="5 10" Visibility="{Binding Path=SelectedAccount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
                 <StackPanel.Resources>
                     <Style x:Key="KeyStyle" TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="LightGray" />
+                        <Setter Property="Foreground" Value="Black" />
                         <Setter Property="FontSize" Value="14pt" />
                     </Style>
                     <Style x:Key="ValueStyle" TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="Foreground" Value="DimGray" />
                         <Setter Property="FontSize" Value="12pt" />
-                        <Setter Property="HorizontalAlignment" Value="Right" />
+                    </Style>
+                    <Style x:Key="EditableValueStyle" TargetType="TextBox">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                        <Setter Property="Padding" Value="0 5" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="BorderBrush" Value="DimGray" />
+                        <Setter Property="BorderThickness" Value="0 0 0 1" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="DimGray" />
+                        <Setter Property="FontSize" Value="12pt" />
                     </Style>
                 </StackPanel.Resources>
-                <Border Padding="5" BorderBrush="LightGray" BorderThickness="0 0 0 1">
-                    <TextBlock Text="{Binding Path=SelectedAccount.Name}" Foreground="White" FontSize="18pt" />
+                <Border Padding="5" Background="DimGray" CornerRadius="10">
+                    <TextBlock Text="{Binding Path=SelectedAccount.Name}" TextAlignment="Center" Foreground="White" FontSize="15pt" />
                 </Border>
-                <Grid Margin="10 2">
+                <StackPanel Margin="10">
+                    <TextBlock Text="{Binding Path=SelectedAccount.Type}" Style="{StaticResource KeyStyle}" Foreground="Navy" />
+                </StackPanel>
+                <StackPanel Margin="10">
                     <TextBlock Text="Fine due:" FontSize="12pt" Style="{StaticResource KeyStyle}" />
-                    <TextBlock Text="{Binding Path=SelectedAccount.FineInGold, StringFormat={}{0:#.##}}" Style="{StaticResource ValueStyle}" />
-                </Grid>
-                <Grid Margin="10 2">
+                    <TextBlock Text="{Binding Path=SelectedAccount.FineInGold, StringFormat=N2}" Style="{StaticResource ValueStyle}" />
+                </StackPanel>
+                <StackPanel Margin="10">
                     <TextBlock Text="Money due:" FontSize="12pt" Style="{StaticResource KeyStyle}" />
-                    <TextBlock Text="{Binding Path=SelectedAccount.FineInMoney, StringFormat={}{0:#.##}}" Style="{StaticResource ValueStyle}" />
-                </Grid>
+                    <TextBlock Text="{Binding Path=SelectedAccount.FineInMoney, StringFormat=N2}" Style="{StaticResource ValueStyle}" />
+                </StackPanel>
+                <StackPanel Margin="10">
+                    <TextBlock Text="Phone:" FontSize="12pt" Style="{StaticResource KeyStyle}" />
+                    <TextBox Text="{Binding Path=SelectedAccount.Phone}" Style="{StaticResource EditableValueStyle}" MaxLength="10" />
+                </StackPanel>
+                <StackPanel Margin="10">
+                    <TextBlock Text="Note:" FontSize="12pt" Style="{StaticResource KeyStyle}" />
+                    <TextBox Text="{Binding Path=SelectedAccount.Note}" AcceptsReturn="True" MaxLines="10" MaxLength="100" Style="{StaticResource EditableValueStyle}" />
+                </StackPanel>
             </StackPanel>
         </Grid>
-
-        <Border Grid.Column="1" BorderBrush="SlateGray" BorderThickness="1 0" Visibility="{Binding Path=SelectedAccount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
+        
+        <Border Grid.Column="2" BorderBrush="SlateGray" BorderThickness="1 0" Visibility="{Binding Path=SelectedAccount, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />
