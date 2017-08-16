@@ -24,7 +24,8 @@ namespace RSFJ.Model
         /// <summary>
         /// The rate/purity of this item.
         /// </summary>
-        public double Rate_Purity { get; set; }
+        public double Rate_Purity { get => _Rate_Purity; set => SetProperty(ref _Rate_Purity, value); }
+        public double _Rate_Purity;
 
         /// <summary>
         /// Normalised value of this stock item as gold.
@@ -34,7 +35,7 @@ namespace RSFJ.Model
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
         {
-            if (PropertyName == nameof(InStock))
+            if (PropertyName == nameof(InStock) || PropertyName == nameof(Rate_Purity))
             {
                 if (DataContextService.Instance.DataContext == null)
                 {

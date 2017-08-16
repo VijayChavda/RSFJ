@@ -14,27 +14,29 @@
 
     <Grid Background="LightBlue">
         <DataGrid ItemsSource="{Binding Path=StockItems}"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="True"
                   AutoGenerateColumns="False"
-                  HorizontalAlignment="Center" Margin="0 60 0 180"
-                  BorderBrush="SlateGray" BorderThickness="1 1 2 2"
+                  HorizontalAlignment="Center" 
+                  Margin="0 60 0 180"
+                  BorderBrush="SlateGray" 
+                  BorderThickness="1 1 2 2"
                   GridLinesVisibility="Vertical"
-                  IsReadOnly="True"
-                  Foreground="#223333"
-                  AlternatingRowBackground="WhiteSmoke"
-                  RowBackground="LightGray"
                   FontSize="14pt">
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="IsHitTestVisible" Value="False" />
+            <DataGrid.Resources>
+                <Style x:Key="DisabledCell" TargetType="DataGridCell">
+                    <Setter Property="Background" Value="Transparent" />
                 </Style>
-            </DataGrid.CellStyle>
+            </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Width="120" Header="Name" Binding="{Binding Path=Name}" />
-                <DataGridTextColumn Width="120" Header="In Stock" Binding="{Binding Path=InStock, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}" />
-                <DataGridTextColumn Width="120" Header="Purity" Binding="{Binding Path=Rate_Purity, StringFormat=N2}" />
-                <DataGridTextColumn Width="120" Header="Value" Binding="{Binding Path=EquivalentGold, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Width="140" Header="Name" Binding="{Binding Path=Name}" CellStyle="{StaticResource DisabledCell}" IsReadOnly="True" />
+                <DataGridTextColumn Width="140" Header="In Stock" Binding="{Binding Path=InStock, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}" CellStyle="{StaticResource DisabledCell}" IsReadOnly="True" />
+                <DataGridTextColumn Width="140" Header="Rate / Purity" Binding="{Binding Path=Rate_Purity, Mode=TwoWay, StringFormat=N2}" />
+                <DataGridTextColumn Width="140" Header="Value" Binding="{Binding Path=EquivalentGold, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" CellStyle="{StaticResource DisabledCell}" IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
