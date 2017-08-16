@@ -392,9 +392,9 @@ namespace RSFJ.ViewModels
         {
             _Id = Model.Id;
             _Date = Model.Date;
-            _Account = Model.Account;
+            _Account = Accounts.Single(x => x.Name == Model.AccountName);
             _Type = Model.Type;
-            _StockItem = Model.StockItem;
+            _StockItem = StockItems.Single(x => x.Name == Model.StockItemName);
 
             _LParam1 = Model.IsLeftSide ? Model.Param1 : (double?)null;
             _LParam2 = Model.IsLeftSide ? Model.Param2 : (double?)null;
@@ -483,9 +483,9 @@ namespace RSFJ.ViewModels
             DataContextService.Instance.DataContext.RemoveRojmelEntry(Model);
 
             Model.Date = Date;
-            Model.Account = Account;
+            Model.AccountName = Account.Name;
             Model.Type = Type;
-            Model.StockItem = StockItem;
+            Model.StockItemName = StockItem.Name;
             Model.Param1 = (double)Param1;
             Model.Param2 = Param2;
             Model.Labour = Labour;

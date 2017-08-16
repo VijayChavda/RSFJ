@@ -20,7 +20,7 @@ namespace RSFJ.Model
         /// <summary>
         /// Account holder's name.
         /// </summary>
-        public Account Account { get; set; }
+        public string AccountName { get; set; }
 
         /// <summary>
         /// The type of this Rojmel entry.
@@ -30,7 +30,7 @@ namespace RSFJ.Model
         /// <summary>
         /// Stock item's name.
         /// </summary>
-        public StockItem StockItem { get; set; }
+        public string StockItemName { get; set; }
 
         /// <summary>
         /// Parameter 1 of rojmel entry.

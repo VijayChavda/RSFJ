@@ -11,20 +11,14 @@ namespace RSFJ.Model
         public HashSet<StockItem> StockItems { get; set; }
         public HashSet<Account> Accounts { get; set; }
 
-        public StockItem Cash { get; set; }
-        public StockItem Fine999 { get; set; }
-        public StockItem None { get; set; }
+        public StockItem Cash { get => StockItems.Single(x => x.Name == "Cash"); }
+        public StockItem Fine999 { get => StockItems.Single(x => x.Name == "Fine999"); }
+        public StockItem None { get => StockItems.Single(x => x.Name == "None"); }
 
-        public Account Self { get; set; }
+        public Account Self { get => Accounts.Single(x => x.Name == "Self"); }
 
         public DataContext()
         {
-            Cash = new StockItem() { Name = "Cash", Rate_Purity = 2900 };   //TODO: Change 2900 to user defined.
-            Fine999 = new StockItem() { Name = "Fine999" };
-            None = new StockItem() { Name = "None" };
-
-            Self = new Account() { Name = "Self", Group = "Others", Note = "Application generated.", Type = AccountType.Self };
-
             RojmelEntries = new List<RojmelEntry>();
             StockItems = new HashSet<StockItem>();
             Accounts = new HashSet<Account>();
@@ -38,6 +32,9 @@ namespace RSFJ.Model
 
         public void AddRojmelEntry(RojmelEntry Entry)
         {
+            var account = Accounts.Single(x => x.Name == Entry.AccountName);
+            var stockItem = StockItems.Single(x => x.Name == Entry.StockItemName);
+
             #region Calculations
             if (Entry.Type == RojmelEntryType.ItemExchangeFine)
             {
@@ -45,11 +42,11 @@ namespace RSFJ.Model
             }
             else if (Entry.Type == RojmelEntryType.ItemExchangeCash)
             {
-                if (Entry.Account.Type == AccountType.Boolean)
+                if (account.Type == AccountType.Boolean)
                 {
                     Entry.Result = Entry.Param1 * (double)Entry.Param2;
                 }
-                else if (Entry.Account.Type == AccountType.Customer)
+                else if (account.Type == AccountType.Customer)
                 {
                     if (Entry.IsLabourAsAmount)
                         Entry.Result = ((Entry.Param1 + (double)Entry.Waste) * (double)Entry.Param2) + (double)Entry.Labour;
@@ -82,24 +79,24 @@ namespace RSFJ.Model
             #endregion
 
             #region Update balances
-            Entry.StockItem.InStock += Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
+            stockItem.InStock += Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
             switch (Entry.Type)
             {
                 case RojmelEntryType.ItemExchangeFine:
-                    Entry.Account.FineInGold += Entry.IsLeftSide ? -result : result;
+                    account.FineInGold += Entry.IsLeftSide ? -result : result;
                     break;
                 case RojmelEntryType.ItemExchangeCash:
-                    Entry.Account.FineInMoney += Entry.IsLeftSide ? -result : result;
+                    account.FineInMoney += Entry.IsLeftSide ? -result : result;
                     break;
                 case RojmelEntryType.SimpleCashExchange:
-                    Entry.Account.FineInMoney += Entry.IsLeftSide ? -result : result;
+                    account.FineInMoney += Entry.IsLeftSide ? -result : result;
                     break;
                 case RojmelEntryType.UseCash:
-                    Entry.Account.FineInGold += Entry.IsLeftSide ? -result : result;
+                    account.FineInGold += Entry.IsLeftSide ? -result : result;
                     //Use account money balance if Cash is not provided.
-                    if (Entry.StockItem == DataContextService.Instance.DataContext.None)
+                    if (stockItem == DataContextService.Instance.DataContext.None)
                     {
-                        Entry.Account.FineInMoney += Entry.IsLeftSide ? result : -result;
+                        account.FineInMoney += Entry.IsLeftSide ? result : -result;
                     }
                     break;
             }
@@ -114,25 +111,28 @@ namespace RSFJ.Model
             if (RojmelEntries.Contains(Entry) == false)
                 return;
 
-            Entry.StockItem.InStock -= Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
+            var account = Accounts.Single(x => x.Name == Entry.AccountName);
+            var stockItem = StockItems.Single(x => x.Name == Entry.StockItemName);
+
+            stockItem.InStock -= Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
 
             switch (Entry.Type)
             {
                 case RojmelEntryType.ItemExchangeFine:
-                    Entry.Account.FineInGold -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    account.FineInGold -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
                     break;
                 case RojmelEntryType.ItemExchangeCash:
-                    Entry.Account.FineInMoney -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    account.FineInMoney -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
                     break;
                 case RojmelEntryType.SimpleCashExchange:
-                    Entry.Account.FineInMoney -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    account.FineInMoney -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
                     break;
                 case RojmelEntryType.UseCash:
-                    Entry.Account.FineInGold -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    account.FineInGold -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
                     //Use account money balance if Cash is not provided.
-                    if (Entry.StockItem == DataContextService.Instance.DataContext.None)
+                    if (stockItem == DataContextService.Instance.DataContext.None)
                     {
-                        Entry.Account.FineInMoney -= Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
+                        account.FineInMoney -= Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
                     }
                     break;
             }
@@ -142,17 +142,10 @@ namespace RSFJ.Model
 
         internal void Load()
         {
-            if (StockItems.Contains(Cash)) StockItems.Remove(Cash);
-            if (StockItems.Contains(None)) StockItems.Remove(None);
-            if (StockItems.Contains(Fine999)) StockItems.Remove(Fine999);
-
-            if (Accounts.Contains(Self)) Accounts.Remove(Self);
-
-            StockItems.Add(Cash);
-            StockItems.Add(None);
-            StockItems.Add(Fine999);
-
-            Accounts.Add(Self);
+            var r1 = StockItems.Add(new StockItem() { Name = "Cash", Rate_Purity = 2900 });
+            var r2 = StockItems.Add(new StockItem() { Name = "Fine999", Rate_Purity = 99.98 });
+            var r3 = StockItems.Add(new StockItem() { Name = "None" });
+            var r4 = Accounts.Add(new Account() { Name = "Self", Type = AccountType.Self });
         }
 
         internal void FireStockItemAdded(StockItem Item)

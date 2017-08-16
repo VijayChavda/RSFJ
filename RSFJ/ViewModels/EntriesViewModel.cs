@@ -168,7 +168,7 @@ namespace RSFJ.ViewModels
 
             var entry = new RojmelEntry()
             {
-                Account = Account,
+                AccountName = Account.Name,
                 Date = DateTime.Now,
                 IsLeftSide = OnLeftSide
             };
@@ -176,7 +176,7 @@ namespace RSFJ.ViewModels
             if (IsExchangeWithFine)
             {
                 entry.Type = RojmelEntryType.ItemExchangeFine;
-                entry.StockItem = ExchangeWithFineViewModel.StockItem;
+                entry.StockItemName = ExchangeWithFineViewModel.StockItem.Name;
                 entry.Param1 = ExchangeWithFineViewModel.Weight;
                 entry.Param2 = ExchangeWithFineViewModel.Purity;
                 entry.FullPaymentDueDays = DateTime.Now.Subtract(ExchangeWithFineViewModel.PaymentBefore).Days;
@@ -185,20 +185,20 @@ namespace RSFJ.ViewModels
             else if (IsCashPayment)
             {
                 entry.Type = RojmelEntryType.SimpleCashExchange;
-                entry.StockItem = DataContextService.Instance.DataContext.Cash;
+                entry.StockItemName = DataContextService.Instance.DataContext.Cash.Name;
                 entry.Param1 = CashPaymentViewModel.Cash;
             }
             else if (IsFineClearWithAccountBalance)
             {
                 entry.Type = RojmelEntryType.UseCash;
-                entry.StockItem = DataContextService.Instance.DataContext.None;
+                entry.StockItemName = DataContextService.Instance.DataContext.None.Name;
                 entry.Param1 = FineClearWithAccountBalanceViewModel.AccountBalance;
                 entry.Param2 = FineClearWithAccountBalanceViewModel.Rate;
             }
             else if (IsFineClear)
             {
                 entry.Type = RojmelEntryType.ItemExchangeCash;
-                entry.StockItem = DataContextService.Instance.DataContext.Cash;
+                entry.StockItemName = DataContextService.Instance.DataContext.Cash.Name;
                 entry.Param1 = FineClearViewModel.Cash;
                 entry.Param2 = FineClearViewModel.Rate;
             }
@@ -296,7 +296,7 @@ namespace RSFJ.ViewModels
 
             var entry = new RojmelEntry()
             {
-                Account = Account,
+                AccountName = Account.Name,
                 Date = DateTime.Now,
                 IsLeftSide = OnLeftSide
             };
@@ -304,7 +304,7 @@ namespace RSFJ.ViewModels
             if (IsFine999Payment)
             {
                 entry.Type = RojmelEntryType.ItemExchangeCash;
-                entry.StockItem = DataContextService.Instance.DataContext.Fine999;
+                entry.StockItemName = DataContextService.Instance.DataContext.Fine999.Name;
                 entry.Param1 = Fine999PaymentViewModel.Weight;
                 entry.Param2 = Fine999PaymentViewModel.Rate;
                 entry.FullPaymentDueDays = DateTime.Now.Subtract(Fine999PaymentViewModel.PaymentBefore).Days;
@@ -313,7 +313,7 @@ namespace RSFJ.ViewModels
             else if (IsCashPayment)
             {
                 entry.Type = RojmelEntryType.SimpleCashExchange;
-                entry.StockItem = DataContextService.Instance.DataContext.Cash;
+                entry.StockItemName = DataContextService.Instance.DataContext.Cash.Name;
                 entry.Param1 = CashPaymentViewModel.Cash;
             }
             else
@@ -419,8 +419,8 @@ namespace RSFJ.ViewModels
             var entry = new RojmelEntry()
             {
                 Type = RojmelEntryType.ItemExchangeCash,
-                Account = Account,
-                StockItem = StockItem,
+                AccountName = Account.Name,
+                StockItemName = StockItem.Name,
                 Date = DateTime.Now,
                 IsLeftSide = OnLeftSide,
                 IsLabourAsAmount = IsLabourAsAmount,

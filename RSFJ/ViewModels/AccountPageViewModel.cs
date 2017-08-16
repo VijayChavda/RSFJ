@@ -48,7 +48,7 @@ namespace RSFJ.ViewModels
             {
                 HistoryEntries.Clear();
 
-                var accountEntries = DataContextService.Instance.DataContext.RojmelEntries.Where(x => x.Account == SelectedAccount);
+                var accountEntries = DataContextService.Instance.DataContext.RojmelEntries.Where(x => x.AccountName == SelectedAccount.Name);
 
                 var lendingEntries = accountEntries.Where(x => !x.IsLeftSide && x.Type == RojmelEntryType.ItemExchangeFine).ToArray();
                 var paybackEntries = accountEntries.Where(x => x.IsLeftSide && x.Type == RojmelEntryType.ItemExchangeFine || x.Type == RojmelEntryType.UseCash).ToArray();
@@ -181,7 +181,7 @@ namespace RSFJ.ViewModels
             Type = Model.Type;
             Id = Model.Id.ToString();
             Date = Model.Date;
-            StockItem = Model.StockItem.ToString();
+            StockItem = Model.StockItemName.ToString();
             PartialPaymentInterval = Model.PartialPaymentInterval;
             TotalPaymentDueDays = Model.FullPaymentDueDays;
             LParam1 = Model.IsLeftSide ? Model.Param1.ToString() : string.Empty;
