@@ -21,11 +21,15 @@ namespace RSFJ.ViewModels
         private bool _ShowAggregateStockBalance;
         public bool ShowAggregateStockBalance { get => _ShowAggregateStockBalance; set => SetProperty(ref _ShowAggregateStockBalance, value); }
 
+        private int _RojmelPageDatesFilterSpan;
+        public int RojmelPageDatesFilterSpan { get => _RojmelPageDatesFilterSpan; set => SetProperty(ref _RojmelPageDatesFilterSpan, value); }
+
         public SettingsFlyoutViewModel()
         {
             ShowAggregateFineBalance = Services.RegistoryService.Instance.ShowAggregateFineBalance;
             ShowAggregateMoneyBalance = Services.RegistoryService.Instance.ShowAggregateMoneyBalance;
             ShowAggregateStockBalance = Services.RegistoryService.Instance.ShowAggregateStockBalance;
+            RojmelPageDatesFilterSpan = Services.RegistoryService.Instance.RojmelPageDatesFilterSpan;
         }
 
         protected override void APropertyChanged<T>(string PropertyName, T OldValue, T NewValue)
@@ -41,6 +45,10 @@ namespace RSFJ.ViewModels
             if (PropertyName == nameof(ShowAggregateStockBalance))
             {
                 Services.RegistoryService.Instance.ShowAggregateStockBalance = ShowAggregateStockBalance;
+            }
+            if (PropertyName == nameof(RojmelPageDatesFilterSpan))
+            {
+                Services.RegistoryService.Instance.RojmelPageDatesFilterSpan = RojmelPageDatesFilterSpan;
             }
         }
     }

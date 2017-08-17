@@ -71,6 +71,26 @@ namespace RSFJ.Services
             }
         }
 
+        public int RojmelPageDatesFilterSpan
+        {
+            get
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                key = key.OpenSubKey("Augment Software", true);
+                key = key.OpenSubKey("RSFJ", true);
+                return int.Parse(key.GetValue(nameof(RojmelPageDatesFilterSpan), 30).ToString());
+            }
+            set
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+                key = key.OpenSubKey("Augment Software", true);
+                key = key.OpenSubKey("RSFJ", true);
+                key.SetValue(nameof(RojmelPageDatesFilterSpan), value);
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RojmelPageDatesFilterSpan)));
+            }
+        }
+
         public bool ShowAggregateFineBalance
         {
             get

@@ -266,7 +266,7 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
 
-                                <Controls:ToggleSwitch Grid.ColumnSpan="2" Content="Labour in amount?" IsChecked="{Binding Path=IsLabourAsAmount, UpdateSourceTrigger=PropertyChanged}" />
+                                <Controls:ToggleSwitch Grid.ColumnSpan="2" Content="Labour in amount?" IsChecked="{Binding Path=IsLabourAsAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <TextBlock Grid.Row="1" Text="Labour: " />
                                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Labour, TargetNullValue={x:Static system:String.Empty}}" FontWeight="SemiBold" TextAlignment="Center" />

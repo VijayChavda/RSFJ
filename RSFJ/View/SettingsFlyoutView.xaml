@@ -32,6 +32,12 @@
                     <StackPanel Margin="0 10">
                         <Controls:ToggleSwitch IsChecked="{Binding Path=ShowAggregateStockBalance, UpdateSourceTrigger=PropertyChanged}" Content="Show stock balance" Foreground="DarkSlateGray" />
                     </StackPanel>
+                    <StackPanel Margin="0 10">
+                        <Grid>
+                            <TextBlock Text="Days of entries to see:" />
+                            <TextBox Text="{Binding Path=RojmelPageDatesFilterSpan, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Right" TextAlignment="Center" Padding="5" Foreground="SlateGray" FontSize="12pt" BorderThickness="0 0 0 1" Background="Transparent" />
+                        </Grid>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Border>

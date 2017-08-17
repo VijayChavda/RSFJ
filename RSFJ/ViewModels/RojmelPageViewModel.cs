@@ -90,8 +90,8 @@ namespace RSFJ.ViewModels
             FilterUnit = UnitFilters[0];
             FilterAccount = null;
             FilterStockItem = null;
-            FilterStartDate = DateTime.Now.Subtract(TimeSpan.FromDays(15));
             FilterEndDate = DateTime.Now;
+            FilterStartDate = FilterEndDate.Subtract(TimeSpan.FromDays(RegistoryService.Instance.RojmelPageDatesFilterSpan));
         }
         #endregion
 
@@ -130,6 +130,10 @@ namespace RSFJ.ViewModels
                 if (e.PropertyName == nameof(RegistoryService.ShowAggregateStockBalance))
                 {
                     ShowAggregateStockBalance = RegistoryService.Instance.ShowAggregateStockBalance;
+                }
+                if (e.PropertyName == nameof(RegistoryService.RojmelPageDatesFilterSpan))
+                {
+                    FilterStartDate = FilterEndDate.Subtract(TimeSpan.FromDays(RegistoryService.Instance.RojmelPageDatesFilterSpan));
                 }
             };
 
