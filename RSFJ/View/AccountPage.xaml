@@ -96,7 +96,7 @@
                 </StackPanel>
                 <StackPanel Margin="10">
                     <TextBlock Text="Note:" FontSize="12pt" Style="{StaticResource KeyStyle}" />
-                    <TextBox Text="{Binding Path=SelectedAccount.Note}" AcceptsReturn="True" MaxLines="10" MaxLength="100" Style="{StaticResource EditableValueStyle}" />
+                    <TextBox Text="{Binding Path=SelectedAccount.Note}" AcceptsReturn="True" MaxLines="10" MaxLength="100" TextWrapping="WrapWithOverflow" Style="{StaticResource EditableValueStyle}" />
                 </StackPanel>
             </StackPanel>
         </Grid>
