@@ -390,6 +390,8 @@ namespace RSFJ.ViewModels
 
         public RojmelEntryViewModel(RojmelEntry Model) : this()
         {
+            this.Model = Model;
+
             _Id = Model.Id;
             _Date = Model.Date;
             _Account = Accounts.Single(x => x.Name == Model.AccountName);

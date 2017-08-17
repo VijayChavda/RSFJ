@@ -74,12 +74,14 @@ namespace RSFJ.Model
             {
                 Entry.Result = 0;
             }
-
-            double result = Entry.Result = Math.Round(Entry.Result, 2);
             #endregion
 
             #region Update balances
+            double result = Entry.Result = Math.Round(Entry.Result, 2);
+            double param1 = Entry.Param1 = Math.Round(Entry.Param1, 2);
+
             stockItem.InStock += Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
+
             switch (Entry.Type)
             {
                 case RojmelEntryType.ItemExchangeFine:
@@ -93,11 +95,7 @@ namespace RSFJ.Model
                     break;
                 case RojmelEntryType.UseCash:
                     account.FineInGold += Entry.IsLeftSide ? -result : result;
-                    //Use account money balance if Cash is not provided.
-                    if (stockItem == DataContextService.Instance.DataContext.None)
-                    {
-                        account.FineInMoney += Entry.IsLeftSide ? result : -result;
-                    }
+                    account.FineInMoney += Entry.IsLeftSide ? param1 : -param1;
                     break;
             }
             #endregion
@@ -114,38 +112,37 @@ namespace RSFJ.Model
             var account = Accounts.Single(x => x.Name == Entry.AccountName);
             var stockItem = StockItems.Single(x => x.Name == Entry.StockItemName);
 
+            double result = Entry.Result = Math.Round(Entry.Result, 2);
+            double param1 = Entry.Result = Math.Round(Entry.Param1, 2);
+
             stockItem.InStock -= Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
 
             switch (Entry.Type)
             {
                 case RojmelEntryType.ItemExchangeFine:
-                    account.FineInGold -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    account.FineInGold -= Entry.IsLeftSide ? -result : result;
                     break;
                 case RojmelEntryType.ItemExchangeCash:
-                    account.FineInMoney -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    account.FineInMoney -= Entry.IsLeftSide ? -result : result;
                     break;
                 case RojmelEntryType.SimpleCashExchange:
-                    account.FineInMoney -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
+                    account.FineInMoney -= Entry.IsLeftSide ? -result : result;
                     break;
                 case RojmelEntryType.UseCash:
-                    account.FineInGold -= Entry.IsLeftSide ? -Entry.Result : Entry.Result;
-                    //Use account money balance if Cash is not provided.
-                    if (stockItem == DataContextService.Instance.DataContext.None)
-                    {
-                        account.FineInMoney -= Entry.IsLeftSide ? Entry.Param1 : -Entry.Param1;
-                    }
+                    account.FineInGold -= Entry.IsLeftSide ? -result : result;
+                    account.FineInMoney -= Entry.IsLeftSide ? param1 : -param1;
                     break;
             }
 
             RojmelEntries.Remove(Entry);
         }
 
-        internal void Load()
+        public void Load()
         {
-            var r1 = StockItems.Add(new StockItem() { Name = "Cash", Rate_Purity = 2900 });
-            var r2 = StockItems.Add(new StockItem() { Name = "Fine999", Rate_Purity = 99.98 });
-            var r3 = StockItems.Add(new StockItem() { Name = "None" });
-            var r4 = Accounts.Add(new Account() { Name = "Self", Type = AccountType.Self });
+            StockItems.Add(new StockItem() { Name = "Cash" });
+            StockItems.Add(new StockItem() { Name = "Fine999" });
+            StockItems.Add(new StockItem() { Name = "None" });
+            Accounts.Add(new Account() { Name = "Self", Type = AccountType.Self });
         }
 
         internal void FireStockItemAdded(StockItem Item)
