@@ -15,32 +15,12 @@ namespace RSFJ.ViewModels.Utilities
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            var dataContext = DataContextService.Instance.DataContext;
             var entry = (value as BindingGroup).Items[0] as RojmelEntryViewModel;
 
-            if (entry.Account == null)
+            string temp = entry.Validate();
+            if (temp != null)
             {
-                return new ValidationResult(false, "Account is required");
-            }
-            if (entry.StockItem == null)
-            {
-                return new ValidationResult(false, "Stock item is required");
-            }
-            if (entry.Account == dataContext.Self && entry.StockItem == dataContext.None)
-            {
-                return new ValidationResult(false, "You cannot make a Self transaction with no item!");
-            }
-            if (entry.Param1 == null)
-            {
-                return new ValidationResult(false, "Param 1 is required");
-            }
-            if (entry.Account != dataContext.Self && entry.StockItem != dataContext.Cash && entry.Param2 == null)
-            {
-                return new ValidationResult(false, "Param 2 is required");
-            }
-            if (entry.Account == dataContext.Self && entry.Param2 != null)
-            {
-                return new ValidationResult(false, "Self transactions are made for initial stock entry. Please remove entry from column 2.");
+                return new ValidationResult(false, temp);
             }
 
             entry.CommitEntry();

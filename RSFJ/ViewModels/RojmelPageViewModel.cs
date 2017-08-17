@@ -478,6 +478,46 @@ namespace RSFJ.ViewModels
                 Type = Account.Type == AccountType.Regular ? RojmelEntryType.ItemExchangeFine : RojmelEntryType.ItemExchangeCash;
             }
             #endregion
+
+            if (PropertyName == nameof(Labour) || PropertyName == nameof(Waste) || PropertyName == nameof(IsLabourAsAmount))
+            {
+                if (Validate() == null)
+                {
+                    CommitEntry();
+                }
+            }
+        }
+
+        public string Validate()
+        {
+            var dataContext = DataContextService.Instance.DataContext;
+
+            if (Account == null)
+            {
+                return "Account is required";
+            }
+            if (StockItem == null)
+            {
+                return "Stock item is required";
+            }
+            if (Account == dataContext.Self && StockItem == dataContext.None)
+            {
+                return "You cannot make a Self transaction with no item!";
+            }
+            if (Param1 == null)
+            {
+                return "Param 1 is required";
+            }
+            if (Account != dataContext.Self && StockItem != dataContext.Cash && Param2 == null)
+            {
+                return "Param 2 is required";
+            }
+            if (Account == dataContext.Self && Param2 != null)
+            {
+                return "Self transactions are made for initial stock entry. Please remove entry from column 2.";
+            }
+
+            return null;
         }
 
         public void CommitEntry()
