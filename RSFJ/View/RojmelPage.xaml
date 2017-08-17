@@ -152,7 +152,7 @@
                 <DataGridTemplateColumn CellStyle="{StaticResource DefaultCellStyle}" Header="Date" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <DatePicker SelectedDate="{Binding Path=Date, StringFormat={}{0:dd/mm/yy}, UpdateSourceTrigger=LostFocus}" />
+                            <DatePicker SelectedDate="{Binding Path=Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

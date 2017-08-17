@@ -483,7 +483,8 @@ namespace RSFJ.ViewModels
             }
             #endregion
 
-            if (PropertyName == nameof(Labour) || PropertyName == nameof(Waste) || PropertyName == nameof(IsLabourAsAmount))
+            if (PropertyName == nameof(Date) || PropertyName == nameof(Labour) ||
+                PropertyName == nameof(Waste) || PropertyName == nameof(IsLabourAsAmount))
             {
                 if (Validate() == null)
                 {
