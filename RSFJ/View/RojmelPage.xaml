@@ -29,6 +29,8 @@
         <utilities:CustomerEntryVisibilityConverter x:Key="CustomerEntryVisibilityConverter" />
 
         <utilities:RojmelPageAccountDetailVisibilityConverter x:Key="RojmelPageAccountDetailVisibilityConverter" />
+        <utilities:RojmelPageStockItemDetailVisibilityConverter x:Key="RojmelPageStockItemDetailVisibilityConverter" />
+        
     </Page.Resources>
 
     <Grid Background="WhiteSmoke">
@@ -218,7 +220,7 @@
                                 <TextBlock Text="{Binding Path=Account.FineInMoney, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}" FontSize="12pt" HorizontalAlignment="Right" />
                             </Grid>
                         </StackPanel>
-                        <StackPanel Margin="10" Visibility="{Binding Path=StockItem, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
+                        <StackPanel Margin="10" Visibility="{Binding UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RojmelPageStockItemDetailVisibilityConverter}}">
                             <Border Padding="5" BorderBrush="LightSlateGray" BorderThickness="0 0 0 1">
                                 <TextBlock Text="{Binding Path=StockItem.Name}" FontSize="14pt" />
                             </Border>
