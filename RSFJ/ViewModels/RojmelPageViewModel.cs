@@ -72,11 +72,13 @@ namespace RSFJ.ViewModels
                 }
                 else if (FilterUnit == UnitFilters[1])
                 {
-                    e.Accepted = entry.Type == RojmelEntryType.ItemExchangeFine || entry.Type == RojmelEntryType.UseCash;
+                    e.Accepted = entry.Type == RojmelEntryType.ItemExchangeFine || entry.Type == RojmelEntryType.UseCash ||
+                        (entry.Type == RojmelEntryType.Initial && entry.StockItem != DataContextService.Instance.DataContext.Cash);
                 }
                 else
                 {
-                    e.Accepted = entry.Type == RojmelEntryType.ItemExchangeCash || entry.Type == RojmelEntryType.SimpleCashExchange;
+                    e.Accepted = entry.Type == RojmelEntryType.ItemExchangeCash || entry.Type == RojmelEntryType.SimpleCashExchange ||
+                        (entry.Type == RojmelEntryType.Initial && entry.StockItem == DataContextService.Instance.DataContext.Cash);
                 }
 
                 e.Accepted &= FilterAccount == null || entry.Account == FilterAccount;
