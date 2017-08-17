@@ -1,13 +1,5 @@
-﻿using MahApps.Metro.Controls;
-using RSFJ.Services;
-using RSFJ.View;
+﻿using RSFJ.Services;
 using RSFJ.ViewModels.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -45,12 +37,9 @@ namespace RSFJ.ViewModels
 
             if (result2 != MessageBoxResult.Yes) return;
 
-            MessageBox.Show("The application will now restart", "RSFJ", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("The application will now restart.", "RSFJ", MessageBoxButton.OK, MessageBoxImage.Information);
 
             DataContextService.Instance.StartOver();
-
-            Process.Start(Application.ResourceAssembly.Location);
-            Environment.Exit(0);
         }
 
         public SettingsFlyoutViewModel()

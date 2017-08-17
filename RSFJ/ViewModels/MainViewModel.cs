@@ -98,25 +98,22 @@ namespace RSFJ.ViewModels
 
         private void Restore()
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-
-            // Set filter for file extension and default file extension 
-            dlg.DefaultExt = ".png";
-            dlg.Filter = "RSFJ Backup File (*.rsfj)|*.rsfj";
-
+            OpenFileDialog dlg = new OpenFileDialog()
+            {
+                DefaultExt = ".png",
+                Filter = "RSFJ Backup File (*.rsfj)|*.rsfj"
+            };
 
             // Display OpenFileDialog by calling ShowDialog method 
             bool? result = dlg.ShowDialog();
 
-
             // Get the selected file name and display in a TextBox 
             if (result.HasValue && result.Value)
             {
-                // Open document 
+                MessageBox.Show("The application will now restart.", "RSFJ", MessageBoxButton.OK, MessageBoxImage.Information);
+
                 DataContextService.Instance.Restore(dlg.FileName);
             }
-
-            MessageBox.Show("The application was restored to the selected backup.", "RSFJ", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

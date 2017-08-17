@@ -93,5 +93,10 @@ namespace RSFJ.Services
 
             return file;
         }
+
+        public void CopyFile(string file, string location)
+        {
+            new FileInfo(file).CopyTo(location);
+        }
     }
 }

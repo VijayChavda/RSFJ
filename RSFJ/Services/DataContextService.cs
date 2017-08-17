@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace RSFJ.Services
@@ -69,6 +71,8 @@ namespace RSFJ.Services
             StorageService.Instance.DeleteFile(StorageService.DatabaseFile);
 
             RegistoryService.Instance.Reset();
+
+            RestartApp();
         }
 
         /// <summary>
@@ -87,9 +91,16 @@ namespace RSFJ.Services
         /// <param name="BackupFile">Path to the backup file to restore.</param>
         public void Restore(string BackupFile)
         {
-            File.Delete(StorageService.DatabaseFile);
-            new FileInfo(BackupFile).CopyTo(StorageService.DatabaseFile);
-            Load();
+            StorageService.Instance.DeleteFile(StorageService.DatabaseFile);
+            StorageService.Instance.CopyFile(BackupFile, StorageService.DatabaseFile);
+
+            RestartApp();
+        }
+
+        private void RestartApp()
+        {
+            Process.Start(Application.ResourceAssembly.Location);
+            Environment.Exit(0);
         }
     }
 }
