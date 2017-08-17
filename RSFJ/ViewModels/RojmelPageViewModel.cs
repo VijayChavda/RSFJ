@@ -163,7 +163,11 @@ namespace RSFJ.ViewModels
                 PropertyName == nameof(FilterAccount) || PropertyName == nameof(FilterStockItem) ||
                 PropertyName == nameof(FilterStartDate) || PropertyName == nameof(FilterEndDate))
             {
-                EntriesViewSource.View.Refresh();
+                try
+                {
+                    EntriesViewSource.View.Refresh();
+                }
+                catch { }
             }
 
             if (PropertyName == nameof(ShowAggregateFineBalance) || PropertyName == nameof(ShowAggregateMoneyBalance) ||
