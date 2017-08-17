@@ -114,7 +114,7 @@ namespace RSFJ.ViewModels
             FilterUnit = UnitFilters[0];
             FilterAccount = null;
             FilterStockItem = null;
-            FilterStartDate = DateTime.Now.Subtract(TimeSpan.FromDays(15));
+            FilterStartDate = DateTime.Now.Subtract(TimeSpan.FromDays(Services.RegistoryService.Instance.RojmelPageDatesFilterSpan));
             FilterEndDate = DateTime.Now;
 
             RegistoryService.Instance.PropertyChanged += (sender, e) =>
