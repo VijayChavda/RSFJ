@@ -150,5 +150,13 @@ namespace RSFJ.Services
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowAggregateStockBalance)));
             }
         }
+
+        public void Reset()
+        {
+            RojmelPageDatesFilterSpan = 50;
+            ShowAggregateFineBalance = false;
+            ShowAggregateMoneyBalance = false;
+            ShowAggregateStockBalance = false;
+        }
     }
 }

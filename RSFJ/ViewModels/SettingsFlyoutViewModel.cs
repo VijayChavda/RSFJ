@@ -1,11 +1,14 @@
 ﻿using MahApps.Metro.Controls;
+using RSFJ.Services;
 using RSFJ.View;
 using RSFJ.ViewModels.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace RSFJ.ViewModels
@@ -23,6 +26,32 @@ namespace RSFJ.ViewModels
 
         private int _RojmelPageDatesFilterSpan;
         public int RojmelPageDatesFilterSpan { get => _RojmelPageDatesFilterSpan; set => SetProperty(ref _RojmelPageDatesFilterSpan, value); }
+
+        RelayCommand _startOverCommand;
+        public ICommand StartOverCommand
+        {
+            get => _startOverCommand ?? (_startOverCommand = new RelayCommand(param => StartOver(), param => true));
+        }
+
+        private void StartOver()
+        {
+            var result1 = MessageBox.Show("Are you sure you want to start over? You will loose all your data and the app will start fresh.",
+                "RSFJ", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+
+            if (result1 != MessageBoxResult.Yes) return;
+
+            var result2 = MessageBox.Show("ARE YOU ABSOLUTELY SURE YOU WANT TO DO THIS!!? Consider taking a backup before you delete all your data!",
+                "RSFJ", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result2 != MessageBoxResult.Yes) return;
+
+            MessageBox.Show("The application will now restart", "RSFJ", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            DataContextService.Instance.StartOver();
+
+            Process.Start(Application.ResourceAssembly.Location);
+            Environment.Exit(0);
+        }
 
         public SettingsFlyoutViewModel()
         {

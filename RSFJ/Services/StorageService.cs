@@ -71,6 +71,11 @@ namespace RSFJ.Services
             }
         }
 
+        public void DeleteFile(string File)
+        {
+            new FileInfo(File).Delete();
+        }
+
         /// <summary>
         /// Creates a file which has time-stamp suffixed in it's name, and writes content into it.
         /// </summary>

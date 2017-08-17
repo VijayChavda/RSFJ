@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -61,6 +62,13 @@ namespace RSFJ.Services
             }
 
             DataContext.Load();
+        }
+
+        public void StartOver()
+        {
+            StorageService.Instance.DeleteFile(StorageService.DatabaseFile);
+
+            RegistoryService.Instance.Reset();
         }
 
         /// <summary>

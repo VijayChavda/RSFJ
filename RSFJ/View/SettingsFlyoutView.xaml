@@ -38,6 +38,8 @@
                             <TextBox Text="{Binding Path=RojmelPageDatesFilterSpan, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Right" TextAlignment="Center" Padding="5" Foreground="SlateGray" FontSize="12pt" BorderThickness="0 0 0 1" Background="Transparent" />
                         </Grid>
                     </StackPanel>
+
+                    <Button HorizontalAlignment="Left" BorderBrush="DarkRed" BorderThickness="2" Foreground="DarkRed" Cursor="Hand" Padding="10 5" FontSize="10pt" Command="{Binding Path=StartOverCommand}">Start over</Button>
                 </StackPanel>
             </StackPanel>
         </Border>
