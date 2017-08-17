@@ -151,7 +151,7 @@ namespace RSFJ.ViewModels
 
         private void LoadData()
         {
-            foreach (var model in DataContextService.Instance.DataContext.RojmelEntries)
+            foreach (var model in DataContextService.Instance.DataContext.RojmelEntries.OrderBy(x => x.Id))
             {
                 Entries.Add(new RojmelEntryViewModel(model));
             }
@@ -546,7 +546,7 @@ namespace RSFJ.ViewModels
             Model.IsLabourAsAmount = IsLabourAsAmount;
             Model.IsLeftSide = IsLeftSide;
 
-            DataContextService.Instance.DataContext.AddRojmelEntry(Model);
+            DataContextService.Instance.DataContext.AddRojmelEntry(Model, Id == null);
 
             Id = Model.Id;
             Result = Model.Result;

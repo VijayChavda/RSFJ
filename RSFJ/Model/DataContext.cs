@@ -30,7 +30,7 @@ namespace RSFJ.Model
         public event EventHandler<Account> AccountAdded;
         public event EventHandler<Account> AccountRemoved;
 
-        public void AddRojmelEntry(RojmelEntry Entry)
+        public void AddRojmelEntry(RojmelEntry Entry, bool AssignNewId = true)
         {
             var account = Accounts.Single(x => x.Name == Entry.AccountName);
             var stockItem = StockItems.Single(x => x.Name == Entry.StockItemName);
@@ -100,7 +100,9 @@ namespace RSFJ.Model
             }
             #endregion
 
-            Entry.Id = RojmelEntries.Count == 0 ? 1 : RojmelEntries.Last().Id + 1;
+            if (AssignNewId)
+                Entry.Id = RojmelEntries.Count == 0 ? 1 : RojmelEntries.OrderBy(x => x.Id).Last().Id + 1;
+
             RojmelEntries.Add(Entry);
         }
 
